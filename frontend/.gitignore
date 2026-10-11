@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Next.js build output & cache
+.next/
+out/
+build/
+
+# Local Environment Variables & Secrets (CRITICAL)
+.env
+.env*.local
+.env.local
+.env.production
+.env.development
+
+# Logs & Debugging
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+
+# TypeScript cache
+*.tsbuildinfo
+next-env.d.ts
