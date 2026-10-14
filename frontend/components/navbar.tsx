@@ -203,13 +203,22 @@ export function Navbar() {
                       )}
 
                       {currentUser.role === 'seller' && (
-                        <Link
-                          href="/seller/new-kit"
-                          onClick={() => setIsProfileMenuOpen(false)}
-                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-emerald-300 hover:bg-emerald-950/30 font-medium transition-colors"
-                        >
-                          <span>👨‍💻 Seller Studio &amp; List Kit</span>
-                        </Link>
+                        <>
+                          <Link
+                            href="/seller/my-kits"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                            className="flex items-center gap-2 rounded-lg px-3 py-2 text-emerald-300 hover:bg-emerald-950/30 font-medium transition-colors"
+                          >
+                            <span>📦 My Published Repos</span>
+                          </Link>
+                          <Link
+                            href="/seller/new-kit"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                            className="flex items-center gap-2 rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-900 font-medium transition-colors"
+                          >
+                            <span>➕ List New Kit (GitHub/ZIP)</span>
+                          </Link>
+                        </>
                       )}
 
                       <Link

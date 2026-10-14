@@ -1,9 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { KITS } from '../../../data/kits';
+import { getKitBySlug } from '../../../lib/kits-store';
+import { useAuth } from '../../../lib/auth-context';
+import { Kit } from '../../../types/kit';
 import { formatPriceINR, formatPriceUSD, formatDate } from '../../../lib/utils';
 import { VerificationBadge } from '../../../components/kits/verification-badge';
 import { CodePreview } from '../../../components/kits/code-preview';
@@ -15,12 +18,27 @@ import { CheckoutModal } from '../../../components/checkout/checkout-modal';
 export default function KitDetailPage() {
   const params = useParams();
   const slug = params?.slug as string;
+  const { currentUser } = useAuth();
 
-  const kit = KITS.find((k) => k.slug === slug);
+  const [kit, setKit] = useState<Kit | undefined>(() => {
+    return getKitBySlug(slug) || KITS.find((k) => k.slug === slug);
+  });
+
+  useEffect(() => {
+    const resolved = getKitBySlug(slug) || KITS.find((k) => k.slug === slug);
+    if (resolved) {
+      setKit(resolved);
+    }
+  }, [slug]);
 
   if (!kit) {
     return notFound();
   }
+
+  const isAuthor =
+    currentUser &&
+    (currentUser.email === kit.sellerEmail ||
+      (kit.sellerId && currentUser.id === kit.sellerId));
 
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
@@ -42,6 +60,37 @@ export default function KitDetailPage() {
         <span>/</span>
         <span className="text-zinc-300 truncate">{kit.slug}</span>
       </div>
+
+      {/* Author Indicator Bar */}
+      {isAuthor && (
+        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="text-lg">👑</span>
+            <div>
+              <span className="font-bold text-emerald-400 block">
+                You are the author of this repository listing.
+              </span>
+              <span className="text-zinc-400">
+                Buyers who purchase will receive your README and can connect with you via in-app chat.
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/seller/my-kits"
+              className="rounded-lg border border-white/[0.1] bg-zinc-900 px-3 py-1.5 text-xs text-white hover:bg-zinc-800 transition-colors font-mono"
+            >
+              📦 My Repos
+            </Link>
+            <Link
+              href="/seller/new-kit"
+              className="rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1.5 text-xs hover:bg-emerald-500/30 transition-colors font-mono"
+            >
+              + List Another
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* 2. Top Banner Header */}
       <div className="border-b border-zinc-800/80 pb-8">

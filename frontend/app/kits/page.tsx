@@ -4,17 +4,29 @@ import React, { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { KITS } from '../../data/kits';
 import { CATEGORIES } from '../../data/categories';
-import { FilterState, CategorySlug } from '../../types/kit';
+import { FilterState, CategorySlug, Kit } from '../../types/kit';
 import { filterAndSortKits, getSearchAggregations } from '../../lib/search';
+import { getAllKits } from '../../lib/kits-store';
 import { KitGrid } from '../../components/kits/kit-grid';
 import { FilterSidebar } from '../../components/search/filter-sidebar';
 import { SearchBar } from '../../components/search/search-bar';
 import { Badge } from '../../components/ui/badge';
+import Link from 'next/link';
 
 function KitsCatalogContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
   const initialCategory = (searchParams.get('cat') as CategorySlug) || 'all';
+
+  const [allKits, setAllKits] = useState<Kit[]>(KITS);
+
+  // Sync client-side custom kits
+  useEffect(() => {
+    setAllKits(getAllKits());
+    const handleUpdate = () => setAllKits(getAllKits());
+    window.addEventListener('devkit_kits_updated', handleUpdate);
+    return () => window.removeEventListener('devkit_kits_updated', handleUpdate);
+  }, []);
 
   const [filters, setFilters] = useState<FilterState>({
     query: initialQuery,
@@ -35,8 +47,8 @@ function KitsCatalogContent() {
 
   // Compute filtered kits
   const filteredKits = useMemo(() => {
-    return filterAndSortKits(KITS, filters);
-  }, [filters]);
+    return filterAndSortKits(allKits, filters);
+  }, [allKits, filters]);
 
   // Compute facet aggregations based on current search results
   const aggregations = useMemo(() => {
@@ -65,17 +77,34 @@ function KitsCatalogContent() {
   return (
     <div className="space-y-10 pb-16">
       {/* Page Header */}
-      <div className="border-b border-white/[0.06] pb-6">
-        <div className="flex items-center gap-2 mb-2 text-xs text-indigo-400 font-mono">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>Verified Integration Directory</span>
+      <div className="border-b border-white/[0.06] pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-2 text-xs text-indigo-400 font-mono">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Verified Integration Directory</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Explore Verified Kits
+          </h1>
+          <p className="mt-2 text-xs sm:text-sm text-zinc-400 max-w-2xl leading-relaxed">
+            Search, filter by architecture and technology, and inspect test audits for battle-tested Next.js building blocks.
+          </p>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-          Explore Verified Kits
-        </h1>
-        <p className="mt-2 text-xs sm:text-sm text-zinc-400 max-w-2xl leading-relaxed">
-          Search, filter by architecture and technology, and inspect test audits for battle-tested Next.js building blocks.
-        </p>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <Link
+            href="/seller/my-kits"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-zinc-900/90 px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+          >
+            <span>📦 My Published Repos</span>
+          </Link>
+          <Link
+            href="/seller/new-kit"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 text-xs font-semibold text-emerald-400 hover:bg-emerald-500/20 transition-colors"
+          >
+            <span>+ List Kit</span>
+          </Link>
+        </div>
       </div>
 
       {/* Main Browse Layout */}

@@ -57,6 +57,14 @@ export interface Kit {
   lastUpdated: string;
   license: string;
   supportScope: string;
+  sellerId?: string;
+  sellerName?: string;
+  sellerEmail?: string;
+  githubUrl?: string;
+  zipFileName?: string;
+  zipFileSize?: string;
+  readmeContent?: string;
+  uploadMethod?: 'github' | 'zip';
 }
 
 export type SortOption = 'popular' | 'newest' | 'price-low' | 'price-high' | 'rating';

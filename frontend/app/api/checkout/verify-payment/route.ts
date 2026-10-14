@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
         kitTitle: updatedOrder.kitTitle,
         customerEmail: updatedOrder.customerEmail,
         customerName: updatedOrder.customerName,
+        kitData: updatedOrder.kitData,
       });
       conversationId = conv.conversationId;
     } catch (err) {

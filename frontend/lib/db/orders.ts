@@ -22,6 +22,7 @@ export interface Order {
   maxDownloads: number;
   createdAt: Date;
   updatedAt: Date;
+  kitData?: any;
 }
 
 const ORDERS_COLLECTION = 'orders';
@@ -37,6 +38,7 @@ export async function createOrderRecord(data: {
   customerEmail: string;
   customerName: string;
   razorpayOrderId: string;
+  kitData?: any;
 }): Promise<Order> {
   const db = await getDatabase();
   const downloadToken = crypto.randomBytes(24).toString('hex');
@@ -54,6 +56,7 @@ export async function createOrderRecord(data: {
     customerEmail: data.customerEmail.toLowerCase().trim(),
     customerName: data.customerName.trim(),
     razorpayOrderId: data.razorpayOrderId,
+    kitData: data.kitData,
     status: 'created',
     downloadToken,
     downloadExpiresAt: expiresAt,

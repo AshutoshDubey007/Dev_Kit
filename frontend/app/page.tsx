@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { KITS } from '../data/kits';
@@ -8,6 +8,8 @@ import { CATEGORIES } from '../data/categories';
 import { KitCard } from '../components/kits/kit-card';
 import { SearchBar } from '../components/search/search-bar';
 import { Button } from '../components/ui/button';
+import { Kit } from '../types/kit';
+import { getAllKits } from '../lib/kits-store';
 
 const POPULAR_TAGS = ['razorpay', 'rbac', 'rag', 'webhooks', 'docker'];
 
@@ -56,15 +58,23 @@ const VERIFY_CHECKS = [
 
 export default function HomePage() {
   const [heroSearch, setHeroSearch] = useState('');
+  const [allKits, setAllKits] = useState<Kit[]>(KITS);
   const router = useRouter();
+
+  useEffect(() => {
+    setAllKits(getAllKits());
+    const handleUpdate = () => setAllKits(getAllKits());
+    window.addEventListener('devkit_kits_updated', handleUpdate);
+    return () => window.removeEventListener('devkit_kits_updated', handleUpdate);
+  }, []);
 
   const goToSearch = (query: string) => {
     const q = query.trim();
     if (q.length > 0) router.push(`/kits?q=${encodeURIComponent(q)}`);
   };
 
-  const featuredKits = KITS.filter((kit) => kit.isFeatured);
-  const totalKits = KITS.length;
+  const featuredKits = allKits.filter((kit) => kit.isFeatured);
+  const totalKits = allKits.length;
 
   return (
     <div className="pb-24 text-zinc-200">

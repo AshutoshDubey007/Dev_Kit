@@ -63,6 +63,7 @@ export function CheckoutModal({ kit, isOpen, onClose }: CheckoutModalProps) {
           kitSlug: kit.slug,
           customerEmail: email,
           customerName: name,
+          kitData: kit,
         }),
       });
 

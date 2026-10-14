@@ -19,17 +19,18 @@ export async function autoConnectBuyerSeller(order: {
   kitTitle: string;
   customerEmail: string;
   customerName: string;
+  kitData?: any;
 }): Promise<Conversation> {
   const db = await getDatabase();
   const now = new Date();
 
   // Find kit details for seller info and README guide
-  const kit = KITS.find((k) => k.slug === order.kitSlug);
+  const kit = KITS.find((k) => k.slug === order.kitSlug) || order.kitData;
 
   // In production, seller details come from the kit author record
-  const sellerId = 'seller_devkit_core';
-  const sellerName = 'DevKit Verified Core Team';
-  const sellerEmail = 'support@devkit.store';
+  const sellerId = kit?.sellerId || 'seller_devkit_core';
+  const sellerName = kit?.sellerName || 'DevKit Verified Core Team';
+  const sellerEmail = kit?.sellerEmail || 'support@devkit.store';
 
   // Check if conversation already exists for this order
   const existingConv = await db
@@ -65,7 +66,17 @@ export async function autoConnectBuyerSeller(order: {
   await db.collection<Conversation>(CONVERSATIONS_COLLECTION).insertOne(newConversation);
 
   // Auto-generate Seller Onboarding Message with Step-by-Step README
-  const initialSetupReadme = `### 👋 Welcome to ${order.kitTitle}!
+  const initialSetupReadme = kit?.readmeContent
+    ? `### 👋 Welcome to ${order.kitTitle}!
+
+Thank you for your purchase. Here is your author setup guide:
+
+${kit.readmeContent}
+
+---
+💬 **Need help with setup?** Ask your questions directly in this secure chat! 
+*(Note: Phone numbers and external contacts are automatically masked to keep both buyer and seller protected).*`
+    : `### 👋 Welcome to ${order.kitTitle}!
 
 Thank you for your purchase. Here is your quickstart setup guide:
 
@@ -76,13 +87,13 @@ Thank you for your purchase. Here is your quickstart setup guide:
 - Copy environment template: \`cp .env.example .env.local\`
 
 #### 2. Verification Status
-- Runtime Tested: Next.js ${kit?.verification.nextjsVersion || '15.1.0'}
-- Pass Rate: ${kit?.verification.testSuitePassRate || 100}% (${kit?.verification.automatedTestsCount || 18} automated tests)
+- Runtime Tested: Next.js ${kit?.verification?.nextjsVersion || '15.1.0'}
+- Pass Rate: ${kit?.verification?.testSuitePassRate || 100}% (${kit?.verification?.automatedTestsCount || 18} automated tests)
 
 ${
-  kit?.verification.knownLimitations && kit.verification.knownLimitations.length > 0
+  kit?.verification?.knownLimitations && kit.verification.knownLimitations.length > 0
     ? `#### 3. Honest Limitations\n${kit.verification.knownLimitations
-        .map((l) => `- ${l}`)
+        .map((l: string) => `- ${l}`)
         .join('\n')}\n`
     : ''
 }
