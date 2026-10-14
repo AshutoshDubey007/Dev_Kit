@@ -1,6 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import {
+  SessionProvider,
+  useSession,
+  signIn as nextAuthSignIn,
+  signOut as nextAuthSignOut,
+} from 'next-auth/react';
 
 export type UserProfileRole = 'buyer' | 'seller' | 'operator' | 'admin';
 
@@ -81,8 +87,10 @@ export const DEMO_PROFILES: Record<UserProfileRole, UserSession> = {
 interface AuthContextType {
   currentUser: UserSession | null;
   loginWithCredentials: (email: string, password?: string) => Promise<UserSession>;
-  loginWithOAuth: (provider: 'google' | 'github') => Promise<UserSession>;
+  loginWithOAuth: (provider: 'google' | 'github') => Promise<void>;
   signup: (name: string, email: string, password?: string) => Promise<UserSession>;
+  becomeSeller: () => void;
+  switchRole: (role: UserProfileRole) => void;
   loginAsRole: (role: UserProfileRole) => void;
   loginWithEmail: (email: string, name: string, role?: UserProfileRole) => void;
   signupWithEmail: (
@@ -91,8 +99,6 @@ interface AuthContextType {
     password?: string,
     role?: UserProfileRole
   ) => Promise<UserSession>;
-  becomeSeller: () => void;
-  switchRole: (role: UserProfileRole) => void;
   logout: () => void;
   isLoginModalOpen: boolean;
   openLoginModal: () => void;
@@ -103,7 +109,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AUTH_STORAGE_KEY = 'devkit_user_session';
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+function NextAuthSync({
+  onSync,
+}: {
+  onSync: (user: any) => void;
+}) {
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session?.user && session.user.email) {
+      onSync(session.user);
+    }
+  }, [session, onSync]);
+
+  return null;
+}
+
+function InnerAuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -130,7 +152,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoginModalOpen(false);
   };
 
-  // Standard Basic Login with Email & Password (auto-detects role from specified profiles)
+  const handleNextAuthSync = React.useCallback((nextAuthUser: any) => {
+    const email = nextAuthUser.email || '';
+    const name = nextAuthUser.name || email.split('@')[0];
+    const { role } = resolveProfileForEmail(email, name);
+    const initials = name
+      .split(' ')
+      .map((n: string) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+
+    const profile: UserSession = {
+      id: nextAuthUser.id || `usr_oauth_${Date.now()}`,
+      name,
+      email: email.trim().toLowerCase(),
+      role: nextAuthUser.role || role,
+      avatarText: initials || 'US',
+      avatarUrl: nextAuthUser.image || undefined,
+      provider: nextAuthUser.provider || 'github',
+      sellerQuotas:
+        role === 'seller'
+          ? {
+              totalListed: 2,
+              freeKitsUsed: 2,
+              isSubscribed: false,
+            }
+          : undefined,
+    };
+
+    saveUserSession(profile);
+  }, []);
+
+  // Standard Basic Login with Email & Password
   const loginWithCredentials = async (
     email: string,
     _password?: string
@@ -164,35 +218,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return profile;
   };
 
-  // Standard OAuth with Google or GitHub
+  // Real OAuth Login with NextAuth
   const loginWithOAuth = async (
     provider: 'google' | 'github'
-  ): Promise<UserSession> => {
-    const isGoogle = provider === 'google';
-    const mockEmail = isGoogle ? 'ashutosh.dubey@gmail.com' : 'ashutoshdubey@github.com';
-    const mockName = isGoogle ? 'Ashutosh Dubey' : 'ashutoshdubey';
-    const { role, name } = resolveProfileForEmail(mockEmail, mockName);
-    const avatarText = isGoogle ? 'G' : 'GH';
-
-    const profile: UserSession = {
-      id: `usr_${provider}_${Date.now()}`,
-      name,
-      email: mockEmail,
-      role,
-      avatarText,
-      provider,
-      sellerQuotas:
-        role === 'seller'
-          ? {
-              totalListed: 2,
-              freeKitsUsed: 2,
-              isSubscribed: false,
-            }
-          : undefined,
-    };
-
-    saveUserSession(profile);
-    return profile;
+  ): Promise<void> => {
+    try {
+      await nextAuthSignIn(provider, { callbackUrl: '/onboarding' });
+    } catch (err) {
+      console.error(`Error redirecting to ${provider}:`, err);
+    }
   };
 
   // Standard Basic Sign Up
@@ -230,6 +264,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return profile;
   };
 
+  const becomeSeller = () => {
+    if (!currentUser) return;
+    const updated: UserSession = {
+      ...currentUser,
+      role: 'seller',
+      sellerQuotas: currentUser.sellerQuotas || {
+        totalListed: 0,
+        freeKitsUsed: 0,
+        isSubscribed: false,
+      },
+    };
+    saveUserSession(updated);
+  };
+
+  const switchRole = (role: UserProfileRole) => {
+    if (!currentUser) return;
+    const updated: UserSession = {
+      ...currentUser,
+      role,
+      sellerQuotas:
+        role === 'seller'
+          ? currentUser.sellerQuotas || {
+              totalListed: 0,
+              freeKitsUsed: 0,
+              isSubscribed: false,
+            }
+          : currentUser.sellerQuotas,
+    };
+    saveUserSession(updated);
+  };
+
   const loginAsRole = (role: UserProfileRole) => {
     const profile = DEMO_PROFILES[role];
     saveUserSession(profile);
@@ -265,41 +330,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return signup(name, email, password);
   };
 
-  const becomeSeller = () => {
-    if (!currentUser) return;
-    const updated: UserSession = {
-      ...currentUser,
-      role: 'seller',
-      sellerQuotas: currentUser.sellerQuotas || {
-        totalListed: 0,
-        freeKitsUsed: 0,
-        isSubscribed: false,
-      },
-    };
-    saveUserSession(updated);
-  };
-
-  const switchRole = (role: UserProfileRole) => {
-    if (!currentUser) return;
-    const updated: UserSession = {
-      ...currentUser,
-      role,
-      sellerQuotas:
-        role === 'seller'
-          ? currentUser.sellerQuotas || {
-              totalListed: 0,
-              freeKitsUsed: 0,
-              isSubscribed: false,
-            }
-          : currentUser.sellerQuotas,
-    };
-    saveUserSession(updated);
-  };
-
-  const logout = () => {
+  const logout = async () => {
     setCurrentUser(null);
     try {
       localStorage.removeItem(AUTH_STORAGE_KEY);
+      await nextAuthSignOut({ redirect: false });
     } catch {}
   };
 
@@ -321,8 +356,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         closeLoginModal: () => setIsLoginModalOpen(false),
       }}
     >
+      <NextAuthSync onSync={handleNextAuthSync} />
       {children}
     </AuthContext.Provider>
+  );
+}
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <SessionProvider>
+      <InnerAuthProvider>{children}</InnerAuthProvider>
+    </SessionProvider>
   );
 }
 

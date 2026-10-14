@@ -174,7 +174,7 @@ export function Navbar() {
                           onClick={() => setIsProfileMenuOpen(false)}
                           className="flex items-center gap-2 rounded-lg px-3 py-2 text-purple-300 hover:bg-purple-950/30 font-medium transition-colors"
                         >
-                          <span>👑 Admin Console</span>
+                          <span> Admin Console</span>
                         </Link>
                       )}
 
@@ -185,7 +185,7 @@ export function Navbar() {
                           onClick={() => setIsProfileMenuOpen(false)}
                           className="flex items-center gap-2 rounded-lg px-3 py-2 text-amber-300 hover:bg-amber-950/30 font-medium transition-colors"
                         >
-                          <span>🛡️ Operator Desk</span>
+                          <span> Operator Desk</span>
                         </Link>
                       )}
 

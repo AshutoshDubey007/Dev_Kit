@@ -47,14 +47,9 @@ export default function LoginPage() {
     setIsLoading(true);
     setAuthError('');
     try {
-      const user = await loginWithOAuth(provider);
-      if (user.role === 'admin') router.push('/admin');
-      else if (user.role === 'operator') router.push('/operator');
-      else if (user.role === 'seller') router.push('/seller/new-kit');
-      else router.push('/kits');
+      await loginWithOAuth(provider);
     } catch (err: any) {
       setAuthError(`Failed to sign in with ${provider}.`);
-    } finally {
       setIsLoading(false);
     }
   };

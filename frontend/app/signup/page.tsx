@@ -61,13 +61,9 @@ export default function SignUpPage() {
     setIsLoading(true);
     setErrorMsg('');
     try {
-      const user = await loginWithOAuth(provider);
-      if (user.role === 'admin') router.push('/admin');
-      else if (user.role === 'operator') router.push('/operator');
-      else router.push('/onboarding');
+      await loginWithOAuth(provider);
     } catch (err: any) {
       setErrorMsg(`Failed to connect with ${provider}.`);
-    } finally {
       setIsLoading(false);
     }
   };
