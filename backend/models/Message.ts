@@ -1,9 +1,7 @@
-import { ObjectId } from 'mongodb';
-
 export type MessageSenderRole = 'buyer' | 'seller' | 'operator' | 'system';
 
 export interface Message {
-  _id?: ObjectId;
+  _id?: string | any;
   messageId: string;
   conversationId: string;
   senderId: string;

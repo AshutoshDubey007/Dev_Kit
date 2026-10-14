@@ -13,7 +13,7 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
-  const { currentUser, openLoginModal, logout } = useAuth();
+  const { currentUser, openLoginModal, logout, becomeSeller } = useAuth();
 
   // Close profile dropdown on outside click
   useEffect(() => {
@@ -35,96 +35,102 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-white/[0.07] bg-[#070709]/80 backdrop-blur-2xl transition-all">
-        <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Logo & Brand with subtle glow */}
-          <div className="flex items-center gap-8">
-            <Link href="/" className="group flex items-center gap-3">
-              <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-b from-indigo-500 to-indigo-700 shadow-lg shadow-indigo-500/25 border border-white/20 text-white font-mono font-bold text-xs">
+      <header className="sticky top-0 z-40 w-full border-b border-white/[0.06] bg-[#05070a]/85 backdrop-blur-2xl transition-all">
+        {/* Full-width fluid bar — padding only, no centered max-width box */}
+        <div className="flex h-16 items-center justify-between gap-6 px-4 sm:px-6 lg:px-8 xl:px-10">
+          {/* ─── LEFT: Logo + Nav ────────────────────────────── */}
+          <div className="flex items-center gap-8 min-w-0">
+            <Link href="/" className="group flex items-center gap-3 shrink-0">
+              {/* Logo tile — emerald→blue gradient to match hero */}
+              <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-blue-600 shadow-lg shadow-emerald-500/25 border border-white/20 text-white font-mono font-bold text-xs">
                 DK
-                <span className="absolute -inset-0.5 rounded-lg bg-indigo-500/20 blur opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="absolute -inset-0.5 rounded-lg bg-emerald-400/25 blur opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <div className="flex flex-col">
                 <span className="font-semibold tracking-tight text-zinc-100 text-sm group-hover:text-white transition-colors">
-                  DevKit<span className="text-indigo-400">.store</span>
+                  DevKit
+                  <span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                    .store
+                  </span>
                 </span>
                 <div className="flex items-center gap-1.5 -mt-0.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[10px] text-zinc-400 font-mono">
+                  <span className="text-[10px] text-zinc-500 font-mono">
                     Next.js 15 Verified
                   </span>
                 </div>
               </div>
             </Link>
 
-            {/* Public Navigation links */}
-            <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-zinc-400">
+            {/* Public Navigation */}
+            <nav className="hidden md:flex items-center gap-7 text-xs font-medium text-zinc-400">
               <Link
                 href="/kits"
-                className="hover:text-zinc-100 transition-colors py-1 hover:border-b-2 hover:border-indigo-500"
+                className="hover:text-zinc-100 transition-colors py-1 border-b-2 border-transparent hover:border-emerald-500/60"
               >
                 Browse Kits
               </Link>
               <Link
                 href="/categories/payments"
-                className="hover:text-zinc-100 transition-colors"
+                className="hover:text-zinc-100 transition-colors py-1 border-b-2 border-transparent hover:border-blue-500/60"
               >
-                Payments & UPI
+                Payments &amp; UPI
               </Link>
               <Link
                 href="/categories/auth"
-                className="hover:text-zinc-100 transition-colors"
+                className="hover:text-zinc-100 transition-colors py-1 border-b-2 border-transparent hover:border-emerald-500/60"
               >
-                Auth & RBAC
+                Auth &amp; RBAC
               </Link>
               <Link
                 href="/categories/ai"
-                className="hover:text-zinc-100 transition-colors"
+                className="hover:text-zinc-100 transition-colors py-1 border-b-2 border-transparent hover:border-blue-500/60"
               >
-                AI & RAG
+                AI &amp; RAG
               </Link>
               <Link
                 href="/chat"
                 className="hover:text-zinc-100 transition-colors flex items-center gap-1"
               >
-                <span>💬 Chat</span>
+                <span>💬</span>
+                <span>Chat</span>
               </Link>
               <Link
                 href="/verify"
-                className="flex items-center gap-1 text-emerald-400/90 hover:text-emerald-300 transition-colors"
+                className="flex items-center gap-1.5 text-emerald-400/90 hover:text-emerald-300 transition-colors"
               >
                 <span>Audit Standard</span>
-                <span className="text-[10px] bg-emerald-950/80 border border-emerald-800/80 text-emerald-400 px-1 rounded">
+                <span className="text-[10px] font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-1.5 py-0.5 rounded">
                   100% Pass
                 </span>
               </Link>
             </nav>
           </div>
 
-          {/* Right Action Bar */}
-          <div className="flex items-center gap-3">
-            {/* Search command trigger */}
+          {/* ─── RIGHT: Actions ──────────────────────────────── */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* Search trigger — matches the terminal aesthetic */}
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="hidden sm:flex items-center gap-3 rounded-lg border border-white/[0.08] bg-zinc-900/60 px-3 py-1.5 text-xs text-zinc-400 hover:border-zinc-700 hover:text-zinc-200 transition-all hover:bg-zinc-900 shadow-inner"
+              className="hidden sm:flex items-center gap-3 rounded-lg border border-white/[0.08] bg-[#0a0e14]/80 px-3 py-1.5 text-xs text-zinc-500 hover:border-emerald-500/40 hover:text-zinc-200 transition-all"
             >
-              <span className="text-zinc-400 text-xs">🔍</span>
-              <span>Search code...</span>
-              <kbd className="keycap rounded px-1.5 py-0.5 text-[10px] font-mono text-zinc-300">
+              <span className="text-zinc-500 text-xs">🔍</span>
+              <span>Search code…</span>
+              <kbd className="rounded border border-white/[0.1] bg-white/[0.03] px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
                 ⌘K
               </kbd>
             </button>
 
-            {/* Profile / Auth Dropdown */}
+            {/* Profile / Auth */}
             {currentUser ? (
               <div className="relative" ref={profileMenuRef}>
                 <button
                   type="button"
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="flex items-center gap-2 rounded-xl border border-white/[0.1] bg-zinc-900/90 px-2.5 py-1.5 text-xs transition-all hover:border-zinc-700 hover:bg-zinc-800"
+                  className="flex items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0a0e14]/90 px-2.5 py-1.5 text-xs transition-all hover:border-emerald-500/40 hover:bg-[#0d1219]"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-[10px] font-bold text-white font-mono">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-emerald-500 to-blue-600 text-[10px] font-bold text-white font-mono">
                     {currentUser.avatarText}
                   </span>
                   <div className="hidden sm:flex flex-col text-left">
@@ -138,13 +144,15 @@ export function Navbar() {
                   <span className="text-zinc-500 text-[10px]">▼</span>
                 </button>
 
-                {/* Dropdown Menu */}
+                {/* Dropdown */}
                 {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-64 rounded-2xl border border-white/[0.1] bg-[#0c0d12] p-2 shadow-2xl backdrop-blur-2xl z-50 text-xs space-y-1 animate-fade-in">
-                    {/* User Info Header */}
+                  <div className="absolute right-0 mt-2 w-64 rounded-2xl border border-white/[0.1] bg-[#0a0e14] p-2 shadow-2xl backdrop-blur-2xl z-50 text-xs space-y-1 animate-fade-in">
+                    {/* User header */}
                     <div className="p-3 border-b border-white/[0.08]">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="font-semibold text-white">{currentUser.name}</span>
+                        <span className="font-semibold text-white">
+                          {currentUser.name}
+                        </span>
                         <Badge
                           variant={roleBadgeMap[currentUser.role]?.variant}
                           size="sm"
@@ -158,7 +166,7 @@ export function Navbar() {
                       </span>
                     </div>
 
-                    {/* Role-Specific Portal Links */}
+                    {/* Role-specific links */}
                     <div className="py-1 space-y-0.5 border-b border-white/[0.08]">
                       {currentUser.role === 'admin' && (
                         <Link
@@ -170,7 +178,8 @@ export function Navbar() {
                         </Link>
                       )}
 
-                      {(currentUser.role === 'operator' || currentUser.role === 'admin') && (
+                      {(currentUser.role === 'operator' ||
+                        currentUser.role === 'admin') && (
                         <Link
                           href="/operator"
                           onClick={() => setIsProfileMenuOpen(false)}
@@ -180,13 +189,26 @@ export function Navbar() {
                         </Link>
                       )}
 
+                      {currentUser.role === 'buyer' && (
+                        <Link
+                          href="/seller/new-kit"
+                          onClick={() => {
+                            setIsProfileMenuOpen(false);
+                            becomeSeller();
+                          }}
+                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-emerald-300 hover:bg-emerald-950/30 font-medium transition-colors"
+                        >
+                          <span>🚀 Become a Seller (3 Free Kits)</span>
+                        </Link>
+                      )}
+
                       {currentUser.role === 'seller' && (
                         <Link
                           href="/seller/new-kit"
                           onClick={() => setIsProfileMenuOpen(false)}
                           className="flex items-center gap-2 rounded-lg px-3 py-2 text-emerald-300 hover:bg-emerald-950/30 font-medium transition-colors"
                         >
-                          <span>👨‍💻 Seller Portal & List Kit</span>
+                          <span>👨‍💻 Seller Studio &amp; List Kit</span>
                         </Link>
                       )}
 
@@ -199,19 +221,15 @@ export function Navbar() {
                       </Link>
                     </div>
 
-                    {/* Switch Profile Action */}
+                    {/* Account actions */}
                     <div className="pt-1 space-y-0.5">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsProfileMenuOpen(false);
-                          openLoginModal();
-                        }}
-                        className="w-full text-left rounded-lg px-3 py-2 text-indigo-300 hover:bg-indigo-950/30 font-medium transition-colors flex items-center justify-between"
+                      <Link
+                        href="/login"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center justify-between rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-900 transition-colors"
                       >
-                        <span>⚡ Switch Profile / Role</span>
-                        <span className="text-[10px] text-zinc-500">Demo</span>
-                      </button>
+                        <span>Switch Account</span>
+                      </Link>
 
                       <button
                         type="button"
@@ -232,19 +250,26 @@ export function Navbar() {
                 variant="outline"
                 size="sm"
                 onClick={openLoginModal}
-                className="text-xs border-indigo-500/40 text-indigo-300 hover:bg-indigo-950/40"
+                className="text-xs border-emerald-500/40 text-emerald-300 hover:bg-emerald-950/40"
               >
                 Sign In
               </Button>
             )}
 
             <Link href="/kits">
-              <Button size="sm" variant="primary" className="text-xs shadow-md shadow-indigo-600/20 font-medium">
+              <Button
+                size="sm"
+                variant="primary"
+                className="text-xs font-semibold bg-gradient-to-r from-emerald-500 to-blue-500 text-black hover:opacity-90 shadow-md shadow-emerald-500/20 border-0"
+              >
                 Explore Kits →
               </Button>
             </Link>
           </div>
         </div>
+
+        {/* Thin gradient accent line at the bottom of the header */}
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
       </header>
 
       {/* Global Modals */}

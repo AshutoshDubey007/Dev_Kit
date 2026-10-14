@@ -1,208 +1,214 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth, UserProfileRole, DEMO_PROFILES } from '../../lib/auth-context';
+import { useAuth } from '../../lib/auth-context';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
-import { Badge } from '../../components/ui/badge';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { loginAsRole, loginWithEmail, currentUser } = useAuth();
-  const [tab, setTab] = useState<'quick' | 'custom'>('quick');
+  const { loginWithCredentials, loginWithOAuth } = useAuth();
+
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [selectedRole, setSelectedRole] = useState<UserProfileRole>('buyer');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState('');
 
-  const handleCustomSubmit = (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !name) return;
-    loginWithEmail(email, name, selectedRole);
-    router.push('/');
+    setAuthError('');
+
+    if (!email.trim()) {
+      setAuthError('Please enter your email address.');
+      return;
+    }
+    if (!password) {
+      setAuthError('Please enter your password.');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const user = await loginWithCredentials(email, password);
+      if (user.role === 'admin') router.push('/admin');
+      else if (user.role === 'operator') router.push('/operator');
+      else if (user.role === 'seller') router.push('/seller/new-kit');
+      else router.push('/kits');
+    } catch (err: any) {
+      setAuthError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleQuickLogin = (role: UserProfileRole) => {
-    loginAsRole(role);
-    if (role === 'admin') router.push('/admin');
-    else if (role === 'operator') router.push('/operator');
-    else if (role === 'seller') router.push('/seller/new-kit');
-    else router.push('/chat');
-  };
-
-  const roleMeta: Record<
-    UserProfileRole,
-    { label: string; icon: string; desc: string; badgeVariant: 'secondary' | 'purple' | 'success' | 'warning' }
-  > = {
-    buyer: {
-      label: 'Buyer',
-      icon: '👤',
-      desc: 'Browse verified code, checkout securely, and chat with sellers for setup support.',
-      badgeVariant: 'secondary',
-    },
-    seller: {
-      label: 'Seller',
-      icon: '👨‍💻',
-      desc: 'List up to 3 free integration kits, provide README support, and earn per sale.',
-      badgeVariant: 'success',
-    },
-    operator: {
-      label: 'Operator',
-      icon: '🛡️',
-      desc: 'Access Operator Desk to monitor buyer-seller chats and review flagged contact-leak attempts.',
-      badgeVariant: 'warning',
-    },
-    admin: {
-      label: 'Administrator',
-      icon: '👑',
-      desc: 'Full platform control: user management, operator roles, fee configuration, and revenue logs.',
-      badgeVariant: 'purple',
-    },
+  const handleOAuthLogin = async (provider: 'google' | 'github') => {
+    setIsLoading(true);
+    setAuthError('');
+    try {
+      const user = await loginWithOAuth(provider);
+      if (user.role === 'admin') router.push('/admin');
+      else if (user.role === 'operator') router.push('/operator');
+      else if (user.role === 'seller') router.push('/seller/new-kit');
+      else router.push('/kits');
+    } catch (err: any) {
+      setAuthError(`Failed to sign in with ${provider}.`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto py-12 px-4 space-y-6">
-      {/* Header */}
+    <div className="max-w-md mx-auto py-16 px-4 space-y-6">
+      {/* Brand Header */}
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-950/40 px-3 py-1 text-xs text-indigo-300 font-mono">
-          <span>● Multi-Profile Sign In</span>
-        </div>
+        <Link href="/" className="inline-flex items-center gap-2.5 mb-2 group">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-blue-600 shadow-lg shadow-emerald-500/25 border border-white/20 text-white font-mono font-bold text-sm">
+            DK
+          </div>
+          <span className="font-extrabold text-xl text-white tracking-tight">
+            DevKit<span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">.store</span>
+          </span>
+        </Link>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-          Sign In to DevKit
+          Sign In
         </h1>
         <p className="text-xs text-zinc-400">
-          Select an existing test role or sign in with your own custom profile credentials.
+          Enter your details to access your account.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-white/[0.1] bg-[#0c0d12]/95 p-6 shadow-2xl backdrop-blur-2xl space-y-6">
-        {/* Mode Selector */}
-        <div className="flex items-center gap-1 bg-zinc-900/90 p-1 rounded-xl border border-white/[0.08] text-xs">
+      <div className="rounded-2xl border border-white/[0.09] bg-[#090b10]/95 p-7 shadow-2xl backdrop-blur-2xl space-y-5">
+        {/* Social OAuth Buttons */}
+        <div className="space-y-3">
           <button
             type="button"
-            onClick={() => setTab('quick')}
-            className={`flex-1 py-1.5 rounded-lg font-medium transition-all ${
-              tab === 'quick' ? 'bg-indigo-600 text-white shadow-sm' : 'text-zinc-400 hover:text-white'
-            }`}
+            disabled={isLoading}
+            onClick={() => handleOAuthLogin('google')}
+            className="w-full flex items-center justify-center gap-3 rounded-xl border border-white/[0.12] bg-[#121620] px-4 py-2.5 text-xs font-semibold text-white transition-all hover:bg-[#181d2a] hover:border-emerald-500/50 shadow-sm disabled:opacity-60"
           >
-            ⚡ 1-Click Role Switch
+            {/* Google Colorful SVG */}
+            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+              />
+            </svg>
+            <span>Continue with Google</span>
           </button>
+
           <button
             type="button"
-            onClick={() => setTab('custom')}
-            className={`flex-1 py-1.5 rounded-lg font-medium transition-all ${
-              tab === 'custom' ? 'bg-indigo-600 text-white shadow-sm' : 'text-zinc-400 hover:text-white'
-            }`}
+            disabled={isLoading}
+            onClick={() => handleOAuthLogin('github')}
+            className="w-full flex items-center justify-center gap-3 rounded-xl border border-white/[0.12] bg-[#121620] px-4 py-2.5 text-xs font-semibold text-white transition-all hover:bg-[#181d2a] hover:border-blue-500/50 shadow-sm disabled:opacity-60"
           >
-            ✍️ Custom Login
+            {/* GitHub SVG */}
+            <svg className="h-4 w-4 shrink-0 fill-current text-white" viewBox="0 0 24 24">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+              />
+            </svg>
+            <span>Continue with GitHub</span>
           </button>
         </div>
 
-        {tab === 'quick' ? (
-          /* Quick Demo Profiles Grid */
-          <div className="space-y-2.5">
-            {(Object.keys(DEMO_PROFILES) as UserProfileRole[]).map((role) => {
-              const profile = DEMO_PROFILES[role];
-              const meta = roleMeta[role];
-              const isCurrent = currentUser?.role === role;
-
-              return (
-                <div
-                  key={role}
-                  onClick={() => handleQuickLogin(role)}
-                  className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between group ${
-                    isCurrent
-                      ? 'border-indigo-500/50 bg-indigo-950/20 shadow-md'
-                      : 'border-white/[0.07] bg-zinc-900/50 hover:border-zinc-700 hover:bg-zinc-900'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-950 border border-white/[0.08]">
-                      {meta.icon}
-                    </span>
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold text-xs text-white group-hover:text-indigo-300 transition-colors">
-                          {profile.name}
-                        </span>
-                        <Badge variant={meta.badgeVariant} size="sm" className="text-[10px] uppercase font-mono">
-                          {meta.label}
-                        </Badge>
-                      </div>
-                      <span className="text-[11px] text-zinc-400 font-mono">
-                        {profile.email}
-                      </span>
-                    </div>
-                  </div>
-
-                  <span className="text-xs text-zinc-500 group-hover:text-indigo-400 font-mono transition-transform group-hover:translate-x-0.5">
-                    {isCurrent ? '✓ Active' : 'Sign In →'}
-                  </span>
-                </div>
-              );
-            })}
+        {/* Divider */}
+        <div className="relative flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-white/[0.08]" />
           </div>
-        ) : (
-          /* Custom Credentials Form */
-          <form onSubmit={handleCustomSubmit} className="space-y-4 text-xs">
-            <div>
-              <label className="block font-semibold text-zinc-300 mb-1">
-                Full Name
-              </label>
-              <Input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Rahul Sharma"
-              />
-            </div>
+          <span className="relative bg-[#090b10] px-3 text-[11px] font-mono text-zinc-500 uppercase">
+            or continue with email
+          </span>
+        </div>
 
-            <div>
-              <label className="block font-semibold text-zinc-300 mb-1">
-                Email Address
-              </label>
-              <Input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="user@example.com"
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold text-zinc-300 mb-1.5">
-                Assign Profile Role
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {(['buyer', 'seller', 'operator', 'admin'] as UserProfileRole[]).map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setSelectedRole(r)}
-                    className={`p-2.5 rounded-lg border text-left transition-all capitalize ${
-                      selectedRole === r
-                        ? 'border-indigo-500 bg-indigo-600/20 text-white font-semibold'
-                        : 'border-white/[0.08] bg-zinc-900/60 text-zinc-400 hover:text-white'
-                    }`}
-                  >
-                    <span>{roleMeta[r].icon} {roleMeta[r].label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="md"
-              className="w-full text-xs font-semibold mt-2 shadow-lg shadow-indigo-600/20"
-            >
-              Sign In as {roleMeta[selectedRole].label} →
-            </Button>
-          </form>
+        {/* Error Notification */}
+        {authError && (
+          <div className="p-3 rounded-xl border border-red-500/30 bg-red-950/40 text-red-300 text-xs flex items-center gap-2">
+            <span>⚠️</span>
+            <span>{authError}</span>
+          </div>
         )}
+
+        {/* Basic Email & Password Form */}
+        <form onSubmit={handleEmailLogin} className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-zinc-300">
+              Email Address
+            </label>
+            <Input
+              type="email"
+              placeholder="you@domain.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="text-xs"
+              required
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium text-zinc-300">
+                Password
+              </label>
+              <a
+                href="#forgot"
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert('Password reset link has been sent to your email.');
+                }}
+                className="text-[11px] text-emerald-400 hover:text-emerald-300 transition-colors"
+              >
+                Forgot password?
+              </a>
+            </div>
+            <Input
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="text-xs"
+              required
+            />
+          </div>
+
+          <Button
+            type="submit"
+            variant="primary"
+            size="md"
+            disabled={isLoading}
+            className="w-full text-xs font-semibold bg-gradient-to-r from-emerald-500 to-blue-500 text-black hover:opacity-90 shadow-md shadow-emerald-500/20 py-2.5 mt-2"
+          >
+            {isLoading ? 'Signing In…' : 'Sign In →'}
+          </Button>
+        </form>
+
+        {/* Link to Signup */}
+        <div className="text-center pt-2 text-xs text-zinc-400 border-t border-white/[0.07]">
+          Don&apos;t have an account yet?{' '}
+          <Link
+            href="/signup"
+            className="font-semibold text-emerald-400 hover:text-emerald-300 underline underline-offset-4 transition-colors"
+          >
+            Create an account
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,7 @@
-import { ObjectId } from 'mongodb';
-
 export type ConversationStatus = 'active' | 'flagged' | 'closed';
 
 export interface Conversation {
-  _id?: ObjectId;
+  _id?: string | any;
   conversationId: string;
   orderId: string;
   kitId: string;

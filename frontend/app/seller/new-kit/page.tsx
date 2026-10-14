@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../../lib/auth-context';
 import { Button } from '../../../components/ui/button';
@@ -8,7 +8,13 @@ import { Input } from '../../../components/ui/input';
 import { Badge } from '../../../components/ui/badge';
 
 export default function NewKitPage() {
-  const { currentUser, loginAsRole } = useAuth();
+  const { currentUser, becomeSeller } = useAuth();
+
+  useEffect(() => {
+    if (currentUser && currentUser.role === 'buyer') {
+      becomeSeller();
+    }
+  }, [currentUser, becomeSeller]);
 
   // Seller project counter (Simulated: default 2 projects uploaded)
   const [totalListed, setTotalListed] = useState(
