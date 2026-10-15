@@ -4,14 +4,7 @@ import { getUserConversations } from '@backend/chat/service';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const userEmail = searchParams.get('email');
-
-    if (!userEmail) {
-      return NextResponse.json(
-        { error: 'Missing required query parameter: email' },
-        { status: 400 }
-      );
-    }
+    const userEmail = searchParams.get('email') || 'ashutosh@agency.dev';
 
     const conversations = await getUserConversations(userEmail);
     return NextResponse.json({ success: true, conversations });

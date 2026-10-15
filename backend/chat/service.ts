@@ -178,104 +178,200 @@ export async function sendChatMessage(data: {
   return message;
 }
 
-const DEMO_CONVERSATION: Conversation = {
-  conversationId: 'conv_demo',
-  orderId: 'ORD-8491-RAZORPAY',
-  kitId: 'kit-razorpay-pro',
-  kitSlug: 'nextjs-razorpay-pro',
-  kitTitle: 'Next.js 15 Razorpay Pro Kit',
-  buyerId: 'buyer_ashutosh',
-  buyerEmail: 'ashutosh@agency.dev',
-  buyerName: 'Ashutosh Dubey (Buyer)',
-  sellerId: 'seller_devkit_core',
-  sellerEmail: 'support@devkit.store',
-  sellerName: 'DevKit Core Team (Seller)',
-  status: 'flagged',
-  flaggedCount: 1,
-  lastMessageSnippet: 'Can I get your WhatsApp number [🔒 Contact info hidden]?',
-  lastMessageAt: new Date(),
-  createdAt: new Date(Date.now() - 3600000),
-  updatedAt: new Date(),
-};
-
-const DEMO_MESSAGES: Message[] = [
+const DEMO_CONVERSATIONS: Conversation[] = [
   {
-    messageId: 'msg_demo_1',
     conversationId: 'conv_demo',
-    senderId: 'seller_devkit_core',
-    senderName: 'DevKit Core Team (Seller)',
-    senderRole: 'seller',
-    originalContent: `### 👋 Welcome to Next.js 15 Razorpay Pro Kit!
-
-Thank you for your purchase. Here is your quickstart setup guide:
-
-#### 1. Quickstart Steps
-- Download your source package using your order receipt.
-- Unpack into your Next.js workspace.
-- Install dependencies: \`npm install\`
-- Copy environment template: \`cp .env.example .env.local\`
-
-#### 2. Verification Status
-- Runtime Tested: Next.js 15.1.0 on React 19
-- Pass Rate: 100% (18 automated tests)
-
----
-💬 Ask any questions directly in this thread! Note: All phone numbers and personal contacts are automatically masked to keep both buyer and seller protected.`,
-    filteredContent: `### 👋 Welcome to Next.js 15 Razorpay Pro Kit!
-
-Thank you for your purchase. Here is your quickstart setup guide:
-
-#### 1. Quickstart Steps
-- Download your source package using your order receipt.
-- Unpack into your Next.js workspace.
-- Install dependencies: \`npm install\`
-- Copy environment template: \`cp .env.example .env.local\`
-
-#### 2. Verification Status
-- Runtime Tested: Next.js 15.1.0 on React 19
-- Pass Rate: 100% (18 automated tests)
-
----
-💬 Ask any questions directly in this thread! Note: All phone numbers and personal contacts are automatically masked to keep both buyer and seller protected.`,
-    isFlagged: false,
-    metadata: { isAutomatedReadme: true },
-    createdAt: new Date(Date.now() - 3000000),
+    orderId: 'ORD-8491-RAZORPAY',
+    kitId: 'kit-razorpay-pro',
+    kitSlug: 'nextjs-razorpay-pro',
+    kitTitle: 'Next.js 15 Razorpay Pro Kit',
+    buyerId: 'buyer_ashutosh',
+    buyerEmail: 'ashutosh@agency.dev',
+    buyerName: 'Ashutosh Dubey (Buyer)',
+    sellerId: 'seller_devkit_core',
+    sellerEmail: 'support@devkit.store',
+    sellerName: 'DevKit Core Team (Seller)',
+    status: 'flagged',
+    flaggedCount: 1,
+    lastMessageSnippet: 'Can I get your WhatsApp number [🔒 Contact info hidden]?',
+    lastMessageAt: new Date(Date.now() - 300000),
+    createdAt: new Date(Date.now() - 3600000),
+    updatedAt: new Date(),
   },
   {
-    messageId: 'msg_demo_2',
-    conversationId: 'conv_demo',
-    senderId: 'buyer_ashutosh',
-    senderName: 'Ashutosh Dubey (Buyer)',
-    senderRole: 'buyer',
-    originalContent: 'Hey! How do I test the Razorpay webhook on my local machine without deploying to Vercel?',
-    filteredContent: 'Hey! How do I test the Razorpay webhook on my local machine without deploying to Vercel?',
-    isFlagged: false,
-    createdAt: new Date(Date.now() - 2000000),
+    conversationId: 'conv_supabase',
+    orderId: 'ORD-9204-SUPA',
+    kitId: 'kit-supabase-saas',
+    kitSlug: 'supabase-saas-starter',
+    kitTitle: 'Supabase Multi-Tenant SaaS Starter',
+    buyerId: 'buyer_ashutosh',
+    buyerEmail: 'ashutosh@agency.dev',
+    buyerName: 'Ashutosh Dubey (Buyer)',
+    sellerId: 'seller_devkit_core',
+    sellerEmail: 'support@devkit.store',
+    sellerName: 'DevKit Core Team (Seller)',
+    status: 'active',
+    flaggedCount: 0,
+    lastMessageSnippet: 'Row-level security migration scripts executed smoothly!',
+    lastMessageAt: new Date(Date.now() - 7200000),
+    createdAt: new Date(Date.now() - 86400000),
+    updatedAt: new Date(),
   },
   {
-    messageId: 'msg_demo_3',
-    conversationId: 'conv_demo',
-    senderId: 'seller_devkit_core',
-    senderName: 'DevKit Core Team (Seller)',
-    senderRole: 'seller',
-    originalContent: 'Great question! You can use ngrok or cloudflared tunnel to expose port 3000: `ngrok http 3000`. Then copy the https forwarding URL and set it in your Razorpay Test Dashboard webhook settings.',
-    filteredContent: 'Great question! You can use ngrok or cloudflared tunnel to expose port 3000: `ngrok http 3000`. Then copy the https forwarding URL and set it in your Razorpay Test Dashboard webhook settings.',
-    isFlagged: false,
-    createdAt: new Date(Date.now() - 1000000),
-  },
-  {
-    messageId: 'msg_demo_4',
-    conversationId: 'conv_demo',
-    senderId: 'buyer_ashutosh',
-    senderName: 'Ashutosh Dubey (Buyer)',
-    senderRole: 'buyer',
-    originalContent: 'Awesome thanks! By the way, can I get your personal WhatsApp number 9876543210 for quick questions?',
-    filteredContent: 'Awesome thanks! By the way, can I get your personal WhatsApp number [🔒 Contact info hidden to keep transactions safe inside DevKit] for quick questions?',
-    isFlagged: true,
-    flagReason: 'phone_leak, whatsapp_leak',
-    createdAt: new Date(Date.now() - 300000),
+    conversationId: 'conv_prompt',
+    orderId: 'ORD-3810-PROMPT',
+    kitId: 'prompt-nextjs-architect',
+    kitSlug: 'nextjs-15-complete-saas-architect',
+    kitTitle: 'Next.js 15 SaaS AI Blueprint',
+    buyerId: 'buyer_ashutosh',
+    buyerEmail: 'ashutosh@agency.dev',
+    buyerName: 'Ashutosh Dubey (Buyer)',
+    sellerId: 'seller_ai_architect',
+    sellerEmail: 'architect@devkit.store',
+    sellerName: 'AI Systems Architect',
+    status: 'active',
+    flaggedCount: 0,
+    lastMessageSnippet: 'Tested the generation with Claude 3.5 Sonnet and worked out of the box!',
+    lastMessageAt: new Date(Date.now() - 172800000),
+    createdAt: new Date(Date.now() - 259200000),
+    updatedAt: new Date(),
   },
 ];
+
+const DEMO_CONVERSATION = DEMO_CONVERSATIONS[0];
+
+const DEMO_MESSAGES_MAP: Record<string, Message[]> = {
+  conv_demo: [
+    {
+      messageId: 'msg_demo_1',
+      conversationId: 'conv_demo',
+      senderId: 'seller_devkit_core',
+      senderName: 'DevKit Core Team (Seller)',
+      senderRole: 'seller',
+      originalContent: `### 👋 Welcome to Next.js 15 Razorpay Pro Kit!
+
+Thank you for your purchase. Here is your quickstart setup guide:
+
+#### 1. Quickstart Steps
+- Download your source package using your order receipt.
+- Unpack into your Next.js workspace.
+- Install dependencies: \`npm install\`
+- Copy environment template: \`cp .env.example .env.local\`
+
+#### 2. Verification Status
+- Runtime Tested: Next.js 15.1.0 on React 19
+- Pass Rate: 100% (18 automated tests)
+
+---
+💬 Ask any questions directly in this thread! Note: All phone numbers and personal contacts are automatically masked to keep both buyer and seller protected.`,
+      filteredContent: `### 👋 Welcome to Next.js 15 Razorpay Pro Kit!
+
+Thank you for your purchase. Here is your quickstart setup guide:
+
+#### 1. Quickstart Steps
+- Download your source package using your order receipt.
+- Unpack into your Next.js workspace.
+- Install dependencies: \`npm install\`
+- Copy environment template: \`cp .env.example .env.local\`
+
+#### 2. Verification Status
+- Runtime Tested: Next.js 15.1.0 on React 19
+- Pass Rate: 100% (18 automated tests)
+
+---
+💬 Ask any questions directly in this thread! Note: All phone numbers and personal contacts are automatically masked to keep both buyer and seller protected.`,
+      isFlagged: false,
+      metadata: { isAutomatedReadme: true },
+      createdAt: new Date(Date.now() - 3000000),
+    },
+    {
+      messageId: 'msg_demo_2',
+      conversationId: 'conv_demo',
+      senderId: 'buyer_ashutosh',
+      senderName: 'Ashutosh Dubey (Buyer)',
+      senderRole: 'buyer',
+      originalContent: 'Hey! How do I test the Razorpay webhook on my local machine without deploying to Vercel?',
+      filteredContent: 'Hey! How do I test the Razorpay webhook on my local machine without deploying to Vercel?',
+      isFlagged: false,
+      createdAt: new Date(Date.now() - 2000000),
+    },
+    {
+      messageId: 'msg_demo_3',
+      conversationId: 'conv_demo',
+      senderId: 'seller_devkit_core',
+      senderName: 'DevKit Core Team (Seller)',
+      senderRole: 'seller',
+      originalContent: 'Great question! You can use ngrok or cloudflared tunnel to expose port 3000: `ngrok http 3000`. Then copy the https forwarding URL and set it in your Razorpay Test Dashboard webhook settings.',
+      filteredContent: 'Great question! You can use ngrok or cloudflared tunnel to expose port 3000: `ngrok http 3000`. Then copy the https forwarding URL and set it in your Razorpay Test Dashboard webhook settings.',
+      isFlagged: false,
+      createdAt: new Date(Date.now() - 1000000),
+    },
+    {
+      messageId: 'msg_demo_4',
+      conversationId: 'conv_demo',
+      senderId: 'buyer_ashutosh',
+      senderName: 'Ashutosh Dubey (Buyer)',
+      senderRole: 'buyer',
+      originalContent: 'Awesome thanks! By the way, can I get your personal WhatsApp number 9876543210 for quick questions?',
+      filteredContent: 'Awesome thanks! By the way, can I get your personal WhatsApp number [🔒 Contact info hidden to keep transactions safe inside DevKit] for quick questions?',
+      isFlagged: true,
+      flagReason: 'phone_leak, whatsapp_leak',
+      createdAt: new Date(Date.now() - 300000),
+    },
+  ],
+  conv_supabase: [
+    {
+      messageId: 'msg_supa_1',
+      conversationId: 'conv_supabase',
+      senderId: 'seller_devkit_core',
+      senderName: 'DevKit Core Team (Seller)',
+      senderRole: 'seller',
+      originalContent: 'Welcome to Supabase Multi-Tenant SaaS! Check `supabase/migrations` for schema setup.',
+      filteredContent: 'Welcome to Supabase Multi-Tenant SaaS! Check `supabase/migrations` for schema setup.',
+      isFlagged: false,
+      metadata: { isAutomatedReadme: true },
+      createdAt: new Date(Date.now() - 86400000),
+    },
+    {
+      messageId: 'msg_supa_2',
+      conversationId: 'conv_supabase',
+      senderId: 'buyer_ashutosh',
+      senderName: 'Ashutosh Dubey (Buyer)',
+      senderRole: 'buyer',
+      originalContent: 'Row-level security migration scripts executed smoothly!',
+      filteredContent: 'Row-level security migration scripts executed smoothly!',
+      isFlagged: false,
+      createdAt: new Date(Date.now() - 7200000),
+    },
+  ],
+  conv_prompt: [
+    {
+      messageId: 'msg_prm_1',
+      conversationId: 'conv_prompt',
+      senderId: 'seller_ai_architect',
+      senderName: 'AI Systems Architect (Seller)',
+      senderRole: 'seller',
+      originalContent: 'Your AI Prompt Blueprint has been activated in DevKit AI Studio. You can run generation directly with Claude 3.5 Sonnet, GPT-4o, or Gemini 1.5 Pro.',
+      filteredContent: 'Your AI Prompt Blueprint has been activated in DevKit AI Studio. You can run generation directly with Claude 3.5 Sonnet, GPT-4o, or Gemini 1.5 Pro.',
+      isFlagged: false,
+      metadata: { isAutomatedReadme: true },
+      createdAt: new Date(Date.now() - 259200000),
+    },
+    {
+      messageId: 'msg_prm_2',
+      conversationId: 'conv_prompt',
+      senderId: 'buyer_ashutosh',
+      senderName: 'Ashutosh Dubey (Buyer)',
+      senderRole: 'buyer',
+      originalContent: 'Tested the generation with Claude 3.5 Sonnet and worked out of the box!',
+      filteredContent: 'Tested the generation with Claude 3.5 Sonnet and worked out of the box!',
+      isFlagged: false,
+      createdAt: new Date(Date.now() - 172800000),
+    },
+  ],
+};
+
+const DEMO_MESSAGES = DEMO_MESSAGES_MAP.conv_demo;
 
 /**
  * Fetches all messages for a conversation
@@ -290,10 +386,10 @@ export async function getConversationMessages(conversationId: string): Promise<M
       .toArray();
 
     if (stored.length > 0) return stored;
-    if (conversationId === 'conv_demo') return DEMO_MESSAGES;
+    if (DEMO_MESSAGES_MAP[conversationId]) return DEMO_MESSAGES_MAP[conversationId];
     return [];
   } catch {
-    if (conversationId === 'conv_demo') return DEMO_MESSAGES;
+    if (DEMO_MESSAGES_MAP[conversationId]) return DEMO_MESSAGES_MAP[conversationId];
     return [];
   }
 }
@@ -313,9 +409,9 @@ export async function getUserConversations(userEmailOrId: string): Promise<Conve
       .toArray();
 
     if (stored.length > 0) return stored;
-    return [DEMO_CONVERSATION];
+    return DEMO_CONVERSATIONS;
   } catch {
-    return [DEMO_CONVERSATION];
+    return DEMO_CONVERSATIONS;
   }
 }
 
@@ -330,10 +426,10 @@ export async function getConversationById(conversationId: string): Promise<Conve
       .findOne({ conversationId });
 
     if (stored) return stored;
-    if (conversationId === 'conv_demo') return DEMO_CONVERSATION;
-    return null;
+    const found = DEMO_CONVERSATIONS.find((c) => c.conversationId === conversationId);
+    return found || null;
   } catch {
-    if (conversationId === 'conv_demo') return DEMO_CONVERSATION;
-    return null;
+    const found = DEMO_CONVERSATIONS.find((c) => c.conversationId === conversationId);
+    return found || null;
   }
 }

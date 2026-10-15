@@ -140,6 +140,33 @@ export default function NewKitPage() {
   };
 
   const processFile = (file: File) => {
+    // 1. Path traversal defense
+    if (file.name.includes('../') || file.name.includes('..\\') || file.name.includes('/..') || file.name.includes('\\..')) {
+      alert('Security Alert: Malformed archive filename detected with path traversal characters (Zip Slip defense). Upload rejected.');
+      return;
+    }
+
+    // 2. Forbidden dangerous extensions
+    const isForbidden = /\.(exe|bat|cmd|sh|bash|ps1|dll|so|bin|msi|scr|vbs|pif|com|jar|apk)$/i.test(file.name);
+    if (isForbidden) {
+      alert('Security Alert: Executable binaries and shell scripts are strictly prohibited in DevKit marketplace packages. Please upload standard source code archives (.zip, .tar.gz) only.');
+      return;
+    }
+
+    // 3. Allowed archive formats
+    const isAllowedArchive = /\.(zip|tar\.gz|tgz|tar)$/i.test(file.name);
+    if (!isAllowedArchive) {
+      alert('Invalid package format. Please upload a compressed source archive (.zip, .tar.gz, or .tgz).');
+      return;
+    }
+
+    // 4. File size limits (Max 150MB)
+    const MAX_SIZE_BYTES = 150 * 1024 * 1024;
+    if (file.size > MAX_SIZE_BYTES) {
+      alert('Archive size exceeds the 150 MB maximum allowed limit.');
+      return;
+    }
+
     const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
     setUploadedFile({
       name: file.name,

@@ -2,18 +2,51 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { SearchModal } from './search/search-modal';
+import { usePathname } from 'next/navigation';
+import {
+  Compass,
+  BookMarked,
+  ShoppingBag,
+  Sparkles,
+  Bot,
+  FolderKanban,
+  MessageSquare,
+  Search,
+  User,
+  Plus,
+  Settings,
+  LogOut,
+  Shield,
+  Layers,
+  Menu,
+  X,
+} from 'lucide-react';
+import { CommandPalette } from './command-palette';
+import { NotificationCenter } from './notification-center';
 import { LoginModal } from './auth/login-modal';
 import { useAuth } from '../lib/auth-context';
-import { KITS } from '../data/kits';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 
 export function Navbar() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const pathname = usePathname();
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
   const { currentUser, openLoginModal, logout, becomeSeller } = useAuth();
+
+  // Keyboard shortcut listener for Ctrl+K / Cmd+K
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Close profile dropdown on outside click
   useEffect(() => {
@@ -33,222 +66,241 @@ export function Navbar() {
     buyer: { label: 'Buyer', icon: '👤', variant: 'secondary' as const },
   };
 
+  const username = currentUser?.email ? currentUser.email.split('@')[0] : 'ashutoshkdubey007';
+
+  const navLinks = [
+    { label: 'Explore', href: '/explore', icon: Compass },
+    { label: 'Repositories', href: '/repos', icon: BookMarked },
+    { label: 'Marketplace', href: '/kits', icon: ShoppingBag },
+    { label: 'Prompts', href: '/prompts', icon: Sparkles },
+    { label: 'AI Studio', href: '/studio', icon: Bot },
+    { label: 'Projects', href: '/projects', icon: FolderKanban },
+    { label: 'Discussions', href: '/discussions', icon: MessageSquare },
+  ];
+
+  const isLanding = pathname === '/' || pathname === '/kage';
+
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-white/[0.06] bg-[#05070a]/85 backdrop-blur-2xl transition-all">
-        {/* Full-width fluid bar — padding only, no centered max-width box */}
-        <div className="flex h-16 items-center justify-between gap-6 px-4 sm:px-6 lg:px-8 xl:px-10">
-          {/* ─── LEFT: Logo + Nav ────────────────────────────── */}
-          <div className="flex items-center gap-8 min-w-0">
-            <Link href="/" className="group flex items-center gap-3 shrink-0">
-              {/* Logo tile — emerald→blue gradient to match hero */}
-              <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-blue-600 shadow-lg shadow-emerald-500/25 border border-white/20 text-white font-mono font-bold text-xs">
+      <header
+        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+          isLanding
+            ? 'border-b border-white/[0.06] bg-transparent backdrop-blur-sm'
+            : 'border-b border-white/[0.08] bg-[#07090e]/85 backdrop-blur-2xl'
+        }`}
+      >
+        <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          {/* ─── LEFT: Logo + Primary Developer Navigation ─── */}
+          <div className="flex items-center gap-6 min-w-0">
+            <Link href="/" className="group flex items-center gap-2.5 shrink-0">
+              <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 via-blue-600 to-indigo-600 shadow-lg shadow-emerald-500/20 border border-white/20 text-white font-mono font-bold text-xs">
                 DK
                 <span className="absolute -inset-0.5 rounded-lg bg-emerald-400/25 blur opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <div className="flex flex-col">
-                <span className="font-semibold tracking-tight text-zinc-100 text-sm group-hover:text-white transition-colors">
+                <span className="font-bold tracking-tight text-white text-sm group-hover:text-emerald-300 transition-colors">
                   DevKit
-                  <span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
-                    .store
-                  </span>
                 </span>
-                <div className="flex items-center gap-1.5 -mt-0.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[10px] text-zinc-500 font-mono">
-                    Next.js 15 Verified
-                  </span>
-                </div>
+                <span className="text-[9px] text-zinc-500 font-mono -mt-0.5">
+                  Developer Platform
+                </span>
               </div>
             </Link>
 
-            {/* Public Navigation */}
-            <nav className="hidden md:flex items-center gap-7 text-xs font-medium text-zinc-400">
-              <Link
-                href="/kits"
-                className="hover:text-zinc-100 transition-colors py-1 border-b-2 border-transparent hover:border-emerald-500/60"
-              >
-                Browse Kits
-              </Link>
-              <Link
-                href="/categories/payments"
-                className="hover:text-zinc-100 transition-colors py-1 border-b-2 border-transparent hover:border-blue-500/60"
-              >
-                Payments &amp; UPI
-              </Link>
-              <Link
-                href="/categories/auth"
-                className="hover:text-zinc-100 transition-colors py-1 border-b-2 border-transparent hover:border-emerald-500/60"
-              >
-                Auth &amp; RBAC
-              </Link>
-              <Link
-                href="/categories/ai"
-                className="hover:text-zinc-100 transition-colors py-1 border-b-2 border-transparent hover:border-blue-500/60"
-              >
-                AI &amp; RAG
-              </Link>
-              <Link
-                href="/chat"
-                className="hover:text-zinc-100 transition-colors flex items-center gap-1"
-              >
-                <span>💬</span>
-                <span>Chat</span>
-              </Link>
-              <Link
-                href="/verify"
-                className="flex items-center gap-1.5 text-emerald-400/90 hover:text-emerald-300 transition-colors"
-              >
-                <span>Audit Standard</span>
-                <span className="text-[10px] font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-1.5 py-0.5 rounded">
-                  100% Pass
-                </span>
-              </Link>
+            {/* Desktop Navigation Links */}
+            <nav className="hidden xl:flex items-center gap-1 text-xs font-medium text-zinc-400">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
+                      isActive
+                        ? 'bg-white/[0.08] text-white font-semibold'
+                        : 'hover:text-white hover:bg-white/[0.04]'
+                    }`}
+                  >
+                    <Icon className="h-3.5 w-3.5 text-zinc-400" />
+                    <span>{link.label}</span>
+                  </Link>
+                );
+              })}
             </nav>
           </div>
 
-          {/* ─── RIGHT: Actions ──────────────────────────────── */}
-          <div className="flex items-center gap-3 shrink-0">
-            {/* Search trigger — matches the terminal aesthetic */}
+          {/* ─── RIGHT: Search, Notifications, User Menu ─── */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            {/* Cinematic Kage 3D View Link */}
+            <Link
+              href="/"
+              className="hidden lg:inline-flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-950/20 px-2.5 py-1 text-xs text-red-300 hover:text-white hover:border-red-500/60 hover:bg-red-950/40 transition-all font-mono shadow-sm backdrop-blur-sm"
+              title="Launch Cinematic Kage 3D Night Walk"
+            >
+              <span className="font-serif font-bold text-red-400">影</span>
+              <span>KAGE 3D</span>
+            </Link>
+
+            {/* Global Search / Command Palette Trigger */}
             <button
               type="button"
-              onClick={() => setIsSearchOpen(true)}
-              className="hidden sm:flex items-center gap-3 rounded-lg border border-white/[0.08] bg-[#0a0e14]/80 px-3 py-1.5 text-xs text-zinc-500 hover:border-emerald-500/40 hover:text-zinc-200 transition-all"
+              onClick={() => setIsCommandPaletteOpen(true)}
+              className="flex items-center gap-2.5 rounded-xl border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.08] px-3 py-1.5 text-xs text-zinc-300 hover:border-emerald-500/40 hover:text-white transition-all shadow-sm backdrop-blur-sm"
             >
-              <span className="text-zinc-500 text-xs">🔍</span>
-              <span>Search code…</span>
-              <kbd className="rounded border border-white/[0.1] bg-white/[0.03] px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
+              <Search className="h-3.5 w-3.5 text-zinc-500" />
+              <span className="hidden sm:inline">Search or jump to...</span>
+              <kbd className="rounded border border-white/[0.1] bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
                 ⌘K
               </kbd>
             </button>
 
-            {/* Profile / Auth */}
+            {/* Notification Center */}
+            <NotificationCenter />
+
+            {/* Quick Actions (+) */}
+            <Link
+              href="/repos/new"
+              className="hidden sm:flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white hover:border-white/[0.2] transition-colors backdrop-blur-sm"
+              title="Create New Repository"
+            >
+              <Plus className="h-4 w-4" />
+            </Link>
+
+            {/* Profile Menu or Sign In */}
             {currentUser ? (
               <div className="relative" ref={profileMenuRef}>
                 <button
                   type="button"
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="flex items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0a0e14]/90 px-2.5 py-1.5 text-xs transition-all hover:border-emerald-500/40 hover:bg-[#0d1219]"
+                  className="flex items-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] p-1.5 text-xs transition-all hover:border-emerald-500/40 backdrop-blur-sm"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-emerald-500 to-blue-600 text-[10px] font-bold text-white font-mono">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-blue-600 text-[10px] font-bold text-white font-mono">
                     {currentUser.avatarText}
                   </span>
-                  <div className="hidden sm:flex flex-col text-left">
+                  <div className="hidden sm:flex flex-col text-left pr-1">
                     <span className="font-semibold text-white truncate max-w-[100px] text-xs">
                       {currentUser.name}
                     </span>
-                    <span className="text-[10px] font-mono capitalize text-zinc-400 -mt-0.5">
-                      {roleBadgeMap[currentUser.role]?.icon} {currentUser.role}
-                    </span>
                   </div>
-                  <span className="text-zinc-500 text-[10px]">▼</span>
                 </button>
 
-                {/* Dropdown */}
+                {/* Dropdown Menu */}
                 {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-64 rounded-2xl border border-white/[0.1] bg-[#0a0e14] p-2 shadow-2xl backdrop-blur-2xl z-50 text-xs space-y-1 animate-fade-in">
-                    {/* User header */}
+                  <div className="absolute right-0 mt-2 w-64 rounded-2xl border border-white/[0.1] bg-[#0c0e14] p-2 shadow-2xl backdrop-blur-2xl z-50 text-xs space-y-1 animate-in fade-in zoom-in-95 duration-100">
                     <div className="p-3 border-b border-white/[0.08]">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-semibold text-white">
-                          {currentUser.name}
-                        </span>
-                        <Badge
-                          variant={roleBadgeMap[currentUser.role]?.variant}
-                          size="sm"
-                          className="font-mono text-[10px] uppercase"
-                        >
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="font-semibold text-white truncate">{currentUser.name}</span>
+                        <Badge variant={roleBadgeMap[currentUser.role]?.variant} size="sm" className="font-mono text-[9px]">
                           {currentUser.role}
                         </Badge>
                       </div>
-                      <span className="text-zinc-400 text-[11px] block truncate font-mono">
-                        {currentUser.email}
+                      <span className="text-zinc-500 text-[11px] block truncate font-mono">
+                        @{username}
                       </span>
                     </div>
 
-                    {/* Role-specific links */}
                     <div className="py-1 space-y-0.5 border-b border-white/[0.08]">
-                      {currentUser.role === 'admin' && (
-                        <Link
-                          href="/admin"
-                          onClick={() => setIsProfileMenuOpen(false)}
-                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-purple-300 hover:bg-purple-950/30 font-medium transition-colors"
-                        >
-                          <span> Admin Console</span>
-                        </Link>
-                      )}
-
-                      {(currentUser.role === 'operator' ||
-                        currentUser.role === 'admin') && (
-                        <Link
-                          href="/operator"
-                          onClick={() => setIsProfileMenuOpen(false)}
-                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-amber-300 hover:bg-amber-950/30 font-medium transition-colors"
-                        >
-                          <span> Operator Desk</span>
-                        </Link>
-                      )}
-
-                      {currentUser.role === 'buyer' && (
-                        <Link
-                          href="/seller/new-kit"
-                          onClick={() => {
-                            setIsProfileMenuOpen(false);
-                            becomeSeller();
-                          }}
-                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-emerald-300 hover:bg-emerald-950/30 font-medium transition-colors"
-                        >
-                          <span>🚀 Become a Seller (3 Free Kits)</span>
-                        </Link>
-                      )}
-
-                      {currentUser.role === 'seller' && (
-                        <>
-                          <Link
-                            href="/seller/my-kits"
-                            onClick={() => setIsProfileMenuOpen(false)}
-                            className="flex items-center gap-2 rounded-lg px-3 py-2 text-emerald-300 hover:bg-emerald-950/30 font-medium transition-colors"
-                          >
-                            <span>📦 My Published Repos</span>
-                          </Link>
-                          <Link
-                            href="/seller/new-kit"
-                            onClick={() => setIsProfileMenuOpen(false)}
-                            className="flex items-center gap-2 rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-900 font-medium transition-colors"
-                          >
-                            <span>➕ List New Kit (GitHub/ZIP)</span>
-                          </Link>
-                        </>
-                      )}
-
+                      <Link
+                        href={`/${username}`}
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-zinc-300 hover:bg-white/[0.04] hover:text-white transition-colors"
+                      >
+                        <User className="h-3.5 w-3.5 text-zinc-400" />
+                        <span>My Profile</span>
+                      </Link>
+                      <Link
+                        href="/repos"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-zinc-300 hover:bg-white/[0.04] hover:text-white transition-colors"
+                      >
+                        <BookMarked className="h-3.5 w-3.5 text-zinc-400" />
+                        <span>My Repositories</span>
+                      </Link>
+                      <Link
+                        href="/seller/my-kits"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-emerald-400 hover:bg-emerald-950/20 transition-colors"
+                      >
+                        <ShoppingBag className="h-3.5 w-3.5" />
+                        <span>My Published Products</span>
+                      </Link>
+                      <Link
+                        href="/prompts"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-purple-400 hover:bg-purple-950/20 transition-colors"
+                      >
+                        <Sparkles className="h-3.5 w-3.5" />
+                        <span>My Prompts &amp; Templates</span>
+                      </Link>
+                      <Link
+                        href="/studio"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-blue-400 hover:bg-blue-950/20 transition-colors"
+                      >
+                        <Bot className="h-3.5 w-3.5" />
+                        <span>AI Studio &amp; Generations</span>
+                      </Link>
                       <Link
                         href="/chat"
                         onClick={() => setIsProfileMenuOpen(false)}
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-900 transition-colors"
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-zinc-300 hover:bg-white/[0.04] hover:text-white transition-colors"
                       >
-                        <span>💬 In-App Support Chats</span>
+                        <MessageSquare className="h-3.5 w-3.5 text-zinc-400" />
+                        <span>In-App Messages</span>
                       </Link>
                     </div>
 
-                    {/* Account actions */}
+                    {(currentUser.role === 'admin' || currentUser.role === 'operator') && (
+                      <div className="py-1 space-y-0.5 border-b border-white/[0.08]">
+                        {currentUser.role === 'admin' && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                            className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-purple-300 hover:bg-purple-950/30"
+                          >
+                            <Shield className="h-3.5 w-3.5" />
+                            <span>Admin Console</span>
+                          </Link>
+                        )}
+                        <Link
+                          href="/operator"
+                          onClick={() => setIsProfileMenuOpen(false)}
+                          className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-amber-300 hover:bg-amber-950/30"
+                        >
+                          <Layers className="h-3.5 w-3.5" />
+                          <span>Operator Desk</span>
+                        </Link>
+                      </div>
+                    )}
+
                     <div className="pt-1 space-y-0.5">
                       <Link
-                        href="/login"
+                        href="/seller/new-kit"
                         onClick={() => setIsProfileMenuOpen(false)}
-                        className="flex items-center justify-between rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-900 transition-colors"
+                        className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-emerald-400 hover:bg-emerald-950/20"
                       >
-                        <span>Switch Account</span>
+                        <Plus className="h-3.5 w-3.5" />
+                        <span>+ List New Code Kit</span>
                       </Link>
-
+                      <Link
+                        href="/settings"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-zinc-400 hover:text-white hover:bg-white/[0.04]"
+                      >
+                        <Settings className="h-3.5 w-3.5" />
+                        <span>Account Settings</span>
+                      </Link>
                       <button
                         type="button"
                         onClick={() => {
                           setIsProfileMenuOpen(false);
                           logout();
                         }}
-                        className="w-full text-left rounded-lg px-3 py-2 text-zinc-400 hover:text-red-400 hover:bg-red-950/20 transition-colors"
+                        className="w-full text-left rounded-lg px-3 py-1.5 text-zinc-400 hover:text-red-400 hover:bg-red-950/20 flex items-center gap-2"
                       >
-                        Sign Out
+                        <LogOut className="h-3.5 w-3.5" />
+                        <span>Sign Out</span>
                       </button>
                     </div>
                   </div>
@@ -265,27 +317,42 @@ export function Navbar() {
               </Button>
             )}
 
-            <Link href="/kits">
-              <Button
-                size="sm"
-                variant="primary"
-                className="text-xs font-semibold bg-gradient-to-r from-emerald-500 to-blue-500 text-black hover:opacity-90 shadow-md shadow-emerald-500/20 border-0"
-              >
-                Explore Kits →
-              </Button>
-            </Link>
+            {/* Mobile Hamburger Menu Button */}
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="xl:hidden flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.08] text-zinc-400 hover:text-white"
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
 
-        {/* Thin gradient accent line at the bottom of the header */}
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+        {/* Mobile Navigation Drawer */}
+        {isMobileMenuOpen && (
+          <div className="xl:hidden border-t border-white/[0.08] bg-[#07090e] px-4 py-4 space-y-2">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl text-zinc-300 hover:bg-white/[0.06] hover:text-white text-sm"
+                >
+                  <Icon className="h-4 w-4 text-emerald-400" />
+                  <span>{link.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </header>
 
-      {/* Global Modals */}
-      <SearchModal
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-        kits={KITS}
+      {/* Global Command Palette */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
       />
       <LoginModal />
     </>

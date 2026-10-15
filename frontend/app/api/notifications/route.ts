@@ -1,0 +1,28 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getUserNotifications, markAllNotificationsRead } from '@/lib/db/notifications';
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId') || undefined;
+
+    const notifications = await getUserNotifications(userId);
+    return NextResponse.json({ success: true, notifications });
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    return NextResponse.json({ error: 'Failed to fetch notifications' }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId') || undefined;
+
+    const count = await markAllNotificationsRead(userId);
+    return NextResponse.json({ success: true, count });
+  } catch (error) {
+    console.error('Error marking notifications as read:', error);
+    return NextResponse.json({ error: 'Failed to mark notifications read' }, { status: 500 });
+  }
+}
