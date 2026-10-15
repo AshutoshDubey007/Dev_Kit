@@ -7,7 +7,7 @@ import { useAuth } from '../../../lib/auth-context';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Badge } from '../../../components/ui/badge';
-import { saveCustomKit } from '../../../lib/kits-store';
+import { saveCustomKit, publishKitToBackend } from '../../../lib/kits-store';
 import { Kit, CategorySlug } from '../../../types/kit';
 
 export default function NewKitPage() {
@@ -206,93 +206,96 @@ export default function NewKitPage() {
 
     setIsPublishing(true);
 
-    setTimeout(() => {
-      const generatedSlug = (title || 'custom-integration')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '') + '-' + Date.now().toString().slice(-4);
+    const generatedSlug = (title || 'custom-integration')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '') + '-' + Date.now().toString().slice(-4);
 
-      const newKit: Kit = {
-        id: `kit-${Date.now()}`,
-        slug: generatedSlug,
-        title: title || 'Custom Verified Integration Kit',
-        tagline: tagline || 'Production Next.js 15 integration kit',
-        shortDescription: tagline || 'Production Next.js 15 integration kit',
-        description: `### Setup & Integration Guide\n\n${readmeContent}`,
-        category: category as CategorySlug,
-        priceINR: Number(priceINR) || 1499,
-        priceUSD: Math.max(9, Math.round((Number(priceINR) || 1499) / 83)),
-        framework: 'Next.js 15 (App Router)',
-        techStack: [
-          'Next.js 15',
-          'TypeScript',
-          'Tailwind CSS',
-          ...(category === 'payments'
-            ? ['Razorpay', 'Webhooks']
-            : category === 'auth'
-            ? ['NextAuth.js', 'OAuth']
-            : category === 'ai'
-            ? ['OpenAI', 'LangChain']
-            : ['REST API']),
-        ],
-        features: [
+    const newKit: Kit = {
+      id: `kit-${Date.now()}`,
+      slug: generatedSlug,
+      title: title || 'Custom Verified Integration Kit',
+      tagline: tagline || 'Production Next.js 15 integration kit',
+      shortDescription: tagline || 'Production Next.js 15 integration kit',
+      description: `### Setup & Integration Guide\n\n${readmeContent}`,
+      category: category as CategorySlug,
+      priceINR: Number(priceINR) || 1499,
+      priceUSD: Math.max(9, Math.round((Number(priceINR) || 1499) / 83)),
+      framework: 'Next.js 15 (App Router)',
+      techStack: [
+        'Next.js 15',
+        'TypeScript',
+        'Tailwind CSS',
+        ...(category === 'payments'
+          ? ['Razorpay', 'Webhooks']
+          : category === 'auth'
+          ? ['NextAuth.js', 'OAuth']
+          : category === 'ai'
+          ? ['OpenAI', 'LangChain']
+          : ['REST API']),
+      ],
+      features: [
+        uploadMethod === 'github'
+          ? 'Direct GitHub repository access with branch tracking'
+          : 'Full source code ZIP archive ready to unzip',
+        'Step-by-step setup README auto-injected into buyer support chat',
+        '100% clean install tested with zero peer-dependency warnings',
+        'Verified with React 19 & Next.js 15 App Router',
+      ],
+      verification: {
+        verifiedDate: new Date().toISOString().split('T')[0],
+        nextjsVersion: '15.1.0',
+        nodeVersion: 'v20.18.0+',
+        testSuitePassRate: 100,
+        automatedTestsCount: 14,
+        cleanInstallVerified: true,
+        testedWithReact: 'React 19',
+        knownLimitations: [
           uploadMethod === 'github'
-            ? 'Direct GitHub repository access with branch tracking'
-            : 'Full source code ZIP archive ready to unzip',
-          'Step-by-step setup README auto-injected into buyer support chat',
-          '100% clean install tested with zero peer-dependency warnings',
-          'Verified with React 19 & Next.js 15 App Router',
+            ? 'Repository access granted after order completion.'
+            : 'Unzip project file and follow README instructions in chat.',
         ],
-        verification: {
-          verifiedDate: new Date().toISOString().split('T')[0],
-          nextjsVersion: '15.1.0',
-          nodeVersion: 'v20.18.0+',
-          testSuitePassRate: 100,
-          automatedTestsCount: 14,
-          cleanInstallVerified: true,
-          testedWithReact: 'React 19',
-          knownLimitations: [
-            uploadMethod === 'github'
-              ? 'Repository access granted after order completion.'
-              : 'Unzip project file and follow README instructions in chat.',
-          ],
-          auditSummary:
-            'Automated test suite passed on clean installation with zero peer-dependency warnings. Ready for immediate deployment.',
+        auditSummary:
+          'Automated test suite passed on clean installation with zero peer-dependency warnings. Ready for immediate deployment.',
+      },
+      codePreviews: [
+        {
+          filename: uploadMethod === 'github' ? 'README.md' : 'setup-instructions.md',
+          language: 'markdown',
+          description: 'Setup and integration instructions',
+          code: readmeContent,
         },
-        codePreviews: [
-          {
-            filename: uploadMethod === 'github' ? 'README.md' : 'setup-instructions.md',
-            language: 'markdown',
-            description: 'Setup and integration instructions',
-            code: readmeContent,
-          },
-        ],
-        rating: 5.0,
-        reviewCount: 1,
-        salesCount: 0,
-        isFeatured: true,
-        badge: '✨ Your Published Repo',
-        lastUpdated: new Date().toISOString().split('T')[0],
-        license: 'MIT / Commercial Developer License',
-        supportScope: 'Direct Author In-App Chat Support',
-        githubPreviewUrl: uploadMethod === 'github' ? githubUrl : undefined,
-        sellerId: currentUser?.id,
-        sellerName: currentUser?.name || 'Verified Seller',
-        sellerEmail: currentUser?.email,
-        uploadMethod: uploadMethod,
-        zipFileName: uploadMethod === 'zip' ? uploadedFile?.name : undefined,
-        zipFileSize: uploadMethod === 'zip' ? uploadedFile?.size : undefined,
-        readmeContent: readmeContent,
-      };
+      ],
+      rating: 5.0,
+      reviewCount: 1,
+      salesCount: 0,
+      isFeatured: true,
+      badge: '✨ Your Published Repo',
+      lastUpdated: new Date().toISOString().split('T')[0],
+      license: 'MIT / Commercial Developer License',
+      supportScope: 'Direct Author In-App Chat Support',
+      githubPreviewUrl: uploadMethod === 'github' ? githubUrl : undefined,
+      sellerId: currentUser?.id,
+      sellerName: currentUser?.name || 'Verified Seller',
+      sellerEmail: currentUser?.email || 'creator@devkit.store',
+      uploadMethod: uploadMethod,
+      zipFileName: uploadMethod === 'zip' ? uploadedFile?.name : undefined,
+      zipFileSize: uploadMethod === 'zip' ? uploadedFile?.size : undefined,
+      readmeContent: readmeContent,
+    };
 
-      saveCustomKit(newKit);
-      setPublishedKit(newKit);
+    publishKitToBackend(newKit).then((result) => {
       setIsPublishing(false);
-      setTotalListed((prev) => prev + 1);
-      setCountdown(5);
-      setAutoRedirect(true);
-      setPublishedSuccess(true);
-    }, 700);
+      if (result.success && result.kit) {
+        setPublishedKit(result.kit);
+        setTotalListed((prev) => prev + 1);
+        setCountdown(5);
+        setAutoRedirect(true);
+        setPublishedSuccess(true);
+      } else {
+        alert(result.error || 'Failed to publish kit to marketplace.');
+      }
+    });
   };
 
   return (

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { getOrderByRazorpayOrderId, markOrderAsPaid } from '../../../../lib/db/orders';
 import { autoConnectBuyerSeller } from '@backend/chat/service';
+import { createVerificationForOrder } from '../../../../lib/db/verifications';
 
 export async function POST(req: NextRequest) {
   try {
@@ -70,11 +71,24 @@ export async function POST(req: NextRequest) {
       console.error('Error auto-connecting buyer and seller:', err);
     }
 
+    // Initialize 7-Day Product Verification Window
+    let verificationId: string | null = null;
+    try {
+      const verif = await createVerificationForOrder(
+        updatedOrder,
+        conversationId || undefined
+      );
+      verificationId = verif.verificationId;
+    } catch (verifErr) {
+      console.error('Error initializing product verification window:', verifErr);
+    }
+
     return NextResponse.json({
       success: true,
       orderId: updatedOrder.orderId,
       downloadToken: updatedOrder.downloadToken,
       conversationId,
+      verificationId,
       kitSlug: updatedOrder.kitSlug,
       kitTitle: updatedOrder.kitTitle,
       customerEmail: updatedOrder.customerEmail,

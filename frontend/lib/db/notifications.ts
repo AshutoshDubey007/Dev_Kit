@@ -58,36 +58,57 @@ export const SEED_NOTIFICATIONS: NotificationItem[] = [
   },
 ];
 
+export async function createNotification(
+  notification: Omit<NotificationItem, '_id' | 'createdAt' | 'id'> & { id?: string }
+): Promise<NotificationItem | null> {
+  try {
+    const db = await getDatabase();
+    const item: NotificationItem = {
+      id: notification.id || `notif_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      userId: notification.userId,
+      type: notification.type,
+      title: notification.title,
+      message: notification.message,
+      link: notification.link,
+      read: notification.read ?? false,
+      createdAt: new Date(),
+    };
+    await db.collection<NotificationItem>(NOTIFICATIONS_COLLECTION).insertOne(item);
+    return item;
+  } catch (err) {
+    console.error('Error inserting notification:', err);
+    return null;
+  }
+}
+
 export async function getUserNotifications(userId?: string): Promise<NotificationItem[]> {
   try {
     const db = await getDatabase();
-    if (userId) {
-      const list = await db
-        .collection<NotificationItem>(NOTIFICATIONS_COLLECTION)
-        .find({ userId })
-        .sort({ createdAt: -1 })
-        .limit(20)
-        .toArray();
-      if (list.length > 0) return list;
-    }
+    const filter = userId ? { userId } : {};
+    const list = await db
+      .collection<NotificationItem>(NOTIFICATIONS_COLLECTION)
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .limit(30)
+      .toArray();
+    return list;
   } catch (err) {
     console.error('Error fetching notifications from DB:', err);
+    return [];
   }
-
-  return SEED_NOTIFICATIONS;
 }
 
 export async function markAllNotificationsRead(userId?: string): Promise<boolean> {
   try {
     const db = await getDatabase();
-    if (userId) {
-      await db
-        .collection<NotificationItem>(NOTIFICATIONS_COLLECTION)
-        .updateMany({ userId, read: false }, { $set: { read: true } });
-    }
+    const filter = userId ? { userId, read: false } : { read: false };
+    await db
+      .collection<NotificationItem>(NOTIFICATIONS_COLLECTION)
+      .updateMany(filter, { $set: { read: true } });
     return true;
   } catch (err) {
     console.error('Error marking notifications as read:', err);
     return false;
   }
 }
+

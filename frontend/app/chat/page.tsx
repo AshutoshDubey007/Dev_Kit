@@ -30,19 +30,54 @@ export default function ChatHubPage() {
   const { currentUser } = useAuth();
   const [activeRole, setActiveRole] = useState<MessageSenderRole>('buyer');
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [selectedConvId, setSelectedConvId] = useState<string>('conv_demo');
+  const [selectedConvId, setSelectedConvId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [hasLeakWarning, setHasLeakWarning] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
+  const [orderVerification, setOrderVerification] = useState<any>(null);
+  const [linkedTicket, setLinkedTicket] = useState<any>(null);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Active conversation object
   const activeConversation =
     conversations.find((c) => c.conversationId === selectedConvId) || conversations[0];
+
+  // Fetch verification details for active conversation order
+  useEffect(() => {
+    async function loadVerification() {
+      if (!activeConversation?.orderId) {
+        setOrderVerification(null);
+        setLinkedTicket(null);
+        return;
+      }
+      try {
+        const res = await fetch(`/api/verifications?orderId=${encodeURIComponent(activeConversation.orderId)}`);
+        const data = await res.json();
+        if (data.verification) {
+          setOrderVerification(data.verification);
+          if (data.verification.supportCaseId) {
+            const tRes = await fetch(`/api/support/tickets/${data.verification.supportCaseId}`);
+            const tData = await tRes.json();
+            if (tData.ticket) {
+              setLinkedTicket(tData.ticket);
+            }
+          } else {
+            setLinkedTicket(null);
+          }
+        } else {
+          setOrderVerification(null);
+          setLinkedTicket(null);
+        }
+      } catch (err) {
+        console.warn('Could not load order verification in chat:', err);
+      }
+    }
+    loadVerification();
+  }, [activeConversation?.orderId]);
 
   // Prevent page scroll down on mount
   useEffect(() => {
@@ -53,14 +88,24 @@ export default function ChatHubPage() {
   useEffect(() => {
     async function fetchConversations() {
       try {
-        const res = await fetch('/api/chat/conversations');
+        const query =
+          currentUser?.role === 'operator' || currentUser?.role === 'admin'
+            ? '?all=true'
+            : currentUser?.email
+            ? `?email=${encodeURIComponent(currentUser.email)}`
+            : '';
+        const res = await fetch(`/api/chat/conversations${query}`);
         if (res.ok) {
           const data = await res.json();
           if (data.conversations && data.conversations.length > 0) {
             setConversations(data.conversations);
-            if (!selectedConvId) {
-              setSelectedConvId(data.conversations[0].conversationId);
-            }
+            setSelectedConvId((prev) => {
+              if (prev && data.conversations.some((c: any) => c.conversationId === prev)) return prev;
+              return data.conversations[0].conversationId;
+            });
+          } else {
+            setConversations([]);
+            setSelectedConvId('');
           }
         }
       } catch (e) {
@@ -68,7 +113,7 @@ export default function ChatHubPage() {
       }
     }
     fetchConversations();
-  }, []);
+  }, [currentUser?.email, currentUser?.role]);
 
   // Fetch messages for active conversation
   const fetchActiveMessages = async () => {
@@ -253,13 +298,21 @@ export default function ChatHubPage() {
                 <h2 className="text-xs font-bold text-white tracking-tight">
                   {activeConversation?.kitTitle || 'Direct Support'}
                 </h2>
-                <Badge variant="outline" className="font-mono text-[10px] border-zinc-700 text-zinc-400">
-                  {activeConversation?.orderId}
-                </Badge>
+                {activeConversation?.orderId && (
+                  <Badge variant="outline" className="font-mono text-[10px] border-zinc-700 text-zinc-400">
+                    {activeConversation.orderId}
+                  </Badge>
+                )}
               </div>
               <p className="text-[11px] text-zinc-400 mt-0.5">
-                Buyer: <span className="text-zinc-200">{activeConversation?.buyerName}</span> • Seller:{' '}
-                <span className="text-zinc-200">{activeConversation?.sellerName}</span>
+                {activeConversation ? (
+                  <>
+                    Buyer: <span className="text-zinc-200">{activeConversation.buyerName}</span> • Seller:{' '}
+                    <span className="text-zinc-200">{activeConversation.sellerName}</span>
+                  </>
+                ) : (
+                  'No conversation active. Orders automatically initialize support channels.'
+                )}
               </p>
             </div>
 
@@ -383,30 +436,46 @@ export default function ChatHubPage() {
               </div>
             )}
 
-            <form onSubmit={handleSendMessage} className="flex gap-2 items-end">
-              <textarea
-                rows={2}
-                value={inputMessage}
-                onChange={handleInputChange}
-                placeholder="Type your message, code question, or integration query... (Enter to send, Shift+Enter for new line)"
-                className="flex-1 rounded-xl border border-white/[0.1] bg-[#141822] p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none font-sans"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSendMessage(e);
-                  }
-                }}
-              />
+            {activeConversation?.status === 'closed' ? (
+              <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 text-center space-y-1.5">
+                <span className="text-xs font-semibold text-zinc-300 block">
+                  🔒 This verification chat thread is closed.
+                </span>
+                <p className="text-[11px] text-zinc-500 max-w-md mx-auto">
+                  {activeConversation?.closureReason || 'The 7-day verification period or resolution process has concluded.'}
+                </p>
+                <div className="pt-1">
+                  <Link href="/buyer/verifications" className="text-xs text-indigo-400 hover:text-indigo-300 underline font-mono">
+                    View Product Verification Dashboard →
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSendMessage} className="flex gap-2 items-end">
+                <textarea
+                  rows={2}
+                  value={inputMessage}
+                  onChange={handleInputChange}
+                  placeholder="Type your message, code question, or integration query... (Enter to send, Shift+Enter for new line)"
+                  className="flex-1 rounded-xl border border-white/[0.1] bg-[#141822] p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none font-sans"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage(e);
+                    }
+                  }}
+                />
 
-              <Button
-                type="submit"
-                disabled={!inputMessage.trim() || isSending}
-                className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-white text-xs gap-1.5 shadow-md shadow-indigo-600/20 shrink-0"
-              >
-                <Send className="h-3.5 w-3.5" />
-                <span>Send</span>
-              </Button>
-            </form>
+                <Button
+                  type="submit"
+                  disabled={!inputMessage.trim() || isSending || !selectedConvId}
+                  className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-white text-xs gap-1.5 shadow-md shadow-indigo-600/20 shrink-0"
+                >
+                  <Send className="h-3.5 w-3.5" />
+                  <span>Send</span>
+                </Button>
+              </form>
+            )}
           </div>
         </div>
 
@@ -421,6 +490,60 @@ export default function ChatHubPage() {
                 Verified transaction details associated with this chat thread.
               </p>
             </div>
+
+            {/* 7-Day Verification & Support Status Card */}
+            {orderVerification && (
+              <div className="p-3.5 rounded-xl border border-indigo-500/30 bg-indigo-950/20 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-indigo-300 flex items-center gap-1.5">
+                    <Shield className="h-3.5 w-3.5 text-indigo-400" />
+                    <span>7-Day Product Verification</span>
+                  </span>
+                  {orderVerification.verificationStatus === 'verified_success' ? (
+                    <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40 text-[10px]">
+                      ✓ Verified
+                    </Badge>
+                  ) : orderVerification.verificationStatus === 'issue_reported' ? (
+                    <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/40 text-[10px]">
+                      ⚠️ Issue Active
+                    </Badge>
+                  ) : orderVerification.verificationStatus === 'expired' ? (
+                    <Badge className="bg-zinc-800 text-zinc-400 border-zinc-700 text-[10px]">
+                      Concluded
+                    </Badge>
+                  ) : (
+                    <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-500/40 text-[10px]">
+                      Active Window
+                    </Badge>
+                  )}
+                </div>
+
+                <div className="text-[11px] text-zinc-400 space-y-1">
+                  <div className="flex justify-between">
+                    <span>Deadline:</span>
+                    <span className="text-zinc-200 font-mono text-[10px]">
+                      {new Date(orderVerification.verificationDeadline).toLocaleDateString()}
+                    </span>
+                  </div>
+                  {linkedTicket && (
+                    <div className="flex justify-between items-center pt-1 border-t border-indigo-500/20">
+                      <span>Support Ticket:</span>
+                      <span className="text-amber-400 font-mono text-[10px]">
+                        {linkedTicket.ticketId} ({linkedTicket.status})
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-1">
+                  <Link href="/buyer/verifications" className="block w-full">
+                    <Button variant="outline" size="sm" className="w-full text-[11px] h-7 border-indigo-500/40 text-indigo-300 hover:bg-indigo-950/40">
+                      Manage Verification & Issues →
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
 
             {/* Asset Card */}
             <div className="p-3.5 rounded-xl border border-white/[0.08] bg-[#141822] space-y-3">

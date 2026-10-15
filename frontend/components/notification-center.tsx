@@ -4,24 +4,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Bell, Check, ShoppingBag, MessageSquare, Star, ShieldCheck, Sparkles, ExternalLink } from 'lucide-react';
 import type { NotificationItem } from '../types/notification';
-import { SEED_NOTIFICATIONS } from '../data/notifications';
 
 export function NotificationCenter() {
   const [isOpen, setIsOpen] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationItem[]>(SEED_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch('/api/notifications')
       .then((res) => res.json())
       .then((data) => {
-        if (data.notifications && data.notifications.length > 0) {
+        if (data.success && Array.isArray(data.notifications)) {
           setNotifications(data.notifications);
         }
       })
       .catch(() => {
-        // Fallback to seed notifications
-        setNotifications(SEED_NOTIFICATIONS);
+        setNotifications([]);
       });
   }, []);
 

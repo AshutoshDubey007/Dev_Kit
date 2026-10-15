@@ -28,71 +28,72 @@ interface Task {
 }
 
 export default function ProjectsPage() {
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: 'task-1',
-      title: 'Implement Razorpay Webhook Idempotency',
-      description: 'Validate raw-body HMAC signature and prevent double credit grants.',
-      status: 'done',
-      priority: 'high',
-      dueDate: 'Oct 14',
-      repo: 'nextjs-razorpay-pro',
-    },
-    {
-      id: 'task-2',
-      title: 'Build Universal Command Palette',
-      description: 'Support Cmd+K keyboard shortcut across all developer platform views.',
-      status: 'done',
-      priority: 'medium',
-      dueDate: 'Oct 15',
-      repo: 'devkit-core',
-    },
-    {
-      id: 'task-3',
-      title: 'AI Generation Studio Provider Adapter',
-      description: 'Wire Claude 3.5 Sonnet and GPT-4o multi-file generation handlers.',
-      status: 'in_progress',
-      priority: 'high',
-      dueDate: 'Oct 18',
-      repo: 'ai-studio',
-    },
-    {
-      id: 'task-4',
-      title: 'Quarantine Scanner for Executable Uploads',
-      description: 'Inspect ZIP archive paths and reject unauthorized binaries.',
-      status: 'todo',
-      priority: 'medium',
-      dueDate: 'Oct 22',
-      repo: 'devkit-security',
-    },
-  ]);
-
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleAddTask = (e: React.FormEvent) => {
+  const loadTasks = async () => {
+    try {
+      const res = await fetch('/api/projects/tasks');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.tasks)) setTasks(data.tasks);
+      }
+    } catch (e) {
+      console.error('Failed to load tasks:', e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    loadTasks();
+  }, []);
+
+  const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTaskTitle.trim()) return;
 
-    const newTask: Task = {
-      id: `task-${Date.now()}`,
-      title: newTaskTitle.trim(),
-      description: 'New platform tracking item.',
-      status: 'todo',
-      priority: 'medium',
-      dueDate: 'Upcoming',
-      repo: 'devkit-core',
-    };
+    try {
+      const res = await fetch('/api/projects/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: newTaskTitle.trim(),
+          description: 'Platform tracking item.',
+          status: 'todo',
+          priority: 'medium',
+          dueDate: 'Upcoming',
+          repo: 'devkit-core',
+        }),
+      });
 
-    setTasks((prev) => [...prev, newTask]);
-    setNewTaskTitle('');
-    setShowNewTaskModal(false);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.task) setTasks((prev) => [data.task, ...prev]);
+        setNewTaskTitle('');
+        setShowNewTaskModal(false);
+      }
+    } catch (err) {
+      console.error('Error adding task:', err);
+    }
   };
 
-  const handleStatusChange = (taskId: string, nextStatus: Task['status']) => {
+  const handleStatusChange = async (taskId: string, nextStatus: Task['status']) => {
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, status: nextStatus } : t))
     );
+
+    try {
+      await fetch('/api/projects/tasks', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: taskId, status: nextStatus }),
+      });
+    } catch (err) {
+      console.error('Error updating task status:', err);
+    }
   };
 
   const todoTasks = tasks.filter((t) => t.status === 'todo');

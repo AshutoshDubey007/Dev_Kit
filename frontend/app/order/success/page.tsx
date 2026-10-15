@@ -84,6 +84,25 @@ function OrderSuccessContent() {
             </div>
           )}
 
+          {/* 7-Day Product Verification Callout */}
+          <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-4 space-y-2.5 mt-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-emerald-300 flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                <span>7-Day Product Verification Active</span>
+              </span>
+              <span className="text-[10px] font-mono text-emerald-400/80">Guaranteed</span>
+            </div>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              Test your kit in your environment. If anything fails, file a ticket or confirm verification in your dashboard.
+            </p>
+            <Link href="/buyer/verifications" className="block pt-1">
+              <Button variant="outline" size="sm" className="w-full text-xs font-medium border-emerald-700/50 text-emerald-300 hover:bg-emerald-950/40">
+                🛡️ Open Product Verification Dashboard →
+              </Button>
+            </Link>
+          </div>
+
           <p className="text-[11px] text-zinc-500 text-center">
             Valid for 7 days • Maximum 10 downloads per purchase token
           </p>

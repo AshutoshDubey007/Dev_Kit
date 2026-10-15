@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { CATEGORIES } from '../../../data/categories';
-import { KITS } from '../../../data/kits';
+import { fetchKitsFromApi, getAllKits } from '../../../lib/kits-store';
+import { Kit } from '../../../types/kit';
 import { KitGrid } from '../../../components/kits/kit-grid';
 import { Badge } from '../../../components/ui/badge';
 
@@ -14,11 +15,21 @@ export default function CategoryPage() {
 
   const category = CATEGORIES.find((c) => c.slug === categorySlug);
 
+  const [categoryKits, setCategoryKits] = useState<Kit[]>(() => {
+    return getAllKits().filter((kit) => kit.category === categorySlug);
+  });
+
+  useEffect(() => {
+    fetchKitsFromApi({ category: categorySlug }).then((res) => {
+      if (res && res.length > 0) {
+        setCategoryKits(res);
+      }
+    });
+  }, [categorySlug]);
+
   if (!category) {
     return notFound();
   }
-
-  const categoryKits = KITS.filter((kit) => kit.category === categorySlug);
 
   return (
     <div className="space-y-8">

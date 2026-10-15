@@ -6,7 +6,7 @@ import { KITS } from '../../data/kits';
 import { CATEGORIES } from '../../data/categories';
 import { FilterState, CategorySlug, Kit } from '../../types/kit';
 import { filterAndSortKits, getSearchAggregations } from '../../lib/search';
-import { getAllKits } from '../../lib/kits-store';
+import { getAllKits, fetchKitsFromApi } from '../../lib/kits-store';
 import { KitGrid } from '../../components/kits/kit-grid';
 import { FilterSidebar } from '../../components/search/filter-sidebar';
 import { SearchBar } from '../../components/search/search-bar';
@@ -20,10 +20,16 @@ function KitsCatalogContent() {
 
   const [allKits, setAllKits] = useState<Kit[]>(KITS);
 
-  // Sync client-side custom kits
+  // Sync kits from MongoDB via API
   useEffect(() => {
-    setAllKits(getAllKits());
-    const handleUpdate = () => setAllKits(getAllKits());
+    fetchKitsFromApi().then((kits) => {
+      if (kits && kits.length > 0) setAllKits(kits);
+    });
+    const handleUpdate = () => {
+      fetchKitsFromApi().then((kits) => {
+        if (kits && kits.length > 0) setAllKits(kits);
+      });
+    };
     window.addEventListener('devkit_kits_updated', handleUpdate);
     return () => window.removeEventListener('devkit_kits_updated', handleUpdate);
   }, []);

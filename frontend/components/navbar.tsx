@@ -17,6 +17,7 @@ import {
   Settings,
   LogOut,
   Shield,
+  LifeBuoy,
   Layers,
   Menu,
   X,
@@ -132,16 +133,6 @@ export function Navbar() {
 
           {/* ─── RIGHT: Search, Notifications, User Menu ─── */}
           <div className="flex items-center gap-2.5 shrink-0">
-            {/* Cinematic Kage 3D View Link */}
-            <Link
-              href="/"
-              className="hidden lg:inline-flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-950/20 px-2.5 py-1 text-xs text-red-300 hover:text-white hover:border-red-500/60 hover:bg-red-950/40 transition-all font-mono shadow-sm backdrop-blur-sm"
-              title="Launch Cinematic Kage 3D Night Walk"
-            >
-              <span className="font-serif font-bold text-red-400">影</span>
-              <span>KAGE 3D</span>
-            </Link>
-
             {/* Global Search / Command Palette Trigger */}
             <button
               type="button"
@@ -218,12 +209,28 @@ export function Navbar() {
                         <span>My Repositories</span>
                       </Link>
                       <Link
-                        href="/seller/my-kits"
+                        href="/buyer/verifications"
                         onClick={() => setIsProfileMenuOpen(false)}
                         className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-emerald-400 hover:bg-emerald-950/20 transition-colors"
                       >
+                        <Shield className="h-3.5 w-3.5" />
+                        <span>Product Verifications</span>
+                      </Link>
+                      <Link
+                        href="/seller/my-kits"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-zinc-300 hover:bg-white/[0.04] hover:text-white transition-colors"
+                      >
                         <ShoppingBag className="h-3.5 w-3.5" />
                         <span>My Published Products</span>
+                      </Link>
+                      <Link
+                        href="/seller/support"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-indigo-400 hover:bg-indigo-950/20 transition-colors"
+                      >
+                        <LifeBuoy className="h-3.5 w-3.5" />
+                        <span>Customer Support Desk</span>
                       </Link>
                       <Link
                         href="/prompts"

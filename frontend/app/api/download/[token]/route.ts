@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getOrderByDownloadToken, incrementDownloadCount } from '../../../../lib/db/orders';
-import { KITS } from '../../../../data/kits';
+import { getKitBySlugFromDb } from '@/lib/db/kits';
 
 export async function GET(
   req: NextRequest,
@@ -46,7 +46,7 @@ export async function GET(
     // Increment download counter
     await incrementDownloadCount(token);
 
-    const kit = KITS.find((k) => k.slug === order.kitSlug) || order.kitData;
+    const kit = (await getKitBySlugFromDb(order.kitSlug)) || order.kitData;
 
     const nextjsVersion = kit?.verification?.nextjsVersion || '15.1.0';
     const testSuitePassRate = kit?.verification?.testSuitePassRate || 100;

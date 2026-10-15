@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { KITS } from '../../../data/kits';
-import { getKitBySlug } from '../../../lib/kits-store';
+import { getKitBySlug, fetchKitBySlugFromApi } from '../../../lib/kits-store';
 import { useAuth } from '../../../lib/auth-context';
 import { Kit } from '../../../types/kit';
 import { formatPriceINR, formatPriceUSD, formatDate } from '../../../lib/utils';
@@ -25,11 +25,12 @@ export default function KitDetailPage() {
   });
 
   useEffect(() => {
-    const resolved = getKitBySlug(slug) || KITS.find((k) => k.slug === slug);
-    if (resolved) {
-      setKit(resolved);
-    }
+    fetchKitBySlugFromApi(slug).then((k) => {
+      if (k) setKit(k);
+    });
   }, [slug]);
+
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   if (!kit) {
     return notFound();
@@ -39,8 +40,6 @@ export default function KitDetailPage() {
     currentUser &&
     (currentUser.email === kit.sellerEmail ||
       (kit.sellerId && currentUser.id === kit.sellerId));
-
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   return (
     <div className="space-y-10 pb-16">

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../../lib/auth-context';
-import { getSellerKits, deleteCustomKit } from '../../../lib/kits-store';
+import { getSellerKits, deleteCustomKit, fetchKitsFromApi, deleteKitFromBackend } from '../../../lib/kits-store';
 import { Kit } from '../../../types/kit';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
@@ -14,9 +14,14 @@ export default function MyKitsPage() {
   const [kits, setKits] = useState<Kit[]>([]);
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
 
-  const loadKits = () => {
-    const sellerKits = getSellerKits(currentUser?.email || currentUser?.id);
-    setKits(sellerKits);
+  const loadKits = async () => {
+    const email = currentUser?.email;
+    if (email) {
+      const apiKits = await fetchKitsFromApi({ seller: email });
+      setKits(apiKits);
+    } else {
+      setKits(getSellerKits());
+    }
   };
 
   useEffect(() => {
@@ -26,9 +31,13 @@ export default function MyKitsPage() {
     return () => window.removeEventListener('devkit_kits_updated', handleUpdate);
   }, [currentUser]);
 
-  const handleDelete = (kitId: string, title: string) => {
+  const handleDelete = async (kitId: string, title: string) => {
     if (confirm(`Are you sure you want to remove "${title}" from the marketplace?`)) {
-      deleteCustomKit(kitId);
+      if (currentUser?.email) {
+        await deleteKitFromBackend(kitId, currentUser.email);
+      } else {
+        deleteCustomKit(kitId);
+      }
       loadKits();
     }
   };

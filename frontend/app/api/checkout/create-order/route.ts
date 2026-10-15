@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { KITS } from '../../../../data/kits';
+import { getKitBySlugFromDb } from '@/lib/db/kits';
 import { createOrderRecord } from '../../../../lib/db/orders';
 
 export async function POST(req: NextRequest) {
@@ -14,63 +14,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let kit = KITS.find((k) => k.slug === kitSlug);
-    if (!kit && kitData) {
-      kit = {
-        id: kitData.id || `kit-${Date.now()}`,
-        slug: kitData.slug || kitSlug,
-        title: kitData.title || kitSlug,
-        tagline: kitData.tagline || kitData.title || 'Verified Kit',
-        shortDescription: kitData.shortDescription || kitData.title || 'Verified Kit',
-        description: kitData.description || kitData.readmeContent || '',
-        category: kitData.category || 'payments',
-        priceINR: Number(kitData.priceINR) || 1499,
-        priceUSD:
-          Number(kitData.priceUSD) ||
-          Math.max(9, Math.round((Number(kitData.priceINR) || 1499) / 83)),
-        framework: kitData.framework || 'Next.js 15 (App Router)',
-        techStack: kitData.techStack || ['Next.js 15', 'TypeScript'],
-        features: kitData.features || ['Full source code', 'Verified install'],
-        verification: kitData.verification || {
-          verifiedDate: new Date().toISOString().split('T')[0],
-          nextjsVersion: '15.1.0',
-          nodeVersion: 'v20.18.0+',
-          testSuitePassRate: 100,
-          automatedTestsCount: 10,
-          cleanInstallVerified: true,
-          testedWithReact: 'React 19',
-          knownLimitations: [],
-          auditSummary: 'Clean install verified.',
-        },
-        codePreviews: kitData.codePreviews || [
-          {
-            filename: 'README.md',
-            language: 'markdown',
-            description: 'Setup instructions',
-            code: kitData.readmeContent || kitData.description || '# Setup Guide',
-          },
-        ],
-        rating: 5.0,
-        reviewCount: 1,
-        salesCount: 1,
-        isFeatured: true,
-        lastUpdated: new Date().toISOString().split('T')[0],
-        license: 'Commercial',
-        supportScope: 'In-app Chat',
-        sellerId: kitData.sellerId,
-        sellerName: kitData.sellerName,
-        sellerEmail: kitData.sellerEmail,
-        uploadMethod: kitData.uploadMethod,
-        githubUrl: kitData.githubUrl || kitData.githubPreviewUrl,
-        zipFileName: kitData.zipFileName,
-        zipFileSize: kitData.zipFileSize,
-        readmeContent: kitData.readmeContent,
-      };
-    }
+    // Look up authoritative product from MongoDB
+    const kit = await getKitBySlugFromDb(kitSlug);
 
     if (!kit) {
-      return NextResponse.json({ error: 'Kit not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Kit not found in marketplace catalog' }, { status: 404 });
     }
+
+    // Authoritative server-side price determination (client price ignored)
+    const authoritativePriceINR = kit.priceINR;
 
     const keyId = process.env.RAZORPAY_KEY_ID || '';
     const keySecret = process.env.RAZORPAY_KEY_SECRET || '';

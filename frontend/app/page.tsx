@@ -28,7 +28,18 @@ import {
   Filter,
   CheckCircle,
 } from 'lucide-react';
-import { KageCanvas } from '../components/kage/kage-canvas';
+import dynamic from 'next/dynamic';
+
+const KageCanvas = dynamic(
+  () => import('../components/kage/kage-canvas').then((mod) => mod.KageCanvas),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="fixed inset-0 bg-[#06080d] z-0 pointer-events-none" aria-hidden="true" />
+    ),
+  }
+);
+
 import { AmbientSoundscape } from '../components/kage/ambient-audio';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -136,7 +147,7 @@ export default function SingleKageMarketplacePage() {
   ];
 
   return (
-    <div className="relative min-h-[600vh] bg-transparent text-white selection:bg-red-500 selection:text-white font-sans antialiased">
+    <div className="relative min-h-screen bg-transparent text-white selection:bg-red-500 selection:text-white font-sans antialiased">
       {/* ─── 1. 3D WebGL CANVASES (Temple, Torii, Lanterns, Embers, Moon, Rain) ─── */}
       <KageCanvas scrollProgress={scrollProgress} />
 
@@ -198,11 +209,11 @@ export default function SingleKageMarketplacePage() {
       </aside>
 
       {/* ─── 4. INTERACTIVE CHAPTERS OVERLAYING THE 3D TEMPLE ─── */}
-      <main className="relative z-20 space-y-[28vh] pt-28 pb-48">
+      <main className="relative z-20 space-y-14 sm:space-y-16 pt-8 sm:pt-12 pb-28">
         {/* ══════════════════════════════════════════════════════════════
             CHAPTER I // 閾 // THE THRESHOLD (Hero & Instant Filter)
            ══════════════════════════════════════════════════════════════ */}
-        <section id="hero" className="min-h-[85vh] flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto">
+        <section id="hero" className="flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Column: Hero Editorial & Live Search */}
             <div className="lg:col-span-7 space-y-6">
@@ -331,10 +342,52 @@ export default function SingleKageMarketplacePage() {
           </div>
         </section>
 
+        {/* Architecture & Verification Pillars */}
+        <div className="max-w-7xl mx-auto px-6 md:px-16 w-full">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+            <div className="rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-4 space-y-1.5 hover:border-white/[0.16] transition-all">
+              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white">
+                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                <span>Zero Setup Debt</span>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed font-light">
+                Next.js 15 App Router &amp; Node 20+ tested clean installs with zero peer conflicts.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-4 space-y-1.5 hover:border-white/[0.16] transition-all">
+              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white">
+                <span className="h-2 w-2 rounded-full bg-amber-400" />
+                <span>Razorpay Route</span>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed font-light">
+                Cryptographic HMAC-SHA256 signature verification &amp; idempotent settlements.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-4 space-y-1.5 hover:border-white/[0.16] transition-all">
+              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white">
+                <span className="h-2 w-2 rounded-full bg-purple-400" />
+                <span>Security Gate</span>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed font-light">
+                Zip Slip traversal defenses &amp; automated credential leakage inspection on all uploads.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-4 space-y-1.5 hover:border-white/[0.16] transition-all">
+              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white">
+                <span className="h-2 w-2 rounded-full bg-blue-400" />
+                <span>DLP Safe Chat</span>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed font-light">
+                Encrypted author support channels with automatic phone &amp; off-platform link masking.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* ══════════════════════════════════════════════════════════════
             CHAPTER II // 燈籠 // VERIFIED CODE TEMPLATES (Marketplace)
            ══════════════════════════════════════════════════════════════ */}
-        <section id="templates" className="min-h-[90vh] flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-8">
+        <section id="templates" className="flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-6">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
             <div className="space-y-2 max-w-xl">
@@ -474,10 +527,49 @@ export default function SingleKageMarketplacePage() {
           )}
         </section>
 
+        {/* 3-Step Lifecycle Bridge */}
+        <div className="max-w-7xl mx-auto px-6 md:px-16 w-full">
+          <div className="rounded-2xl border border-white/[0.08] bg-black/30 backdrop-blur-xl p-5 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex items-start gap-3">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs font-bold font-mono text-amber-400 shrink-0">
+                01
+              </span>
+              <div>
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">1. Choose or Prompt</h4>
+                <p className="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
+                  Pick a battle-tested template or generate custom architectures in the AI Studio.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-500/10 border border-purple-500/20 text-xs font-bold font-mono text-purple-400 shrink-0">
+                02
+              </span>
+              <div>
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">2. Audit Spec &amp; Tests</h4>
+                <p className="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
+                  Review automated test suites, clean install guarantees, and runtime dependency specs.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold font-mono text-emerald-400 shrink-0">
+                03
+              </span>
+              <div>
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">3. Deploy &amp; Support</h4>
+                <p className="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
+                  Download full source code and auto-connect with verified authors in secure DLP chat.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* ══════════════════════════════════════════════════════════════
             CHAPTER III // 本堂 // THE SACRED CRAFT & AI PROMPT STUDIO
            ══════════════════════════════════════════════════════════════ */}
-        <section id="studio" className="min-h-[90vh] flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-8">
+        <section id="studio" className="flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-6">
           <div className="p-8 sm:p-12 rounded-3xl border border-white/[0.1] bg-black/30 backdrop-blur-2xl relative overflow-hidden shadow-2xl space-y-8">
             <div className="space-y-3 max-w-2xl">
               <div className="inline-flex items-center gap-2 border-b border-purple-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-purple-400">
@@ -560,7 +652,7 @@ export default function SingleKageMarketplacePage() {
         {/* ══════════════════════════════════════════════════════════════
             CHAPTER IV // 枯山水 // OPEN SOURCE REPOSITORIES
            ══════════════════════════════════════════════════════════════ */}
-        <section id="repos" className="min-h-[90vh] flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-8">
+        <section id="repos" className="flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
             <div className="space-y-2 max-w-xl">
               <div className="inline-flex items-center gap-2 border-b border-blue-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-blue-400">
@@ -645,7 +737,7 @@ export default function SingleKageMarketplacePage() {
         {/* ══════════════════════════════════════════════════════════════
             CHAPTER V // 余光 // THE SUMMIT & COLLABORATION
            ══════════════════════════════════════════════════════════════ */}
-        <section id="summit" className="min-h-[85vh] flex flex-col justify-center px-6 md:px-16 max-w-6xl mx-auto text-center space-y-8">
+        <section id="summit" className="flex flex-col justify-center px-6 md:px-16 max-w-6xl mx-auto text-center space-y-6 pt-4">
           <div className="space-y-4 max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-400">
               <span>05 // 余光 // Afterlight</span>

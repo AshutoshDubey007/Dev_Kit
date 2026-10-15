@@ -15,7 +15,18 @@ import {
   ExternalLink,
   ChevronLeft,
 } from 'lucide-react';
-import { KageCanvas } from '../../components/kage/kage-canvas';
+import dynamic from 'next/dynamic';
+
+const KageCanvas = dynamic(
+  () => import('../../components/kage/kage-canvas').then((mod) => mod.KageCanvas),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="fixed inset-0 bg-[#06080d] z-0 pointer-events-none" aria-hidden="true" />
+    ),
+  }
+);
+
 import { AmbientSoundscape } from '../../components/kage/ambient-audio';
 import { Button } from '../../components/ui/button';
 

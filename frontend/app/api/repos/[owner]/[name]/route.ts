@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { owner, name } = await params;
-    const repo = await getRepositoryBySlug(name, owner);
+    const repo = await getRepositoryBySlug(owner, name);
 
     if (!repo) {
       return NextResponse.json({ error: 'Repository not found' }, { status: 404 });

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { getOrderByRazorpayOrderId, markOrderAsPaid } from '../../../../lib/db/orders';
 import { autoConnectBuyerSeller } from '@backend/chat/service';
+import { createVerificationForOrder } from '../../../../lib/db/verifications';
 
 export async function POST(req: NextRequest) {
   try {
@@ -51,8 +52,9 @@ export async function POST(req: NextRequest) {
           );
 
           if (updatedOrder) {
+            let conversationId: string | undefined = undefined;
             try {
-              await autoConnectBuyerSeller({
+              const conv = await autoConnectBuyerSeller({
                 orderId: updatedOrder.orderId,
                 kitId: updatedOrder.kitId,
                 kitSlug: updatedOrder.kitSlug,
@@ -61,8 +63,15 @@ export async function POST(req: NextRequest) {
                 customerName: updatedOrder.customerName,
                 kitData: updatedOrder.kitData,
               });
+              conversationId = conv.conversationId;
             } catch (chatErr) {
               console.error('[Razorpay Webhook] Error connecting buyer and seller:', chatErr);
+            }
+
+            try {
+              await createVerificationForOrder(updatedOrder, conversationId);
+            } catch (verifErr) {
+              console.error('[Razorpay Webhook] Error creating product verification window:', verifErr);
             }
           }
         }

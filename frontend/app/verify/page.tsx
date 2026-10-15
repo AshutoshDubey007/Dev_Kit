@@ -17,6 +17,14 @@ export default function VerificationStandardsPage() {
         <p className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed">
           The marketplace is flooded with abandoned templates that fail on `npm install`. We hold every integration kit to strict verification criteria.
         </p>
+
+        <div className="pt-2">
+          <Link href="/buyer/verifications">
+            <Button variant="outline" size="sm" className="text-xs border-emerald-700/60 text-emerald-300 hover:bg-emerald-950/40">
+              🛡️ Go to Your Product Verification Dashboard →
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* The 6 Core Audit Pillars */}

@@ -33,9 +33,9 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     camera.position.set(0, 3.2, 28);
 
     // 3. WebGL Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'default' });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
@@ -337,9 +337,15 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     // 14. Animation Render Loop
     let animationFrameId: number;
     let clock = new THREE.Clock();
+    const currentPos = new THREE.Vector3();
+    const currentTarget = new THREE.Vector3();
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+
+      // Skip GPU render when tab is backgrounded
+      if (document.hidden) return;
+
       const elapsedTime = clock.getElapsedTime();
 
       // Smooth mouse parallax interpolation
@@ -385,8 +391,8 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
       // Smooth Hermite / Cosine interpolation between waypoints
       const smoothT = (1 - Math.cos(segT * Math.PI)) / 2;
 
-      const currentPos = new THREE.Vector3().lerpVectors(wpStart.pos, wpEnd.pos, smoothT);
-      const currentTarget = new THREE.Vector3().lerpVectors(wpStart.target, wpEnd.target, smoothT);
+      currentPos.lerpVectors(wpStart.pos, wpEnd.pos, smoothT);
+      currentTarget.lerpVectors(wpStart.target, wpEnd.target, smoothT);
 
       // Apply mouse parallax
       camera.position.x = currentPos.x + mouseRef.current.x * 0.8;

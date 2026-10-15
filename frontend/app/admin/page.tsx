@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth, UserProfileRole } from '../../lib/auth-context';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
+import { formatPriceINR } from '../../lib/utils';
 
 interface UserRecord {
   id: string;
@@ -15,46 +16,64 @@ interface UserRecord {
   sellerListedCount?: number;
 }
 
-const INITIAL_USERS: UserRecord[] = [
-  {
-    id: 'usr_1',
-    name: 'Ashutosh Dubey',
-    email: 'ashutosh@agency.dev',
-    role: 'buyer',
-    joined: 'Oct 2026',
-  },
-  {
-    id: 'usr_2',
-    name: 'DevKit Core Creator',
-    email: 'creator@devkit.store',
-    role: 'seller',
-    joined: 'Sep 2026',
-    sellerListedCount: 2,
-  },
-  {
-    id: 'usr_3',
-    name: 'Sarah Connor',
-    email: 'moderator@devkit.store',
-    role: 'operator',
-    joined: 'Aug 2026',
-  },
-  {
-    id: 'usr_4',
-    name: 'Platform Administrator',
-    email: 'admin@devkit.store',
-    role: 'admin',
-    joined: 'Jul 2026',
-  },
-];
-
 export default function AdminConsolePage() {
   const { currentUser, loginAsRole, openLoginModal } = useAuth();
-  const [users, setUsers] = useState<UserRecord[]>(INITIAL_USERS);
+  const [users, setUsers] = useState<UserRecord[]>([]);
+  const [metrics, setMetrics] = useState({
+    totalRevenueINR: 0,
+    paidOrdersCount: 0,
+    totalUsersCount: 0,
+    publishedKitsCount: 0,
+    activeChatThreads: 0,
+    flaggedChatThreads: 0,
+    generatedProjectsCount: 0,
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
-  const toggleUserRole = (userId: string, newRole: UserProfileRole) => {
-    setUsers((prev) =>
-      prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
-    );
+  const loadAdminData = async () => {
+    setIsLoading(true);
+    try {
+      const [metricsRes, usersRes] = await Promise.all([
+        fetch('/api/admin/metrics'),
+        fetch('/api/admin/users'),
+      ]);
+
+      if (metricsRes.ok) {
+        const mData = await metricsRes.json();
+        if (mData.metrics) setMetrics(mData.metrics);
+      }
+
+      if (usersRes.ok) {
+        const uData = await usersRes.json();
+        if (uData.users) setUsers(uData.users);
+      }
+    } catch (err) {
+      console.error('Error loading admin data:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadAdminData();
+  }, []);
+
+  const toggleUserRole = async (userEmail: string, newRole: UserProfileRole) => {
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: userEmail, newRole }),
+      });
+
+      if (res.ok) {
+        setUsers((prev) =>
+          prev.map((u) => (u.email === userEmail ? { ...u, role: newRole } : u))
+        );
+      }
+    } catch (err) {
+      console.error('Error updating user role:', err);
+    }
   };
 
   const isAdmin = currentUser?.role === 'admin';
@@ -100,7 +119,7 @@ export default function AdminConsolePage() {
             Platform Admin Console
           </h1>
           <p className="mt-1 text-xs text-zinc-400">
-            Manage users, assign Operator moderation roles, view platform revenue, and configure seller fees.
+            Authoritative platform revenue, verified users, marketplace catalog audits, and moderation metrics from MongoDB.
           </p>
         </div>
 
@@ -118,27 +137,39 @@ export default function AdminConsolePage() {
         </div>
       </div>
 
-      {/* Metric Cards */}
+      {/* Metric Cards - Real MongoDB Data */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="rounded-xl border border-white/[0.08] bg-[#0c0d12]/80 p-5 space-y-1">
-          <span className="text-xs font-mono text-zinc-400">Total Product Sales</span>
-          <span className="text-2xl font-extrabold text-white block">₹1,54,300</span>
-          <span className="text-[10px] text-emerald-400 font-mono">100% verified payouts</span>
+          <span className="text-xs font-mono text-zinc-400">Total Verified Sales</span>
+          <span className="text-2xl font-extrabold text-white block">
+            {formatPriceINR(metrics.totalRevenueINR)}
+          </span>
+          <span className="text-[10px] text-emerald-400 font-mono">
+            {metrics.paidOrdersCount} verified transactions
+          </span>
         </div>
         <div className="rounded-xl border border-white/[0.08] bg-[#0c0d12]/80 p-5 space-y-1">
-          <span className="text-xs font-mono text-zinc-400">Active Members</span>
-          <span className="text-2xl font-extrabold text-white block">{users.length} Users</span>
+          <span className="text-xs font-mono text-zinc-400">Registered Accounts</span>
+          <span className="text-2xl font-extrabold text-white block">
+            {users.length} Users
+          </span>
           <span className="text-[10px] text-zinc-500 font-mono">Buyers, Sellers, Staff</span>
         </div>
         <div className="rounded-xl border border-white/[0.08] bg-[#0c0d12]/80 p-5 space-y-1">
-          <span className="text-xs font-mono text-zinc-400">Seller Passes Sold</span>
-          <span className="text-2xl font-extrabold text-indigo-400 block">14 Passes</span>
-          <span className="text-[10px] text-zinc-400 font-mono">₹99/mo listing pass</span>
+          <span className="text-xs font-mono text-zinc-400">Published Kits</span>
+          <span className="text-2xl font-extrabold text-indigo-400 block">
+            {metrics.publishedKitsCount} Kits
+          </span>
+          <span className="text-[10px] text-zinc-400 font-mono">Verified in catalog</span>
         </div>
         <div className="rounded-xl border border-white/[0.08] bg-[#0c0d12]/80 p-5 space-y-1">
-          <span className="text-xs font-mono text-zinc-400">Moderated Chats</span>
-          <span className="text-2xl font-extrabold text-amber-400 block">38 Threads</span>
-          <span className="text-[10px] text-amber-300 font-mono">1 contact leak caught</span>
+          <span className="text-xs font-mono text-zinc-400">Active Chat Threads</span>
+          <span className="text-2xl font-extrabold text-amber-400 block">
+            {metrics.activeChatThreads} Threads
+          </span>
+          <span className="text-[10px] text-amber-300 font-mono">
+            {metrics.flaggedChatThreads} DLP leaks flagged
+          </span>
         </div>
       </div>
 
@@ -148,7 +179,7 @@ export default function AdminConsolePage() {
           <h3 className="text-xs font-bold font-mono text-zinc-200 uppercase tracking-wider">
             User Role Assignment & Profiles
           </h3>
-          <span className="text-xs text-zinc-500 font-mono">{users.length} Accounts Registered</span>
+          <span className="text-xs text-zinc-500 font-mono">{users.length} Accounts Synchronized</span>
         </div>
 
         <div className="overflow-x-auto">
@@ -183,7 +214,7 @@ export default function AdminConsolePage() {
                           : 'secondary'
                       }
                       size="sm"
-                      className="font-mono text-[10px] uppercase"
+                      className="capitalize font-mono"
                     >
                       {u.role}
                     </Badge>
@@ -191,42 +222,39 @@ export default function AdminConsolePage() {
                   <td className="px-5 py-3.5 text-zinc-500 font-mono">
                     {u.joined}
                   </td>
-                  <td className="px-5 py-3.5 text-right space-x-1.5">
-                    <button
-                      type="button"
-                      onClick={() => toggleUserRole(u.id, 'operator')}
-                      className={`px-2 py-1 rounded text-[10px] font-mono border transition-all ${
-                        u.role === 'operator'
-                          ? 'bg-amber-600/30 text-amber-300 border-amber-500/50'
-                          : 'border-white/[0.08] text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      Make Operator
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => toggleUserRole(u.id, 'seller')}
-                      className={`px-2 py-1 rounded text-[10px] font-mono border transition-all ${
-                        u.role === 'seller'
-                          ? 'bg-emerald-600/30 text-emerald-300 border-emerald-500/50'
-                          : 'border-white/[0.08] text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      Make Seller
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => toggleUserRole(u.id, 'buyer')}
-                      className={`px-2 py-1 rounded text-[10px] font-mono border transition-all ${
-                        u.role === 'buyer'
-                          ? 'bg-indigo-600/30 text-indigo-300 border-indigo-500/50'
-                          : 'border-white/[0.08] text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      Make Buyer
-                    </button>
+                  <td className="px-5 py-3.5 text-right space-x-2">
+                    {u.role !== 'buyer' && (
+                      <button
+                        onClick={() => toggleUserRole(u.email, 'buyer')}
+                        className="text-[11px] text-zinc-400 hover:text-white underline decoration-zinc-700"
+                      >
+                        Set Buyer
+                      </button>
+                    )}
+                    {u.role !== 'seller' && (
+                      <button
+                        onClick={() => toggleUserRole(u.email, 'seller')}
+                        className="text-[11px] text-emerald-400 hover:text-emerald-300 underline decoration-emerald-800"
+                      >
+                        Set Seller
+                      </button>
+                    )}
+                    {u.role !== 'operator' && (
+                      <button
+                        onClick={() => toggleUserRole(u.email, 'operator')}
+                        className="text-[11px] text-amber-400 hover:text-amber-300 underline decoration-amber-800"
+                      >
+                        Set Operator
+                      </button>
+                    )}
+                    {u.role !== 'admin' && (
+                      <button
+                        onClick={() => toggleUserRole(u.email, 'admin')}
+                        className="text-[11px] text-purple-400 hover:text-purple-300 underline decoration-purple-800"
+                      >
+                        Set Admin
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
