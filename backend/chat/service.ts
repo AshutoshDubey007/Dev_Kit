@@ -25,9 +25,17 @@ export async function autoConnectBuyerSeller(order: {
   const now = new Date();
 
   // Find kit details for seller info and README guide
-  const kit = KITS.find((k) => k.slug === order.kitSlug) || order.kitData;
+  let kit: any = null;
+  try {
+    kit = await db.collection('kits').findOne({ slug: order.kitSlug });
+  } catch (err) {
+    console.warn('Could not query kits collection in autoConnectBuyerSeller:', err);
+  }
+  if (!kit) {
+    kit = KITS.find((k) => k.slug === order.kitSlug) || order.kitData;
+  }
 
-  // In production, seller details come from the kit author record
+  // Authoritative seller details come from the kit author record
   const sellerId = kit?.sellerId || 'seller_devkit_core';
   const sellerName = kit?.sellerName || 'DevKit Verified Core Team';
   const sellerEmail = kit?.sellerEmail || 'support@devkit.store';
@@ -119,6 +127,34 @@ ${
   };
 
   await db.collection<Message>(MESSAGES_COLLECTION).insertOne(welcomeMessage);
+
+  try {
+    const notifCollection = db.collection('notifications');
+    await notifCollection.insertOne({
+      id: `notif_${Date.now()}_buyer`,
+      userId: order.customerEmail,
+      type: 'purchase',
+      title: `Order Confirmed: ${order.kitTitle}`,
+      message: `Your payment was verified. Setup guide is ready in your chat support thread.`,
+      link: `/chat`,
+      read: false,
+      createdAt: now,
+    });
+    if (sellerEmail) {
+      await notifCollection.insertOne({
+        id: `notif_${Date.now()}_seller`,
+        userId: sellerEmail,
+        type: 'purchase',
+        title: `Kit Sold: ${order.kitTitle}`,
+        message: `${order.customerName} purchased ${order.kitTitle}. Setup guide auto-dispatched.`,
+        link: `/chat`,
+        read: false,
+        createdAt: now,
+      });
+    }
+  } catch (notifErr) {
+    console.warn('Could not insert purchase notifications:', notifErr);
+  }
 
   return newConversation;
 }
@@ -385,11 +421,9 @@ export async function getConversationMessages(conversationId: string): Promise<M
       .sort({ createdAt: 1 })
       .toArray();
 
-    if (stored.length > 0) return stored;
-    if (DEMO_MESSAGES_MAP[conversationId]) return DEMO_MESSAGES_MAP[conversationId];
-    return [];
-  } catch {
-    if (DEMO_MESSAGES_MAP[conversationId]) return DEMO_MESSAGES_MAP[conversationId];
+    return stored;
+  } catch (err) {
+    console.error('Error fetching conversation messages:', err);
     return [];
   }
 }
@@ -400,18 +434,27 @@ export async function getConversationMessages(conversationId: string): Promise<M
 export async function getUserConversations(userEmailOrId: string): Promise<Conversation[]> {
   try {
     const db = await getDatabase();
+    const query = userEmailOrId
+      ? {
+          $or: [
+            { buyerEmail: userEmailOrId },
+            { sellerEmail: userEmailOrId },
+            { sellerId: userEmailOrId },
+            { buyerId: userEmailOrId },
+          ],
+        }
+      : {};
+
     const stored = await db
       .collection<Conversation>(CONVERSATIONS_COLLECTION)
-      .find({
-        $or: [{ buyerEmail: userEmailOrId }, { sellerId: userEmailOrId }, { buyerId: userEmailOrId }],
-      })
+      .find(query)
       .sort({ lastMessageAt: -1 })
       .toArray();
 
-    if (stored.length > 0) return stored;
-    return DEMO_CONVERSATIONS;
-  } catch {
-    return DEMO_CONVERSATIONS;
+    return stored;
+  } catch (err) {
+    console.error('Error fetching user conversations:', err);
+    return [];
   }
 }
 
@@ -425,11 +468,9 @@ export async function getConversationById(conversationId: string): Promise<Conve
       .collection<Conversation>(CONVERSATIONS_COLLECTION)
       .findOne({ conversationId });
 
-    if (stored) return stored;
-    const found = DEMO_CONVERSATIONS.find((c) => c.conversationId === conversationId);
-    return found || null;
-  } catch {
-    const found = DEMO_CONVERSATIONS.find((c) => c.conversationId === conversationId);
-    return found || null;
+    return stored || null;
+  } catch (err) {
+    console.error('Error fetching conversation by id:', err);
+    return null;
   }
 }

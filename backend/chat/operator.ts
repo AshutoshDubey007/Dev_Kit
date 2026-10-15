@@ -38,10 +38,10 @@ export async function getAllConversationsForOperator(): Promise<Conversation[]> 
       .sort({ lastMessageAt: -1 })
       .toArray();
 
-    if (stored.length > 0) return stored;
-    return [DEMO_OPERATOR_CONVERSATION];
-  } catch {
-    return [DEMO_OPERATOR_CONVERSATION];
+    return stored;
+  } catch (err) {
+    console.error('Error fetching operator conversations:', err);
+    return [];
   }
 }
 
@@ -57,10 +57,10 @@ export async function getFlaggedConversationsForOperator(): Promise<Conversation
       .sort({ lastMessageAt: -1 })
       .toArray();
 
-    if (stored.length > 0) return stored;
-    return [DEMO_OPERATOR_CONVERSATION];
-  } catch {
-    return [DEMO_OPERATOR_CONVERSATION];
+    return stored;
+  } catch (err) {
+    console.error('Error fetching flagged conversations:', err);
+    return [];
   }
 }
 

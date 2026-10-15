@@ -65,13 +65,44 @@ export function sanitizeChatMessage(text: string): FilterResult {
   const violations: string[] = [];
   let filtered = normalized;
 
-  // 1. Check and mask phone numbers
-  if (PHONE_REGEX.test(filtered)) {
+  // Helper to test and reset stateful global regex
+  const testAndReset = (regex: RegExp, str: string) => {
+    regex.lastIndex = 0;
+    const matched = regex.test(str);
+    regex.lastIndex = 0;
+    return matched;
+  };
+
+  // 1. Check and mask WhatsApp (URLs and text invites)
+  if (testAndReset(WHATSAPP_REGEX, filtered)) {
+    violations.push('whatsapp_leak');
+    WHATSAPP_REGEX.lastIndex = 0;
+    filtered = filtered.replace(WHATSAPP_REGEX, REPLACEMENT_MASK);
+  }
+
+  // 2. Check and mask Telegram / Discord / external social channels
+  if (testAndReset(SOCIAL_LEAK_REGEX, filtered)) {
+    violations.push('social_leak');
+    SOCIAL_LEAK_REGEX.lastIndex = 0;
+    filtered = filtered.replace(SOCIAL_LEAK_REGEX, REPLACEMENT_MASK);
+  }
+
+  // 3. Check and mask UPI handles
+  if (testAndReset(UPI_REGEX, filtered)) {
+    violations.push('upi_leak');
+    UPI_REGEX.lastIndex = 0;
+    filtered = filtered.replace(UPI_REGEX, REPLACEMENT_MASK);
+  }
+
+  // 4. Check and mask phone numbers
+  if (testAndReset(PHONE_REGEX, filtered)) {
     violations.push('phone_leak');
+    PHONE_REGEX.lastIndex = 0;
     filtered = filtered.replace(PHONE_REGEX, REPLACEMENT_MASK);
   }
 
-  // 2. Check and mask emails (excluding package scopes like @auth/core)
+  // 5. Check and mask emails (excluding package scopes like @auth/core)
+  EMAIL_REGEX.lastIndex = 0;
   const emailMatches = filtered.match(EMAIL_REGEX);
   if (emailMatches) {
     let hasActualEmail = false;
@@ -83,28 +114,11 @@ export function sanitizeChatMessage(text: string): FilterResult {
     }
     if (hasActualEmail) {
       violations.push('email_leak');
+      EMAIL_REGEX.lastIndex = 0;
       filtered = filtered.replace(EMAIL_REGEX, (match) => {
         return isCodeSnippetOrPackage(match) ? match : REPLACEMENT_MASK;
       });
     }
-  }
-
-  // 3. Check and mask WhatsApp
-  if (WHATSAPP_REGEX.test(filtered)) {
-    violations.push('whatsapp_leak');
-    filtered = filtered.replace(WHATSAPP_REGEX, REPLACEMENT_MASK);
-  }
-
-  // 4. Check and mask UPI handles
-  if (UPI_REGEX.test(filtered)) {
-    violations.push('upi_leak');
-    filtered = filtered.replace(UPI_REGEX, REPLACEMENT_MASK);
-  }
-
-  // 5. Check and mask Telegram / external social channels
-  if (SOCIAL_LEAK_REGEX.test(filtered)) {
-    violations.push('social_leak');
-    filtered = filtered.replace(SOCIAL_LEAK_REGEX, REPLACEMENT_MASK);
   }
 
   const isFlagged = violations.length > 0;

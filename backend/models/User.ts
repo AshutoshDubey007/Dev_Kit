@@ -1,5 +1,3 @@
-import { ObjectId } from 'mongodb';
-
 export type UserRole = 'admin' | 'operator' | 'user';
 
 export interface SellerProfile {
@@ -14,7 +12,7 @@ export interface SellerProfile {
 }
 
 export interface User {
-  _id?: ObjectId;
+  _id?: any;
   userId: string;
   email: string;
   name: string;

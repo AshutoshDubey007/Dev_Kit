@@ -14,6 +14,8 @@ export interface Conversation {
   sellerEmail: string;
   sellerName: string;
   status: ConversationStatus;
+  closureReason?: string | null;
+  closedAt?: Date | null;
   flaggedCount: number; // Increment if anti-leak triggers
   lastMessageSnippet: string;
   lastMessageAt: Date;
