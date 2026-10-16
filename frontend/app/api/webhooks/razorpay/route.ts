@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { getOrderByRazorpayOrderId, markOrderAsPaid } from '../../../../lib/db/orders';
+import { getOrderByRazorpayOrderId, markOrderAsPaid, markOrderAsFailed, recordWebhookEvent } from '../../../../lib/db/orders';
 import { autoConnectBuyerSeller } from '@backend/chat/service';
 import { createVerificationForOrder } from '../../../../lib/db/verifications';
 
@@ -22,13 +22,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Webhook secret is not configured' }, { status: 500 });
     }
 
-    // Verify cryptographic HMAC-SHA256 signature
+    // Verify cryptographic HMAC-SHA256 signature using constant-time comparison
     const expectedSignature = crypto
       .createHmac('sha256', webhookSecret)
       .update(rawBody)
       .digest('hex');
 
-    if (signature !== expectedSignature) {
+    const signatureBuffer = Buffer.from(signature, 'utf8');
+    const expectedBuffer = Buffer.from(expectedSignature, 'utf8');
+
+    if (
+      signatureBuffer.length !== expectedBuffer.length ||
+      !crypto.timingSafeEqual(signatureBuffer, expectedBuffer)
+    ) {
       console.warn('[Razorpay Webhook] Invalid signature detected');
       return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
     }
@@ -41,6 +47,18 @@ export async function POST(req: NextRequest) {
       const paymentEntity = event.payload?.payment?.entity;
       const razorpayOrderId = paymentEntity?.order_id || event.payload?.order?.entity?.id;
       const razorpayPaymentId = paymentEntity?.id;
+
+      // Extract unique event identifier to guarantee delivery idempotency
+      const eventId =
+        event.id ||
+        (paymentEntity?.id ? `wh_${eventType}_${paymentEntity.id}` : null) ||
+        `wh_${eventType}_${razorpayOrderId}_${Date.now()}`;
+
+      // Check event replay / duplicate delivery
+      const { isDuplicate } = await recordWebhookEvent(eventId, eventType, razorpayOrderId);
+      if (isDuplicate) {
+        return NextResponse.json({ status: 'ok', received: true, note: 'Duplicate event already processed' });
+      }
 
       if (razorpayOrderId) {
         const order = await getOrderByRazorpayOrderId(razorpayOrderId);
@@ -78,12 +96,36 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Handle payment.failed explicitly to transition order and revoke entitlements
+    if (eventType === 'payment.failed') {
+      const paymentEntity = event.payload?.payment?.entity;
+      const razorpayOrderId = paymentEntity?.order_id;
+      const failureReason =
+        paymentEntity?.error_description || paymentEntity?.error_reason || 'Payment failed or cancelled by buyer';
+
+      const eventId =
+        event.id ||
+        (paymentEntity?.id ? `wh_${eventType}_${paymentEntity.id}` : null) ||
+        `wh_${eventType}_${razorpayOrderId}_${Date.now()}`;
+
+      const { isDuplicate } = await recordWebhookEvent(eventId, eventType, razorpayOrderId);
+      if (isDuplicate) {
+        return NextResponse.json({ status: 'ok', received: true, note: 'Duplicate failed event already processed' });
+      }
+
+      if (razorpayOrderId) {
+        await markOrderAsFailed(razorpayOrderId, failureReason);
+        console.log(`[Razorpay Webhook] Order for ${razorpayOrderId} marked as failed: ${failureReason}`);
+      }
+    }
+
     return NextResponse.json({ status: 'ok', received: true });
   } catch (err: any) {
     console.error('[Razorpay Webhook] Error processing event:', err);
     return NextResponse.json(
-      { error: err.message || 'Internal webhook error' },
+      { error: 'Internal error processing webhook' },
       { status: 500 }
     );
   }
 }
+

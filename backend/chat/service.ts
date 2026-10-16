@@ -172,6 +172,12 @@ export async function sendChatMessage(data: {
   const db = await getDatabase();
   const now = new Date();
 
+  // Validate conversation is active
+  const conv = await db.collection<Conversation>(CONVERSATIONS_COLLECTION).findOne({ conversationId: data.conversationId });
+  if (conv && conv.status === 'closed') {
+    throw new Error('Cannot send message: Conversation has been closed.');
+  }
+
   // Run anti-leakage filter
   const filterResult = sanitizeChatMessage(data.content);
 

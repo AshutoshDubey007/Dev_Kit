@@ -2,6 +2,7 @@
  * Master DevKit Production Test Suite Entry Point
  * Executes all security, compliance, payment, authorization, data, and configuration tests.
  */
+import './env-setup';
 import './security/scanner.test';
 import './security/dlp-chat-filter.test';
 import './payments/razorpay-verification.test';
@@ -14,4 +15,17 @@ import './studio/studio-provider.test';
 import './config/environment.test';
 import './verifications/product-verifications.test';
 import './support/support-tickets-lifecycle.test';
+import './security/production-hardening.test';
+import './beta/beta-readiness.test';
+import './reliability/production-engineering.test';
+
+import { after } from 'node:test';
+import clientPromise from '../lib/mongodb';
+
+after(async () => {
+  try {
+    const client = await clientPromise;
+    await client.close();
+  } catch {}
+});
 

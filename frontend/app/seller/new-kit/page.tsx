@@ -83,7 +83,7 @@ export default function NewKitPage() {
   const requiresSubscription = !isFreeTierAvailable && !isSubscribed;
 
   const handlePurchaseSubscription = () => {
-    alert('Simulating Razorpay ₹99 Seller Pro Pass payment...');
+    alert('Beta Partner Access: Unlimited listing pass activated for early developer evaluation.');
     setIsSubscribed(true);
   };
 

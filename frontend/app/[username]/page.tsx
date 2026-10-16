@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, notFound } from 'next/navigation';
 import {
   BookMarked,
   ShoppingBag,
@@ -84,8 +84,31 @@ export default function DeveloperProfilePage() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followersCount, setFollowersCount] = useState(0);
 
+  const reservedRoutes = [
+    'checkout',
+    'download',
+    'api',
+    'admin',
+    'operator',
+    'buyer',
+    'seller',
+    'kits',
+    'repos',
+    'prompts',
+    'studio',
+    'settings',
+    'categories',
+    'explore',
+    'discussions',
+    'feedback',
+    'terms',
+    'privacy',
+    'guarantee',
+  ];
+  const isReserved = reservedRoutes.includes(username.toLowerCase());
+
   useEffect(() => {
-    if (!username) return;
+    if (!username || isReserved) return;
 
     fetch(`/api/user/profile?username=${username}`)
       .then((res) => res.json())
@@ -113,7 +136,11 @@ export default function DeveloperProfilePage() {
 
     const allKits = getAllKits();
     setKits(allKits.filter((k) => k.sellerEmail?.toLowerCase().includes(username.toLowerCase()) || k.id.includes(username)));
-  }, [username]);
+  }, [username, isReserved]);
+
+  if (isReserved) {
+    return notFound();
+  }
 
   if (!profile) {
     return (

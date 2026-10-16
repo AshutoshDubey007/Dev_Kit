@@ -15,7 +15,9 @@ export interface Order {
   razorpayOrderId: string;
   razorpayPaymentId?: string;
   razorpaySignature?: string;
-  status: 'created' | 'paid' | 'failed';
+  status: 'created' | 'paid' | 'failed' | 'cancelled';
+  failureReason?: string;
+  reconciledAt?: Date;
   downloadToken: string;
   downloadExpiresAt: Date;
   downloadCount: number;
@@ -26,6 +28,52 @@ export interface Order {
 }
 
 const ORDERS_COLLECTION = 'orders';
+const WEBHOOK_EVENTS_COLLECTION = 'webhook_events';
+let ordersIndexed = false;
+
+/**
+ * Ensures indexes exist for the orders and webhook events collection
+ */
+export async function ensureOrderIndexes(): Promise<void> {
+  if (ordersIndexed) return;
+  try {
+    const db = await getDatabase();
+    await db.collection<Order>(ORDERS_COLLECTION).createIndex({ orderId: 1 }, { unique: true });
+    await db.collection<Order>(ORDERS_COLLECTION).createIndex({ razorpayOrderId: 1 }, { unique: true });
+    await db.collection<Order>(ORDERS_COLLECTION).createIndex({ downloadToken: 1 }, { unique: true });
+    await db.collection<Order>(ORDERS_COLLECTION).createIndex({ customerEmail: 1 });
+    await db.collection(WEBHOOK_EVENTS_COLLECTION).createIndex({ eventId: 1 }, { unique: true });
+    ordersIndexed = true;
+  } catch (err) {
+    console.warn('[Orders DB] Index creation notice:', err);
+  }
+}
+
+/**
+ * Records a webhook event and checks for duplicate delivery
+ */
+export async function recordWebhookEvent(
+  eventId: string,
+  eventType: string,
+  orderId?: string
+): Promise<{ isDuplicate: boolean }> {
+  await ensureOrderIndexes();
+  try {
+    const db = await getDatabase();
+    await db.collection(WEBHOOK_EVENTS_COLLECTION).insertOne({
+      eventId,
+      eventType,
+      orderId,
+      processedAt: new Date(),
+    });
+    return { isDuplicate: false };
+  } catch (err: any) {
+    if (err.code === 11000) {
+      return { isDuplicate: true };
+    }
+    return { isDuplicate: false };
+  }
+}
 
 /**
  * Creates a new pending order in MongoDB
@@ -40,6 +88,7 @@ export async function createOrderRecord(data: {
   razorpayOrderId: string;
   kitData?: any;
 }): Promise<Order> {
+  await ensureOrderIndexes();
   const db = await getDatabase();
   const downloadToken = crypto.randomBytes(24).toString('hex');
   const orderId = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
@@ -126,4 +175,74 @@ export async function incrementDownloadCount(downloadToken: string): Promise<boo
     }
   );
   return result.modifiedCount > 0;
+}
+
+/**
+ * Marks an order as failed upon payment failure notification or cancellation.
+ * Revokes download rights and logs failure reason.
+ */
+export async function markOrderAsFailed(
+  razorpayOrderId: string,
+  failureReason = 'Payment failed or cancelled by buyer'
+): Promise<Order | null> {
+  const db = await getDatabase();
+  const now = new Date();
+
+  const updateResult = await db.collection<Order>(ORDERS_COLLECTION).findOneAndUpdate(
+    { razorpayOrderId },
+    {
+      $set: {
+        status: 'failed',
+        failureReason,
+        downloadExpiresAt: now, // immediately invalidate download window
+        updatedAt: now,
+      },
+    },
+    { returnDocument: 'after' }
+  );
+
+  return updateResult || null;
+}
+
+/**
+ * Reconciles an order against payment state, checking for consistency between
+ * order status, verification records, and download entitlement.
+ */
+export async function reconcileOrder(orderId: string): Promise<{
+  isConsistent: boolean;
+  orderStatus: string;
+  hasPaidEntitlement: boolean;
+  issues: string[];
+}> {
+  const db = await getDatabase();
+  const order = await db.collection<Order>(ORDERS_COLLECTION).findOne({ orderId });
+  if (!order) {
+    return { isConsistent: false, orderStatus: 'unknown', hasPaidEntitlement: false, issues: ['Order record not found'] };
+  }
+
+  const issues: string[] = [];
+  const hasPaidEntitlement = order.status === 'paid' && Boolean(order.razorpayPaymentId);
+
+  // If status is paid, razorpayPaymentId must be present
+  if (order.status === 'paid' && !order.razorpayPaymentId) {
+    issues.push('Order marked as paid but lacks razorpayPaymentId');
+  }
+
+  // If status is failed or created, downloadCount must be 0
+  if (order.status !== 'paid' && order.downloadCount > 0) {
+    issues.push(`Unpaid order has non-zero downloadCount: ${order.downloadCount}`);
+  }
+
+  // Check verification record consistency (in product_verifications collection)
+  const verification = await db.collection('product_verifications').findOne({ orderId });
+  if (order.status === 'paid' && !verification) {
+    issues.push('Paid order has no associated verification record');
+  }
+
+  return {
+    isConsistent: issues.length === 0,
+    orderStatus: order.status,
+    hasPaidEntitlement,
+    issues,
+  };
 }

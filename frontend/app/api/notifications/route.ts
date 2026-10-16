@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserNotifications, markAllNotificationsRead } from '@/lib/db/notifications';
+import { getUserNotifications, markAllNotificationsRead, markNotificationRead } from '@/lib/db/notifications';
 
 export async function GET(req: NextRequest) {
   try {
@@ -24,5 +24,20 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Error marking notifications as read:', error);
     return NextResponse.json({ error: 'Failed to mark notifications read' }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id } = body;
+    if (id) {
+      await markNotificationRead(id);
+      return NextResponse.json({ success: true });
+    }
+    return NextResponse.json({ error: 'Missing notification id' }, { status: 400 });
+  } catch (error) {
+    console.error('Error updating notification:', error);
+    return NextResponse.json({ error: 'Failed to update notification' }, { status: 500 });
   }
 }

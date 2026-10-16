@@ -1,17 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminUsersList, updateUserRoleInDb } from '@/lib/db/admin';
 import { UserProfileRole } from '@/lib/auth-shared';
+import { auth } from '@/auth';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const session = await auth();
+    const role = (session?.user as any)?.role;
+
+    if (role !== 'admin') {
+      return NextResponse.json(
+        { error: 'Forbidden: Platform Administrator privileges required' },
+        { status: 403 }
+      );
+    }
+
     const users = await getAdminUsersList();
     return NextResponse.json({ success: true, count: users.length, users });
   } catch (error: any) {
     console.error('Error fetching admin users:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch platform users' },
+      { error: 'Failed to fetch platform users' },
       { status: 500 }
     );
   }
@@ -19,6 +30,16 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await auth();
+    const role = (session?.user as any)?.role;
+
+    if (role !== 'admin') {
+      return NextResponse.json(
+        { error: 'Forbidden: Platform Administrator privileges required' },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const { identifier, newRole } = body;
 
@@ -46,7 +67,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('Error updating user role:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to update user role' },
+      { error: 'Failed to update user role' },
       { status: 500 }
     );
   }

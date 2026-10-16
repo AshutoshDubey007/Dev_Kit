@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Footer() {
   return (
@@ -8,12 +9,18 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand & Value Proposition */}
           <div className="md:col-span-2 space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-xs">
-                DK
+            <div className="flex items-center gap-2.5">
+              <div className="relative flex h-8 w-8 items-center justify-center rounded-xl overflow-hidden border border-white/20 shadow-md shadow-indigo-500/20 bg-black">
+                <Image
+                  src="/logo.png"
+                  alt="DevKit Marketplace Logo"
+                  width={32}
+                  height={32}
+                  className="h-full w-full object-cover"
+                />
               </div>
               <span className="font-bold text-zinc-100 text-sm tracking-tight">
-                DevKit Store
+                DevKit Marketplace
               </span>
             </div>
             <p className="text-zinc-400 text-xs leading-relaxed max-w-sm">
@@ -57,22 +64,38 @@ export function Footer() {
           {/* Trust & Guarantees */}
           <div>
             <h4 className="font-semibold text-zinc-200 text-xs uppercase tracking-wider mb-3">
-              Standards & Terms
+              Standards &amp; Terms
             </h4>
             <ul className="space-y-2">
+              <li>
+                <Link href="/guarantee" className="hover:text-emerald-400 transition-colors">
+                  7-Day Guarantee &amp; Refund Policy
+                </Link>
+              </li>
               <li>
                 <Link href="/verify" className="hover:text-zinc-100 transition-colors">
                   Verification Audit Standard
                 </Link>
               </li>
               <li>
-                <span className="text-zinc-500">Commercial License (Unlimited)</span>
+                <Link href="/seller/guidelines" className="hover:text-zinc-100 transition-colors">
+                  Seller Quality Guidelines
+                </Link>
               </li>
               <li>
-                <span className="text-zinc-500">Async GitHub Issue Support</span>
+                <Link href="/terms" className="hover:text-zinc-100 transition-colors">
+                  Terms &amp; Commercial License
+                </Link>
               </li>
               <li>
-                <span className="text-zinc-500">Zero Lock-in Guarantee</span>
+                <Link href="/privacy" className="hover:text-zinc-100 transition-colors">
+                  Privacy Policy &amp; Data Safety
+                </Link>
+              </li>
+              <li>
+                <Link href="/feedback" className="text-amber-400 hover:text-amber-300 transition-colors">
+                  ★ Beta Customer Feedback
+                </Link>
               </li>
             </ul>
           </div>

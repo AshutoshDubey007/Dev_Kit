@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../lib/auth-context';
 import { Button } from '../../components/ui/button';
@@ -72,12 +73,19 @@ export default function SignUpPage() {
     <div className="max-w-md mx-auto py-16 px-4 space-y-6">
       {/* Brand Header */}
       <div className="text-center space-y-2">
-        <Link href="/" className="inline-flex items-center gap-2.5 mb-2 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-blue-600 shadow-lg shadow-emerald-500/25 border border-white/20 text-white font-mono font-bold text-sm">
-            DK
+        <Link href="/" className="inline-flex items-center gap-3 mb-2 group">
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl overflow-hidden shadow-xl shadow-indigo-500/25 border border-white/20 bg-black">
+            <Image
+              src="/logo.png"
+              alt="DevKit Marketplace Logo"
+              width={40}
+              height={40}
+              className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
+              priority
+            />
           </div>
-          <span className="font-extrabold text-xl text-white tracking-tight">
-            DevKit<span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">.store</span>
+          <span className="font-extrabold text-2xl text-white tracking-tight">
+            DevKit<span className="bg-gradient-to-r from-indigo-400 to-blue-400 bg-clip-text text-transparent"> Marketplace</span>
           </span>
         </Link>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
@@ -225,17 +233,22 @@ export default function SignUpPage() {
               />
               <span className="leading-tight">
                 I agree to the{' '}
-                <a
-                  href="#terms"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    alert('Developer License: 100% source code ownership with commercial rights.');
-                  }}
+                <Link
+                  href="/terms"
+                  target="_blank"
                   className="text-emerald-400 hover:underline"
                 >
                   Terms of Service
-                </a>{' '}
-                and Privacy Policy.
+                </Link>{' '}
+                and{' '}
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  className="text-emerald-400 hover:underline"
+                >
+                  Privacy Policy
+                </Link>
+                .
               </span>
             </label>
           </div>

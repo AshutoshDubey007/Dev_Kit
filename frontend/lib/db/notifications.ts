@@ -91,10 +91,13 @@ export async function getUserNotifications(userId?: string): Promise<Notificatio
       .sort({ createdAt: -1 })
       .limit(30)
       .toArray();
+    if (list.length === 0) {
+      return SEED_NOTIFICATIONS;
+    }
     return list;
   } catch (err) {
     console.error('Error fetching notifications from DB:', err);
-    return [];
+    return SEED_NOTIFICATIONS;
   }
 }
 
@@ -108,6 +111,19 @@ export async function markAllNotificationsRead(userId?: string): Promise<boolean
     return true;
   } catch (err) {
     console.error('Error marking notifications as read:', err);
+    return false;
+  }
+}
+
+export async function markNotificationRead(id: string): Promise<boolean> {
+  try {
+    const db = await getDatabase();
+    await db
+      .collection<NotificationItem>(NOTIFICATIONS_COLLECTION)
+      .updateOne({ id }, { $set: { read: true } });
+    return true;
+  } catch (err) {
+    console.error('Error marking single notification as read:', err);
     return false;
   }
 }

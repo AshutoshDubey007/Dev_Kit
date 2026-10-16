@@ -5,6 +5,7 @@ export interface DeveloperProfile {
   _id?: ObjectId;
   username: string;
   name: string;
+  email?: string;
   avatar: string;
   bio: string;
   website?: string;

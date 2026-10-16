@@ -100,6 +100,8 @@ export async function POST(req: NextRequest) {
 
     // 4. Persist directly to MongoDB
     const persistedKit = await createKitInDb({
+      id: body.id,
+      slug: body.slug,
       title,
       tagline,
       category,

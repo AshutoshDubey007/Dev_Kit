@@ -21,16 +21,53 @@ export default function KitDetailPage() {
   const { currentUser } = useAuth();
 
   const [kit, setKit] = useState<Kit | undefined>(() => {
-    return getKitBySlug(slug) || KITS.find((k) => k.slug === slug);
+    return getKitBySlug(slug) || KITS.find((k) => k.slug === slug || k.id === slug);
   });
+  const [isLoading, setIsLoading] = useState(!kit);
 
   useEffect(() => {
-    fetchKitBySlugFromApi(slug).then((k) => {
-      if (k) setKit(k);
-    });
+    let isMounted = true;
+    fetchKitBySlugFromApi(slug)
+      .then((k) => {
+        if (isMounted) {
+          if (k) setKit(k);
+          setIsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setIsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [slug]);
+
+  // Track product page view
+  useEffect(() => {
+    if (slug) {
+      fetch('/api/analytics/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventType: 'page_view',
+          entityId: slug,
+          path: `/kits/${slug}`,
+        }),
+      }).catch(() => {});
+    }
   }, [slug]);
 
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-4xl mx-auto py-24 text-center space-y-4">
+        <div className="animate-spin h-8 w-8 border-2 border-amber-400 border-t-transparent rounded-full mx-auto" />
+        <p className="text-xs font-mono text-zinc-400">Loading verified code package...</p>
+      </div>
+    );
+  }
 
   if (!kit) {
     return notFound();
@@ -138,7 +175,7 @@ export default function KitDetailPage() {
           </section>
 
           {/* Interactive Code Preview */}
-          <section className="space-y-3">
+          <section id="code-preview" className="space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
                 <span>💻</span>

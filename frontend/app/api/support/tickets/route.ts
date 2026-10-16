@@ -4,6 +4,7 @@ import {
   createSupportTicket,
   getTicketsForVerification,
 } from '../../../../lib/db/tickets';
+import { recordAnalyticsEvent } from '@/lib/db/analytics';
 import { auth } from '@/auth';
 
 export async function GET(req: NextRequest) {
@@ -91,6 +92,13 @@ export async function POST(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
+
+    // Record issue reported analytics event
+    recordAnalyticsEvent('issue_reported', {
+      entityId: result.ticket?.verificationId,
+      path: '/api/support/tickets',
+      metadata: { ticketId: result.ticket?.ticketId },
+    }).catch(() => {});
 
     return NextResponse.json({
       success: true,

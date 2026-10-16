@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../../lib/auth-context';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -65,11 +66,22 @@ export function LoginModal() {
 
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
-          <div>
-            <h3 className="text-base font-bold text-white">Sign In to DevKit</h3>
-            <p className="text-xs text-zinc-400 mt-0.5">
-              Access your downloads, orders, and support chats.
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl overflow-hidden border border-white/20 shadow-md shadow-indigo-500/20 bg-black shrink-0">
+              <Image
+                src="/logo.png"
+                alt="DevKit Marketplace Logo"
+                width={32}
+                height={32}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-white leading-tight">Sign In to DevKit</h3>
+              <p className="text-[11px] text-zinc-400 mt-0.5">
+                Access your downloads, orders, and support chats.
+              </p>
+            </div>
           </div>
           <button
             type="button"

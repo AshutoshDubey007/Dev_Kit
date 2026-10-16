@@ -1,5 +1,6 @@
 import { getDatabase } from '../mongodb';
 import { ObjectId } from 'mongodb';
+import { escapeRegex } from '../utils/regex';
 
 export interface Repository {
   _id?: ObjectId;
@@ -143,10 +144,10 @@ export async function getAllRepositories(query?: {
       filter.topics = query.topic.toLowerCase();
     }
     if (query?.language && query.language !== 'all') {
-      filter.primaryLanguage = new RegExp(`^${query.language}$`, 'i');
+      filter.primaryLanguage = new RegExp(`^${escapeRegex(query.language.trim())}$`, 'i');
     }
     if (query?.search) {
-      const searchRegex = new RegExp(query.search, 'i');
+      const searchRegex = new RegExp(escapeRegex(query.search.trim()), 'i');
       filter.$or = [{ name: searchRegex }, { description: searchRegex }, { topics: searchRegex }];
     }
 

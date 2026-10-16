@@ -23,13 +23,15 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    if (!body.title) {
+    if (!body.title || !body.title.trim()) {
       return NextResponse.json({ error: 'Discussion title is required' }, { status: 400 });
     }
 
     const newDiscussion = await createDiscussionInDb({
       title: body.title,
+      content: body.content,
       author: body.author || 'Anonymous Developer',
+      authorRole: body.authorRole || 'buyer',
       category: body.category || 'q_and_a',
     });
 

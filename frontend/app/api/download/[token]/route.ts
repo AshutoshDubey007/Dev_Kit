@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getOrderByDownloadToken, incrementDownloadCount } from '../../../../lib/db/orders';
 import { getKitBySlugFromDb } from '@/lib/db/kits';
+import { recordAnalyticsEvent } from '@/lib/db/analytics';
 
 export async function GET(
   req: NextRequest,
@@ -45,6 +46,13 @@ export async function GET(
 
     // Increment download counter
     await incrementDownloadCount(token);
+
+    // Record privacy-safe analytics event
+    recordAnalyticsEvent('download_completed', {
+      entityId: order.kitSlug,
+      path: `/api/download/${token}`,
+      metadata: { orderId: order.orderId },
+    }).catch(() => {});
 
     const kit = (await getKitBySlugFromDb(order.kitSlug)) || order.kitData;
 

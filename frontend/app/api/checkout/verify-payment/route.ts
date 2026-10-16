@@ -3,39 +3,91 @@ import crypto from 'crypto';
 import { getOrderByRazorpayOrderId, markOrderAsPaid } from '../../../../lib/db/orders';
 import { autoConnectBuyerSeller } from '@backend/chat/service';
 import { createVerificationForOrder } from '../../../../lib/db/verifications';
+import { recordAnalyticsEvent } from '@/lib/db/analytics';
+import {
+  checkRateLimit,
+  RATE_LIMIT_POLICIES,
+  createRateLimitResponse,
+  getClientIp,
+  getRateLimitHeaders,
+} from '@/lib/security/rate-limit';
+import { validateString } from '@/lib/security/validation';
 
 export async function POST(req: NextRequest) {
   try {
+    // 1. Rate Limiting Protection (15 req/min per client IP)
+    const clientIp = getClientIp(req);
+    const rateLimit = await checkRateLimit(RATE_LIMIT_POLICIES.checkout, clientIp);
+    if (!rateLimit.success) {
+      return createRateLimitResponse(rateLimit);
+    }
+
     const body = await req.json();
     const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = body;
 
-    if (!razorpayOrderId || !razorpayPaymentId) {
+    const orderIdVal = validateString(razorpayOrderId, {
+      fieldName: 'razorpayOrderId',
+      minLength: 5,
+      maxLength: 150,
+      required: true,
+    });
+    const paymentIdVal = validateString(razorpayPaymentId, {
+      fieldName: 'razorpayPaymentId',
+      minLength: 5,
+      maxLength: 150,
+      required: true,
+    });
+
+    if (!orderIdVal.valid || !paymentIdVal.valid) {
       return NextResponse.json(
-        { error: 'Missing required payment verification details' },
-        { status: 400 }
+        { error: 'Missing or invalid required payment verification details' },
+        { status: 400, headers: getRateLimitHeaders(rateLimit) }
       );
     }
 
-    const order = await getOrderByRazorpayOrderId(razorpayOrderId);
+    const order = await getOrderByRazorpayOrderId(orderIdVal.value);
     if (!order) {
-      return NextResponse.json({ error: 'Order not found in database' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Order not found in database' },
+        { status: 404, headers: getRateLimitHeaders(rateLimit) }
+      );
     }
 
     const keySecret = process.env.RAZORPAY_KEY_SECRET || '';
-    const isMock = razorpayOrderId.startsWith('order_sim_') || !keySecret || keySecret.includes('placeholder');
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    if (isProduction) {
+      if (razorpayOrderId.startsWith('order_sim_')) {
+        return NextResponse.json(
+          { error: 'Simulated orders are rejected in production mode.' },
+          { status: 403 }
+        );
+      }
+      if (!keySecret || keySecret.includes('placeholder')) {
+        return NextResponse.json(
+          { error: 'Payment gateway configuration error.' },
+          { status: 500 }
+        );
+      }
+    }
+
+    const isMock = !isProduction && (razorpayOrderId.startsWith('order_sim_') || !keySecret || keySecret.includes('placeholder'));
 
     if (!isMock) {
       if (!razorpaySignature) {
         return NextResponse.json({ error: 'Missing payment signature' }, { status: 400 });
       }
 
-      // Verify HMAC-SHA256 signature
+      // Verify HMAC-SHA256 signature using constant-time comparison
       const expectedSignature = crypto
         .createHmac('sha256', keySecret)
         .update(`${razorpayOrderId}|${razorpayPaymentId}`)
         .digest('hex');
 
-      if (razorpaySignature !== expectedSignature) {
+      const sigBuf = Buffer.from(razorpaySignature, 'utf8');
+      const expBuf = Buffer.from(expectedSignature, 'utf8');
+
+      if (sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) {
         return NextResponse.json(
           { error: 'Invalid payment signature. Verification failed.' },
           { status: 400 }
@@ -83,16 +135,31 @@ export async function POST(req: NextRequest) {
       console.error('Error initializing product verification window:', verifErr);
     }
 
-    return NextResponse.json({
-      success: true,
-      orderId: updatedOrder.orderId,
-      downloadToken: updatedOrder.downloadToken,
-      conversationId,
-      verificationId,
-      kitSlug: updatedOrder.kitSlug,
-      kitTitle: updatedOrder.kitTitle,
-      customerEmail: updatedOrder.customerEmail,
-    });
+    // Record payment success analytics event
+    recordAnalyticsEvent('payment_success', {
+      entityId: updatedOrder.kitSlug,
+      path: '/api/checkout/verify-payment',
+      metadata: {
+        orderId: updatedOrder.orderId,
+        amountINR: updatedOrder.amountINR,
+      },
+    }).catch(() => {});
+
+    return NextResponse.json(
+      {
+        success: true,
+        orderId: updatedOrder.orderId,
+        downloadToken: updatedOrder.downloadToken,
+        conversationId,
+        verificationId,
+        kitSlug: updatedOrder.kitSlug,
+        kitTitle: updatedOrder.kitTitle,
+        customerEmail: updatedOrder.customerEmail,
+      },
+      {
+        headers: getRateLimitHeaders(rateLimit),
+      }
+    );
   } catch (error: any) {
     console.error('Error verifying payment:', error);
     return NextResponse.json(

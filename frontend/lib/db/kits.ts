@@ -2,6 +2,7 @@ import { getDatabase } from '../mongodb';
 import { Kit } from '../../types/kit';
 import { KITS } from '../../data/kits';
 import { ObjectId } from 'mongodb';
+import { escapeRegex } from '../utils/regex';
 
 const KITS_COLLECTION = 'kits';
 let isInitialized = false;
@@ -70,7 +71,7 @@ export async function getAllKitsFromDb(query?: {
 
     if (query?.search && query.search.trim()) {
       const term = query.search.trim();
-      const regex = new RegExp(term, 'i');
+      const regex = new RegExp(escapeRegex(term), 'i');
       filter.$or = [
         { title: regex },
         { tagline: regex },
@@ -124,8 +125,14 @@ export async function getKitBySlugFromDb(slug: string): Promise<Kit | null> {
 
   try {
     const db = await getDatabase();
+    const cleanSlug = slug.toLowerCase().trim();
+    const rawTrimmed = slug.trim();
     const kit = await db.collection<Kit>(KITS_COLLECTION).findOne({
-      slug: slug.toLowerCase().trim(),
+      $or: [
+        { slug: cleanSlug },
+        { id: cleanSlug },
+        { id: rawTrimmed },
+      ],
     });
 
     if (kit) return kit;
@@ -134,7 +141,9 @@ export async function getKitBySlugFromDb(slug: string): Promise<Kit | null> {
   }
 
   // Fallback to static seeds
-  return KITS.find((k) => k.slug === slug.toLowerCase().trim()) || null;
+  const clean = slug.toLowerCase().trim();
+  const raw = slug.trim();
+  return KITS.find((k) => k.slug.toLowerCase() === clean || k.id === raw || k.id.toLowerCase() === clean) || null;
 }
 
 /**
@@ -159,7 +168,7 @@ export async function createKitInDb(kitData: Partial<Kit> & {
 
   let uniqueSlug = baseSlug;
   const existing = await db.collection<Kit>(KITS_COLLECTION).findOne({ slug: uniqueSlug });
-  if (existing) {
+  if (existing && existing.id !== kitData.id) {
     uniqueSlug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
   }
 

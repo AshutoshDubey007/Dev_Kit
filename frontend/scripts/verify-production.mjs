@@ -164,12 +164,7 @@ function stageTypeScriptTypecheck() {
 // STAGE 4: Automated Test Suite (node:test + tsx)
 // -------------------------------------------------------------
 function stageAutomatedTests() {
-  const hasEnvLocal = fs.existsSync(path.join(rootDir, '.env.local'));
-  const testArgs = hasEnvLocal
-    ? ['tsx', '--env-file=.env.local', '--test', 'tests/index.ts']
-    : ['tsx', '--test', 'tests/index.ts'];
-
-  const result = spawnSync('npx', testArgs, {
+  const result = spawnSync('npm', ['test'], {
     cwd: rootDir,
     shell: true,
     encoding: 'utf8',

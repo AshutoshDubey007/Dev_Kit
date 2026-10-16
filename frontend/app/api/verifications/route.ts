@@ -6,6 +6,7 @@ import {
   confirmProductWorks,
   getVerificationById,
 } from '../../../lib/db/verifications';
+import { recordAnalyticsEvent } from '@/lib/db/analytics';
 import { auth } from '@/auth';
 
 export async function GET(req: NextRequest) {
@@ -90,6 +91,13 @@ export async function POST(req: NextRequest) {
       if (!result.success) {
         return NextResponse.json({ error: result.error }, { status: 400 });
       }
+
+      // Record verification confirmed analytics event
+      recordAnalyticsEvent('verification_confirmed', {
+        entityId: result.verification?.productSlug,
+        path: '/api/verifications',
+        metadata: { verificationId },
+      }).catch(() => {});
 
       return NextResponse.json({
         success: true,

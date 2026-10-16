@@ -1,5 +1,6 @@
 import { getDatabase } from '../mongodb';
 import { ObjectId } from 'mongodb';
+import { escapeRegex } from '../utils/regex';
 
 export interface PromptVariable {
   name: string;
@@ -187,7 +188,7 @@ export async function getAllPrompts(query?: {
       filter.isPaid = false;
     }
     if (query?.search) {
-      const searchRegex = new RegExp(query.search, 'i');
+      const searchRegex = new RegExp(escapeRegex(query.search.trim()), 'i');
       filter.$or = [{ title: searchRegex }, { description: searchRegex }, { problemSolves: searchRegex }];
     }
 

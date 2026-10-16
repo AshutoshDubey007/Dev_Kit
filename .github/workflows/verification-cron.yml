@@ -1,0 +1,32 @@
+name: DevKit Product Verification & Lifecycle Cron
+
+on:
+  schedule:
+    # Run at the beginning of every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-verification-cycle:
+    name: ⏰ Execute Expirations & Reminders Cycle
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Trigger Automated Cron Endpoint
+        run: |
+          if [ -n "${{ secrets.PRODUCTION_URL }}" ] && [ -n "${{ secrets.CRON_SECRET }}" ]; then
+            echo "Invoking verification cron endpoint on ${{ secrets.PRODUCTION_URL }}..."
+            HTTP_CODE=$(curl -s -o response.json -w "%{http_code}" -X GET "${{ secrets.PRODUCTION_URL }}/api/cron/verifications" \
+              -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+            
+            echo "HTTP Status Code: $HTTP_CODE"
+            cat response.json
+            
+            if [ "$HTTP_CODE" -ne 200 ]; then
+              echo "Cron execution failed with status $HTTP_CODE"
+              exit 1
+            fi
+          else
+            echo "PRODUCTION_URL or CRON_SECRET not configured in GitHub repository secrets. Skipping remote ping."
+          fi

@@ -18,6 +18,8 @@ import {
   Clock,
   ChevronRight,
   Sparkles,
+  ArrowLeft,
+  X,
 } from 'lucide-react';
 import { MessageSenderRole, Message } from '@backend/models/Message';
 import { Conversation } from '@backend/models/Conversation';
@@ -28,7 +30,6 @@ import { useAuth } from '../../lib/auth-context';
 
 export default function ChatHubPage() {
   const { currentUser } = useAuth();
-  const [activeRole, setActiveRole] = useState<MessageSenderRole>('buyer');
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConvId, setSelectedConvId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,6 +38,7 @@ export default function ChatHubPage() {
   const [isSending, setIsSending] = useState(false);
   const [hasLeakWarning, setHasLeakWarning] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
+  const [mobileTab, setMobileTab] = useState<'conversations' | 'chat' | 'details'>('chat');
   const [orderVerification, setOrderVerification] = useState<any>(null);
   const [linkedTicket, setLinkedTicket] = useState<any>(null);
 
@@ -45,6 +47,21 @@ export default function ChatHubPage() {
   // Active conversation object
   const activeConversation =
     conversations.find((c) => c.conversationId === selectedConvId) || conversations[0];
+
+  // Derive effective role from session and active conversation
+  const isSellerOfConversation = Boolean(
+    activeConversation &&
+    currentUser?.email &&
+    activeConversation.sellerEmail &&
+    activeConversation.sellerEmail.toLowerCase() === currentUser.email.toLowerCase()
+  );
+
+  const effectiveRole: MessageSenderRole =
+    currentUser?.role === 'operator' || currentUser?.role === 'admin'
+      ? 'operator'
+      : currentUser?.role === 'seller' || isSellerOfConversation
+      ? 'seller'
+      : 'buyer';
 
   // Fetch verification details for active conversation order
   useEffect(() => {
@@ -160,18 +177,21 @@ export default function ChatHubPage() {
     setIsSending(true);
 
     const senderName =
-      activeRole === 'buyer'
-        ? 'Ashutosh Dubey (Buyer)'
-        : activeRole === 'seller'
-        ? 'DevKit Core Team (Seller)'
-        : 'Moderation Desk (Operator)';
+      currentUser?.name ||
+      (effectiveRole === 'buyer'
+        ? 'Verified Buyer'
+        : effectiveRole === 'seller'
+        ? 'Kit Seller'
+        : 'Safety Desk Operator');
 
     const senderId =
-      activeRole === 'buyer'
-        ? 'buyer_ashutosh'
-        : activeRole === 'seller'
-        ? 'seller_devkit_core'
-        : 'operator_system';
+      currentUser?.id ||
+      currentUser?.email ||
+      (effectiveRole === 'buyer'
+        ? 'buyer_user'
+        : effectiveRole === 'seller'
+        ? 'seller_user'
+        : 'operator_system');
 
     try {
       const res = await fetch(`/api/chat/${selectedConvId}/messages`, {
@@ -180,7 +200,7 @@ export default function ChatHubPage() {
         body: JSON.stringify({
           senderId,
           senderName,
-          senderRole: activeRole,
+          senderRole: effectiveRole,
           content: inputMessage.trim(),
         }),
       });
@@ -207,11 +227,55 @@ export default function ChatHubPage() {
   );
 
   return (
-    <div className="max-w-[1500px] mx-auto space-y-4 pb-12">
+    <div className="max-w-[1500px] mx-auto space-y-3 sm:space-y-4 pb-12">
+      {/* Mobile View Switcher (Visible only on < lg screens to eliminate clutter) */}
+      <div className="lg:hidden flex items-center p-1 rounded-xl bg-[#0c0d12]/90 border border-white/[0.08] text-xs font-medium backdrop-blur-xl shadow-lg">
+        <button
+          type="button"
+          onClick={() => setMobileTab('conversations')}
+          className={`flex-1 py-2 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
+            mobileTab === 'conversations'
+              ? 'bg-white/[0.1] text-white shadow-sm font-semibold'
+              : 'text-zinc-400 hover:text-white'
+          }`}
+        >
+          <MessageSquare className="h-3.5 w-3.5 text-emerald-400" />
+          <span>Chats ({conversations.length})</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileTab('chat')}
+          className={`flex-1 py-2 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
+            mobileTab === 'chat'
+              ? 'bg-indigo-600/30 border border-indigo-500/40 text-indigo-200 shadow-sm font-semibold'
+              : 'text-zinc-400 hover:text-white'
+          }`}
+        >
+          <Send className="h-3.5 w-3.5 text-indigo-400" />
+          <span className="truncate max-w-[90px]">{activeConversation?.kitTitle ? 'Thread' : 'Chat'}</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileTab('details')}
+          className={`flex-1 py-2 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
+            mobileTab === 'details'
+              ? 'bg-white/[0.1] text-white shadow-sm font-semibold'
+              : 'text-zinc-400 hover:text-white'
+          }`}
+        >
+          <Info className="h-3.5 w-3.5 text-blue-400" />
+          <span>Order Info</span>
+        </button>
+      </div>
+
       {/* 3-PANEL CHAT CONTAINER */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[750px] max-h-[82vh]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:h-[750px] lg:max-h-[82vh]">
         {/* PANEL 1: CONVERSATIONS LIST (3 COLS) */}
-        <div className="lg:col-span-3 rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-hidden">
+        <div
+          className={`rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-hidden lg:col-span-3 lg:h-full ${
+            mobileTab === 'conversations' ? 'flex h-[calc(100vh-210px)] min-h-[500px]' : 'hidden lg:flex'
+          }`}
+        >
           {/* Search Header */}
           <div className="p-3.5 border-b border-white/[0.08] space-y-2.5 bg-[#101116]">
             <div className="flex items-center justify-between">
@@ -246,7 +310,10 @@ export default function ChatHubPage() {
                   <button
                     key={c.conversationId}
                     type="button"
-                    onClick={() => setSelectedConvId(c.conversationId)}
+                    onClick={() => {
+                      setSelectedConvId(c.conversationId);
+                      setMobileTab('chat');
+                    }}
                     className={`w-full text-left p-3 rounded-xl transition-all flex flex-col gap-1.5 ${
                       isSelected
                         ? 'bg-white/[0.06] border border-white/[0.12] shadow-sm'
@@ -279,7 +346,7 @@ export default function ChatHubPage() {
                     <div className="flex items-center justify-between text-[10px] text-zinc-500 font-mono pt-1">
                       <span>{c.orderId}</span>
                       <span className="text-zinc-400">
-                        {activeRole === 'seller' ? c.buyerName : c.sellerName}
+                        {effectiveRole === 'seller' ? c.buyerName : c.sellerName}
                       </span>
                     </div>
                   </button>
@@ -290,57 +357,91 @@ export default function ChatHubPage() {
         </div>
 
         {/* PANEL 2: ACTIVE CHAT & COMPOSER (6 COLS) */}
-        <div className="lg:col-span-6 rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-hidden">
+        <div
+          className={`rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-hidden ${
+            isDetailsOpen ? 'lg:col-span-6' : 'lg:col-span-9'
+          } lg:h-full ${
+            mobileTab === 'chat' ? 'flex h-[calc(100vh-210px)] min-h-[550px]' : 'hidden lg:flex'
+          }`}
+        >
           {/* Chat Header */}
-          <div className="px-5 py-3.5 border-b border-white/[0.08] bg-[#101116] flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-xs font-bold text-white tracking-tight">
-                  {activeConversation?.kitTitle || 'Direct Support'}
-                </h2>
-                {activeConversation?.orderId && (
-                  <Badge variant="outline" className="font-mono text-[10px] border-zinc-700 text-zinc-400">
-                    {activeConversation.orderId}
+          <div className="px-3 sm:px-5 py-3 border-b border-white/[0.08] bg-[#101116] flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              {/* Mobile Back Button to Conversations List */}
+              <button
+                type="button"
+                onClick={() => setMobileTab('conversations')}
+                className="lg:hidden p-1.5 -ml-1 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg shrink-0"
+                title="View all conversations"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <h2 className="text-xs font-bold text-white tracking-tight truncate max-w-[130px] sm:max-w-[220px] lg:max-w-none">
+                    {activeConversation?.kitTitle || 'Direct Support'}
+                  </h2>
+                  {activeConversation?.orderId && (
+                    <Badge variant="outline" className="font-mono text-[9px] sm:text-[10px] border-zinc-700 text-zinc-400 shrink-0">
+                      {activeConversation.orderId}
+                    </Badge>
+                  )}
+                  <Badge
+                    variant={effectiveRole === 'seller' ? 'secondary' : effectiveRole === 'operator' ? 'purple' : 'default'}
+                    className="font-mono text-[9px] sm:text-[10px] capitalize hidden sm:inline-flex shrink-0"
+                  >
+                    {effectiveRole} mode
                   </Badge>
-                )}
+                </div>
+                <p className="text-[10px] sm:text-[11px] text-zinc-400 mt-0.5 truncate hidden sm:block">
+                  {activeConversation ? (
+                    <>
+                      Buyer: <span className="text-zinc-200">{activeConversation.buyerName}</span> • Seller:{' '}
+                      <span className="text-zinc-200">{activeConversation.sellerName}</span>
+                    </>
+                  ) : (
+                    'No conversation active. Orders automatically initialize support channels.'
+                  )}
+                </p>
               </div>
-              <p className="text-[11px] text-zinc-400 mt-0.5">
-                {activeConversation ? (
-                  <>
-                    Buyer: <span className="text-zinc-200">{activeConversation.buyerName}</span> • Seller:{' '}
-                    <span className="text-zinc-200">{activeConversation.sellerName}</span>
-                  </>
-                ) : (
-                  'No conversation active. Orders automatically initialize support channels.'
-                )}
-              </p>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-950/40 px-2.5 py-1 text-[10px] font-mono text-emerald-400">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-950/40 px-2 py-1 text-[10px] font-mono text-emerald-400" title="DevKit DLP Active">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>DLP Protected</span>
+                <span className="hidden sm:inline">DLP Protected</span>
               </span>
               <button
                 type="button"
-                onClick={() => setIsDetailsOpen(!isDetailsOpen)}
-                className="text-zinc-400 hover:text-white p-1 rounded-lg border border-white/[0.08] bg-[#141822]"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                    setMobileTab('details');
+                  } else {
+                    setIsDetailsOpen(!isDetailsOpen);
+                  }
+                }}
+                className="text-zinc-400 hover:text-white p-1.5 rounded-lg border border-white/[0.08] bg-[#141822] flex items-center gap-1 text-xs"
                 title="Toggle details panel"
               >
-                <Info className="h-3.5 w-3.5" />
+                <Info className="h-3.5 w-3.5 text-zinc-300" />
+                <span className="lg:hidden text-[10px] font-medium text-zinc-300">Details</span>
               </button>
             </div>
           </div>
 
           {/* Anti-Leak Safety Banner */}
-          <div className="bg-amber-950/20 border-b border-amber-900/30 px-5 py-2 text-[11px] text-amber-300/90 flex items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="bg-amber-950/20 border-b border-amber-900/30 px-3 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-[11px] text-amber-300/90 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
               <Shield className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-              <span>
+              <span className="hidden sm:inline">
                 Phone numbers, WhatsApp, emails, and UPI handles are automatically masked.
               </span>
+              <span className="sm:hidden truncate">
+                Contacts &amp; UPI are automatically masked by DLP.
+              </span>
             </div>
-            {activeRole === 'operator' && (
+            {effectiveRole === 'operator' && (
               <Link
                 href="/operator"
                 className="text-purple-400 hover:text-purple-300 font-mono text-[10px] underline shrink-0"
@@ -358,7 +459,10 @@ export default function ChatHubPage() {
               </div>
             ) : (
               messages.map((msg) => {
-                const isMe = msg.senderRole === activeRole;
+                const isMe =
+                  msg.senderRole === effectiveRole ||
+                  msg.senderId === currentUser?.id ||
+                  msg.senderId === currentUser?.email;
                 const isOperator = msg.senderRole === 'operator';
                 const isReadme = msg.metadata?.isAutomatedReadme;
 
@@ -456,8 +560,8 @@ export default function ChatHubPage() {
                   rows={2}
                   value={inputMessage}
                   onChange={handleInputChange}
-                  placeholder="Type your message, code question, or integration query... (Enter to send, Shift+Enter for new line)"
-                  className="flex-1 rounded-xl border border-white/[0.1] bg-[#141822] p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none font-sans"
+                  placeholder="Type a message or code question..."
+                  className="flex-1 rounded-xl border border-white/[0.1] bg-[#141822] p-2.5 sm:p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none font-sans"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
@@ -469,10 +573,10 @@ export default function ChatHubPage() {
                 <Button
                   type="submit"
                   disabled={!inputMessage.trim() || isSending || !selectedConvId}
-                  className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-white text-xs gap-1.5 shadow-md shadow-indigo-600/20 shrink-0"
+                  className="h-10 px-3 sm:px-4 bg-indigo-600 hover:bg-indigo-500 text-white text-xs gap-1.5 shadow-md shadow-indigo-600/20 shrink-0"
                 >
                   <Send className="h-3.5 w-3.5" />
-                  <span>Send</span>
+                  <span className="hidden sm:inline">Send</span>
                 </Button>
               </form>
             )}
@@ -480,18 +584,48 @@ export default function ChatHubPage() {
         </div>
 
         {/* PANEL 3: ORDER & KIT DETAILS (3 COLS) */}
-        {isDetailsOpen && (
-          <div className="lg:col-span-3 rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-y-auto p-4 space-y-5">
-            <div>
-              <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">
-                Order & Asset Context
-              </span>
-              <p className="text-[11px] text-zinc-400 mt-0.5">
-                Verified transaction details associated with this chat thread.
-              </p>
+        <div
+          className={`rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-y-auto p-4 space-y-4 sm:space-y-5 lg:col-span-3 lg:h-full ${
+            mobileTab === 'details' ? 'flex h-[calc(100vh-210px)] min-h-[500px]' : 'hidden'
+          } ${isDetailsOpen ? 'lg:flex' : 'lg:hidden'}`}
+        >
+          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setMobileTab('chat')}
+                className="lg:hidden p-1 -ml-1 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg flex items-center gap-1 text-xs"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span className="text-[11px] font-medium">Chat</span>
+              </button>
+              <div>
+                <span className="text-xs font-bold text-white uppercase tracking-wider font-mono block">
+                  Order &amp; Asset Context
+                </span>
+                <p className="text-[10px] text-zinc-400 mt-0.5">
+                  Verified details for this chat thread.
+                </p>
+              </div>
             </div>
 
-            {/* 7-Day Verification & Support Status Card */}
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                  setMobileTab('chat');
+                } else {
+                  setIsDetailsOpen(false);
+                }
+              }}
+              className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-white/[0.04]"
+              title="Close details"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          {/* 7-Day Verification & Support Status Card */}
             {orderVerification && (
               <div className="p-3.5 rounded-xl border border-indigo-500/30 bg-indigo-950/20 space-y-2.5">
                 <div className="flex items-center justify-between">
@@ -584,7 +718,7 @@ export default function ChatHubPage() {
             {/* Direct Action Links */}
             <div className="space-y-2">
               <Link
-                href={`/kits/${activeConversation?.kitSlug || 'nextjs-razorpay-pro'}`}
+                href={`/kits/${activeConversation?.kitSlug || orderVerification?.productSlug || 'nextjs-razorpay-pro'}`}
                 className="w-full flex items-center justify-between p-2.5 rounded-xl border border-white/[0.08] bg-[#141822] text-xs text-zinc-200 hover:text-white hover:border-emerald-500/30 transition-all"
               >
                 <div className="flex items-center gap-2">
@@ -595,26 +729,40 @@ export default function ChatHubPage() {
               </Link>
 
               <Link
-                href={`/repos/devkit-core/${activeConversation?.kitSlug || 'nextjs-razorpay-pro'}`}
+                href={`/kits/${activeConversation?.kitSlug || orderVerification?.productSlug || 'nextjs-razorpay-pro'}#code-preview`}
                 className="w-full flex items-center justify-between p-2.5 rounded-xl border border-white/[0.08] bg-[#141822] text-xs text-zinc-200 hover:text-white hover:border-blue-500/30 transition-all"
               >
                 <div className="flex items-center gap-2">
                   <Code2 className="h-3.5 w-3.5 text-blue-400" />
-                  <span>Explore Repository Code</span>
+                  <span>Explore Architecture &amp; Code</span>
                 </div>
                 <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
               </Link>
 
-              <Link
-                href={`/download/${activeConversation?.orderId || 'ORD-8491-RAZORPAY'}`}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-white/[0.08] bg-[#141822] text-xs text-zinc-200 hover:text-white hover:border-purple-500/30 transition-all"
-              >
-                <div className="flex items-center gap-2">
-                  <Download className="h-3.5 w-3.5 text-purple-400" />
-                  <span>Secure Download Token</span>
-                </div>
-                <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
-              </Link>
+              {orderVerification?.downloadToken ? (
+                <a
+                  href={`/api/download/${orderVerification.downloadToken}`}
+                  download
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-purple-500/30 bg-purple-950/20 text-xs text-purple-200 hover:text-white hover:border-purple-400 transition-all"
+                >
+                  <div className="flex items-center gap-2">
+                    <Download className="h-3.5 w-3.5 text-purple-400" />
+                    <span>Download Package (.ZIP)</span>
+                  </div>
+                  <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
+                </a>
+              ) : (
+                <Link
+                  href="/buyer/verifications"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-white/[0.08] bg-[#141822] text-xs text-zinc-200 hover:text-white hover:border-purple-500/30 transition-all"
+                >
+                  <div className="flex items-center gap-2">
+                    <Download className="h-3.5 w-3.5 text-purple-400" />
+                    <span>Secure Download Token</span>
+                  </div>
+                  <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
+                </Link>
+              )}
             </div>
 
             {/* Quickstart Terminal Command */}
@@ -636,7 +784,6 @@ export default function ChatHubPage() {
               Transactions are covered by 14-day defect resolution guarantee when kept inside the platform.
             </div>
           </div>
-        )}
       </div>
     </div>
   );

@@ -27,7 +27,12 @@ export function ChatWindow({
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [hasLeakWarning, setHasLeakWarning] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  // Prevent parent window from scrolling down on mount
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
 
   // Fetch messages from API
   const fetchMessages = async () => {
@@ -51,8 +56,11 @@ export function ChatWindow({
     return () => clearInterval(interval);
   }, [conversationId]);
 
+  // Scroll ONLY the inner message list, NOT the whole browser window
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   // Client-side instant preview check for contact leaks
@@ -98,44 +106,47 @@ export function ChatWindow({
   return (
     <div className="flex flex-col h-[700px] max-h-[85vh] rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-2xl backdrop-blur-xl overflow-hidden">
       {/* 1. Header with kit & participants info */}
-      <div className="flex items-center justify-between border-b border-white/[0.08] bg-[#121319] px-6 py-4">
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <h2 className="text-sm font-bold text-white tracking-tight">
+      <div className="flex items-center justify-between border-b border-white/[0.08] bg-[#121319] px-3 sm:px-6 py-3 sm:py-4 gap-2">
+        <div className="flex flex-col min-w-0">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <h2 className="text-xs sm:text-sm font-bold text-white tracking-tight truncate max-w-[150px] sm:max-w-none">
               {conversation?.kitTitle || 'Kit Support & Setup Chat'}
             </h2>
-            <Badge variant="secondary" size="sm" className="font-mono text-[10px]">
+            <Badge variant="secondary" size="sm" className="font-mono text-[9px] sm:text-[10px] shrink-0">
               {conversation?.orderId || 'Direct Chat'}
             </Badge>
           </div>
-          <span className="text-xs text-zinc-400 mt-0.5">
+          <span className="text-[10px] sm:text-xs text-zinc-400 mt-0.5 hidden sm:block truncate">
             Buyer: <span className="text-zinc-200">{conversation?.buyerName}</span> • Seller:{' '}
             <span className="text-zinc-200">{conversation?.sellerName}</span>
           </span>
         </div>
 
         {/* Security badge */}
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-950/40 px-2.5 py-1 text-[11px] font-mono text-emerald-400">
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-950/40 px-2 sm:px-2.5 py-1 text-[10px] sm:text-[11px] font-mono text-emerald-400">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Anti-Leak Protected</span>
+            <span className="hidden sm:inline">Anti-Leak Protected</span>
           </span>
         </div>
       </div>
 
       {/* 2. Anti-Leak Policy Banner */}
-      <div className="bg-amber-950/20 border-b border-amber-900/40 px-6 py-2 text-[11px] text-amber-300/90 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span>🔒</span>
-          <span>
+      <div className="bg-amber-950/20 border-b border-amber-900/40 px-3 sm:px-6 py-1.5 sm:py-2 text-[10px] sm:text-[11px] text-amber-300/90 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <span className="shrink-0">🔒</span>
+          <span className="hidden sm:inline">
             Contact information (phone numbers, WhatsApp, emails, UPI) is automatically masked to protect both parties.
           </span>
+          <span className="sm:hidden truncate">
+            Contacts &amp; UPI are masked by DevKit DLP.
+          </span>
         </div>
-        <span className="text-zinc-500 font-mono text-[10px]">Operator Moderated</span>
+        <span className="text-zinc-500 font-mono text-[9px] sm:text-[10px] shrink-0">Moderated</span>
       </div>
 
       {/* 3. Message Thread Area */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-4">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-zinc-500 text-xs">
             Connecting to seller...
@@ -207,11 +218,10 @@ export function ChatWindow({
             );
           })
         )}
-        <div ref={messagesEndRef} />
       </div>
 
       {/* 4. Input Composer */}
-      <div className="border-t border-white/[0.08] bg-[#101116] p-4">
+      <div className="border-t border-white/[0.08] bg-[#101116] p-3 sm:p-4">
         {hasLeakWarning && (
           <div className="mb-2 p-2 rounded-lg bg-amber-950/40 border border-amber-800/60 text-amber-300 text-[11px] flex items-center gap-2">
             <span>⚠️</span>
@@ -221,13 +231,13 @@ export function ChatWindow({
           </div>
         )}
 
-        <form onSubmit={handleSendMessage} className="flex gap-3 items-end">
+        <form onSubmit={handleSendMessage} className="flex gap-2 sm:gap-3 items-end">
           <textarea
             rows={2}
             value={inputMessage}
             onChange={handleInputChange}
-            placeholder="Type your question or message to the seller..."
-            className="flex-1 rounded-xl border border-white/[0.08] bg-zinc-950 px-3.5 py-2.5 text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-indigo-500 resize-none"
+            placeholder="Type your message to the seller..."
+            className="flex-1 rounded-xl border border-white/[0.08] bg-zinc-950 px-3 sm:px-3.5 py-2 sm:py-2.5 text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-indigo-500 resize-none"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -242,9 +252,10 @@ export function ChatWindow({
             size="md"
             isLoading={isSending}
             disabled={!inputMessage.trim()}
-            className="text-xs h-10 px-5 shadow-md shadow-indigo-600/20"
+            className="text-xs h-10 px-3 sm:px-5 shadow-md shadow-indigo-600/20 shrink-0"
           >
-            Send ↵
+            <span>Send</span>
+            <span className="hidden sm:inline ml-1">↵</span>
           </Button>
         </form>
       </div>
