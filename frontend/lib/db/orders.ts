@@ -1,5 +1,5 @@
 import { getDatabase } from '../mongodb';
-import { ObjectId } from 'mongodb';
+import { ObjectId, Db } from 'mongodb';
 import crypto from 'crypto';
 
 export interface Order {
@@ -34,10 +34,10 @@ let ordersIndexed = false;
 /**
  * Ensures indexes exist for the orders and webhook events collection
  */
-export async function ensureOrderIndexes(): Promise<void> {
+export async function ensureOrderIndexes(dbOverride?: Db): Promise<void> {
   if (ordersIndexed) return;
   try {
-    const db = await getDatabase();
+    const db: Db = dbOverride || (await getDatabase());
     await db.collection<Order>(ORDERS_COLLECTION).createIndex({ orderId: 1 }, { unique: true });
     await db.collection<Order>(ORDERS_COLLECTION).createIndex({ razorpayOrderId: 1 }, { unique: true });
     await db.collection<Order>(ORDERS_COLLECTION).createIndex({ downloadToken: 1 }, { unique: true });
@@ -55,11 +55,12 @@ export async function ensureOrderIndexes(): Promise<void> {
 export async function recordWebhookEvent(
   eventId: string,
   eventType: string,
-  orderId?: string
+  orderId?: string,
+  dbOverride?: Db
 ): Promise<{ isDuplicate: boolean }> {
-  await ensureOrderIndexes();
+  await ensureOrderIndexes(dbOverride);
   try {
-    const db = await getDatabase();
+    const db: Db = dbOverride || (await getDatabase());
     await db.collection(WEBHOOK_EVENTS_COLLECTION).insertOne({
       eventId,
       eventType,
@@ -78,18 +79,21 @@ export async function recordWebhookEvent(
 /**
  * Creates a new pending order in MongoDB
  */
-export async function createOrderRecord(data: {
-  kitId: string;
-  kitSlug: string;
-  kitTitle: string;
-  amountINR: number;
-  customerEmail: string;
-  customerName: string;
-  razorpayOrderId: string;
-  kitData?: any;
-}): Promise<Order> {
-  await ensureOrderIndexes();
-  const db = await getDatabase();
+export async function createOrderRecord(
+  data: {
+    kitId: string;
+    kitSlug: string;
+    kitTitle: string;
+    amountINR: number;
+    customerEmail: string;
+    customerName: string;
+    razorpayOrderId: string;
+    kitData?: any;
+  },
+  dbOverride?: Db
+): Promise<Order> {
+  await ensureOrderIndexes(dbOverride);
+  const db: Db = dbOverride || (await getDatabase());
   const downloadToken = crypto.randomBytes(24).toString('hex');
   const orderId = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
@@ -122,16 +126,22 @@ export async function createOrderRecord(data: {
 /**
  * Finds an order by Razorpay order_id
  */
-export async function getOrderByRazorpayOrderId(razorpayOrderId: string): Promise<Order | null> {
-  const db = await getDatabase();
+export async function getOrderByRazorpayOrderId(
+  razorpayOrderId: string,
+  dbOverride?: Db
+): Promise<Order | null> {
+  const db: Db = dbOverride || (await getDatabase());
   return db.collection<Order>(ORDERS_COLLECTION).findOne({ razorpayOrderId });
 }
 
 /**
  * Finds an order by secret download token
  */
-export async function getOrderByDownloadToken(downloadToken: string): Promise<Order | null> {
-  const db = await getDatabase();
+export async function getOrderByDownloadToken(
+  downloadToken: string,
+  dbOverride?: Db
+): Promise<Order | null> {
+  const db: Db = dbOverride || (await getDatabase());
   return db.collection<Order>(ORDERS_COLLECTION).findOne({ downloadToken });
 }
 
@@ -141,9 +151,10 @@ export async function getOrderByDownloadToken(downloadToken: string): Promise<Or
 export async function markOrderAsPaid(
   razorpayOrderId: string,
   razorpayPaymentId: string,
-  razorpaySignature?: string
+  razorpaySignature?: string,
+  dbOverride?: Db
 ): Promise<Order | null> {
-  const db = await getDatabase();
+  const db: Db = dbOverride || (await getDatabase());
   const now = new Date();
 
   const updateResult = await db.collection<Order>(ORDERS_COLLECTION).findOneAndUpdate(
@@ -165,8 +176,11 @@ export async function markOrderAsPaid(
 /**
  * Increments download count when buyer downloads the package
  */
-export async function incrementDownloadCount(downloadToken: string): Promise<boolean> {
-  const db = await getDatabase();
+export async function incrementDownloadCount(
+  downloadToken: string,
+  dbOverride?: Db
+): Promise<boolean> {
+  const db: Db = dbOverride || (await getDatabase());
   const result = await db.collection<Order>(ORDERS_COLLECTION).updateOne(
     { downloadToken },
     {
@@ -183,9 +197,10 @@ export async function incrementDownloadCount(downloadToken: string): Promise<boo
  */
 export async function markOrderAsFailed(
   razorpayOrderId: string,
-  failureReason = 'Payment failed or cancelled by buyer'
+  failureReason = 'Payment failed or cancelled by buyer',
+  dbOverride?: Db
 ): Promise<Order | null> {
-  const db = await getDatabase();
+  const db: Db = dbOverride || (await getDatabase());
   const now = new Date();
 
   const updateResult = await db.collection<Order>(ORDERS_COLLECTION).findOneAndUpdate(
@@ -208,13 +223,16 @@ export async function markOrderAsFailed(
  * Reconciles an order against payment state, checking for consistency between
  * order status, verification records, and download entitlement.
  */
-export async function reconcileOrder(orderId: string): Promise<{
+export async function reconcileOrder(
+  orderId: string,
+  dbOverride?: Db
+): Promise<{
   isConsistent: boolean;
   orderStatus: string;
   hasPaidEntitlement: boolean;
   issues: string[];
 }> {
-  const db = await getDatabase();
+  const db: Db = dbOverride || (await getDatabase());
   const order = await db.collection<Order>(ORDERS_COLLECTION).findOne({ orderId });
   if (!order) {
     return { isConsistent: false, orderStatus: 'unknown', hasPaidEntitlement: false, issues: ['Order record not found'] };

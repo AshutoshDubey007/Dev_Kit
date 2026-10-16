@@ -1,8 +1,20 @@
-import test, { describe, it } from 'node:test';
+import test, { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { recordAnalyticsEvent, getBetaAnalyticsSummary } from '../../lib/db/analytics';
+import { setMockDatabase } from '../../lib/mongodb';
+import { createMockDb } from '../mocks/mock-db';
 
 describe('Beta Readiness & Product Analytics Invariants', () => {
+  let analyticsMockDb: any;
+
+  beforeEach(() => {
+    analyticsMockDb = createMockDb();
+    setMockDatabase(analyticsMockDb);
+  });
+
+  afterEach(() => {
+    setMockDatabase(null);
+  });
   describe('Analytics Event Ingestion & Privacy Sanitization', () => {
     it('should sanitize and strip sensitive credentials from event metadata', async () => {
       const rawMetadata = {

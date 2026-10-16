@@ -1,4 +1,4 @@
-import test, { describe, it } from 'node:test';
+import test, { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import {
@@ -15,9 +15,21 @@ import {
 } from '../../lib/security/validation';
 import { resilientFetch } from '../../lib/utils/resilient-fetch';
 import { markOrderAsFailed, reconcileOrder, createOrderRecord, markOrderAsPaid } from '../../lib/db/orders';
+import { setMockDatabase } from '../../lib/mongodb';
+import { createMockDb } from '../mocks/mock-db';
 
 describe('Production Engineering & Reliability Invariants', () => {
   describe('Distributed Rate Limiting Engine', () => {
+    let rateLimitMockDb: any;
+
+    beforeEach(() => {
+      rateLimitMockDb = createMockDb();
+      setMockDatabase(rateLimitMockDb);
+    });
+
+    afterEach(() => {
+      setMockDatabase(null);
+    });
     it('should permit requests within window and decrement remaining quota', async () => {
       const testPolicy: RateLimitPolicy = {
         name: 'test-policy-ok',
@@ -136,6 +148,17 @@ describe('Production Engineering & Reliability Invariants', () => {
   });
 
   describe('Payment Failure Lifecycle & Order Reconciliation', () => {
+    let paymentMockDb: any;
+
+    beforeEach(() => {
+      paymentMockDb = createMockDb();
+      setMockDatabase(paymentMockDb);
+    });
+
+    afterEach(() => {
+      setMockDatabase(null);
+    });
+
     it('should revoke download rights and mark order failed on payment failure', async () => {
       // 1. Create test order
       const testOrderId = `test_fail_${Date.now()}`;

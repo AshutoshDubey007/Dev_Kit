@@ -24,8 +24,10 @@ import clientPromise from '../lib/mongodb';
 
 after(async () => {
   try {
-    const client = await clientPromise;
-    await client.close();
+    if (global._mongoClientPromise) {
+      const client = await global._mongoClientPromise;
+      await client.close();
+    }
   } catch {}
 });
 
