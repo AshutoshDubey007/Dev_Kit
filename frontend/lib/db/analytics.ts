@@ -191,14 +191,14 @@ export async function getBetaAnalyticsSummary(): Promise<BetaAnalyticsSummary> {
     ? Math.round((ticketsResolved / ticketsTotal) * 100)
     : 0;
 
-  // Funnel conversion calculations
+  // Funnel conversion calculations (bounded 0 - 100%)
   const totalViews = pageViews.length;
   const totalCheckouts = checkoutEvents.length;
   const conversionViewsToCheckout = totalViews > 0
-    ? Math.round((totalCheckouts / totalViews) * 100)
+    ? Math.min(100, Math.max(0, Math.round((totalCheckouts / totalViews) * 100)))
     : 0;
   const conversionCheckoutToPaid = totalCheckouts > 0
-    ? Math.round((totalPaidOrders / totalCheckouts) * 100)
+    ? Math.min(100, Math.max(0, Math.round((totalPaidOrders / totalCheckouts) * 100)))
     : 0;
 
   return {
