@@ -74,36 +74,37 @@ export default function SignUpPage() {
       {/* Brand Header */}
       <div className="text-center space-y-2">
         <Link href="/" className="inline-flex items-center gap-3 mb-2 group">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl overflow-hidden shadow-xl shadow-indigo-500/25 border border-white/20 bg-black">
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl overflow-hidden shadow-xl shadow-[#e8c3a8] border border-[#cc6b35] bg-white">
             <Image
-              src="/logo.png"
+              src="/logo.png?v=2"
               alt="DevKit Marketplace Logo"
               width={40}
               height={40}
+              unoptimized
               className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
               priority
             />
           </div>
-          <span className="font-extrabold text-2xl text-white tracking-tight">
-            DevKit<span className="bg-gradient-to-r from-indigo-400 to-blue-400 bg-clip-text text-transparent"> Marketplace</span>
+          <span className="font-arcade text-xl text-zinc-950 tracking-tight">
+            DevKit<span className="text-[#b8531e]"> Marketplace</span>
           </span>
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950">
           Create Account
         </h1>
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-zinc-600">
           Sign up to download and buy verified Next.js code kits.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-white/[0.09] bg-[#090b10]/95 p-7 shadow-2xl backdrop-blur-2xl space-y-5">
+      <div className="rounded-2xl border border-orange-200 bg-white p-7 shadow-2xl backdrop-blur-2xl space-y-5">
         {/* Social Sign Up */}
         <div className="space-y-3">
           <button
             type="button"
             disabled={isLoading}
             onClick={() => handleOAuthSignUp('google')}
-            className="w-full flex items-center justify-center gap-3 rounded-xl border border-white/[0.12] bg-[#121620] px-4 py-2.5 text-xs font-semibold text-white transition-all hover:bg-[#181d2a] hover:border-emerald-500/50 shadow-sm disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-3 rounded-xl border border-orange-200 bg-[#faf5ef] px-4 py-2.5 text-xs font-semibold text-zinc-950 transition-all hover:bg-orange-100 hover:border-[#cc6b35] shadow-sm disabled:opacity-60"
           >
             {/* Google Colorful SVG */}
             <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
@@ -131,10 +132,10 @@ export default function SignUpPage() {
             type="button"
             disabled={isLoading}
             onClick={() => handleOAuthSignUp('github')}
-            className="w-full flex items-center justify-center gap-3 rounded-xl border border-white/[0.12] bg-[#121620] px-4 py-2.5 text-xs font-semibold text-white transition-all hover:bg-[#181d2a] hover:border-blue-500/50 shadow-sm disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-3 rounded-xl border border-orange-200 bg-[#faf5ef] px-4 py-2.5 text-xs font-semibold text-zinc-950 transition-all hover:bg-orange-100 hover:border-[#cc6b35] shadow-sm disabled:opacity-60"
           >
             {/* GitHub SVG */}
-            <svg className="h-4 w-4 shrink-0 fill-current text-white" viewBox="0 0 24 24">
+            <svg className="h-4 w-4 shrink-0 fill-current text-zinc-950" viewBox="0 0 24 24">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -148,16 +149,16 @@ export default function SignUpPage() {
         {/* Divider */}
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-white/[0.08]" />
+            <div className="w-full border-t border-orange-200" />
           </div>
-          <span className="relative bg-[#090b10] px-3 text-[11px] font-mono text-zinc-500 uppercase">
+          <span className="relative bg-white px-3 text-[11px] font-mono text-zinc-600 uppercase">
             or sign up with email
           </span>
         </div>
 
         {/* Error Notification */}
         {errorMsg && (
-          <div className="p-3 rounded-xl border border-red-500/30 bg-red-950/40 text-red-300 text-xs flex items-center gap-2">
+          <div className="p-3 rounded-xl border border-red-500/30 bg-red-50 text-red-700 text-xs flex items-center gap-2">
             <span>⚠️</span>
             <span>{errorMsg}</span>
           </div>
@@ -166,7 +167,7 @@ export default function SignUpPage() {
         {/* Clean Email Form */}
         <form onSubmit={handleEmailSignUp} className="space-y-3.5">
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-zinc-300">
+            <label className="text-xs font-medium text-zinc-800">
               Full Name
             </label>
             <Input
@@ -180,7 +181,7 @@ export default function SignUpPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-zinc-300">
+            <label className="text-xs font-medium text-zinc-800">
               Email Address
             </label>
             <Input
@@ -195,7 +196,7 @@ export default function SignUpPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-zinc-300">
+              <label className="text-xs font-medium text-zinc-800">
                 Password
               </label>
               <Input
@@ -208,7 +209,7 @@ export default function SignUpPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-zinc-300">
+              <label className="text-xs font-medium text-zinc-800">
                 Confirm Password
               </label>
               <Input
@@ -224,19 +225,19 @@ export default function SignUpPage() {
 
           {/* Terms Checkbox */}
           <div className="pt-1">
-            <label className="flex items-start gap-2.5 text-xs text-zinc-400 cursor-pointer">
+            <label className="flex items-start gap-2.5 text-xs text-zinc-600 cursor-pointer">
               <input
                 type="checkbox"
                 checked={agreeTerms}
                 onChange={(e) => setAgreeTerms(e.target.checked)}
-                className="mt-0.5 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500"
+                className="mt-0.5 rounded border-orange-200 bg-[#faf5ef] text-emerald-500 focus:ring-[#cc6b35]"
               />
               <span className="leading-tight">
                 I agree to the{' '}
                 <Link
                   href="/terms"
                   target="_blank"
-                  className="text-emerald-400 hover:underline"
+                  className="text-[#b8531e] hover:underline"
                 >
                   Terms of Service
                 </Link>{' '}
@@ -244,7 +245,7 @@ export default function SignUpPage() {
                 <Link
                   href="/privacy"
                   target="_blank"
-                  className="text-emerald-400 hover:underline"
+                  className="text-[#b8531e] hover:underline"
                 >
                   Privacy Policy
                 </Link>
@@ -258,18 +259,18 @@ export default function SignUpPage() {
             variant="primary"
             size="md"
             disabled={isLoading}
-            className="w-full text-xs font-semibold bg-gradient-to-r from-emerald-500 to-blue-500 text-black hover:opacity-90 shadow-md shadow-emerald-500/20 py-2.5 mt-2"
+            className="w-full text-xs font-semibold bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white hover:opacity-90 shadow-md shadow-[#e8c3a8] py-2.5 mt-2"
           >
             {isLoading ? 'Creating Account…' : 'Create Account →'}
           </Button>
         </form>
 
         {/* Link back to login */}
-        <div className="text-center pt-2 text-xs text-zinc-400 border-t border-white/[0.07]">
+        <div className="text-center pt-2 text-xs text-zinc-600 border-t border-orange-200">
           Already have an account?{' '}
           <Link
             href="/login"
-            className="font-semibold text-emerald-400 hover:text-emerald-300 underline underline-offset-4 transition-colors"
+            className="font-semibold text-[#b8531e] hover:text-[#b8531e] underline underline-offset-4 transition-colors"
           >
             Sign in
           </Link>

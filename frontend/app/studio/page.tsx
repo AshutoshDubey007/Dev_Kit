@@ -127,16 +127,16 @@ ${f.content}
   return (
     <div className="max-w-7xl mx-auto pb-20 space-y-8">
       {/* ─── Top Studio Banner ─── */}
-      <div className="border-b border-white/[0.08] pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="border-b border-orange-200 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-2 text-xs text-blue-400 font-mono">
+          <div className="flex items-center gap-2 mb-2 text-xs text-[#b8531e] font-mono">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
             <span>AI Code Generation Studio</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl font-extrabold text-zinc-950 tracking-tight">
             AI Project Studio
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
+          <p className="mt-1 text-xs sm:text-sm text-zinc-600">
             Configure prompt blueprints, specify requirements, and generate complete runnable Next.js 15 repositories.
           </p>
         </div>
@@ -154,17 +154,17 @@ ${f.content}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Blueprint & Variables Configuration (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/90 p-6 space-y-5 shadow-xl">
+          <div className="rounded-2xl border border-orange-200 bg-white p-6 space-y-5 shadow-xl">
             {/* Prompt Selector */}
             <div className="space-y-2">
-              <label className="block text-xs font-semibold text-zinc-300">Prompt Blueprint</label>
+              <label className="block text-xs font-semibold text-zinc-800">Prompt Blueprint</label>
               <select
                 value={selectedPrompt.slug}
                 onChange={(e) => {
                   const p = SEED_PROMPTS.find((item) => item.slug === e.target.value);
                   if (p) setSelectedPrompt(p);
                 }}
-                className="w-full rounded-xl border border-white/[0.08] bg-zinc-950 p-2.5 text-xs text-zinc-200 focus:outline-none focus:border-blue-500 font-mono"
+                className="w-full rounded-xl border border-orange-200 bg-white p-2.5 text-xs text-zinc-900 focus:outline-none focus:border-[#cc6b35] font-mono"
               >
                 {SEED_PROMPTS.map((p) => (
                   <option key={p.slug} value={p.slug}>
@@ -176,11 +176,11 @@ ${f.content}
 
             {/* Model Selector */}
             <div className="space-y-2">
-              <label className="block text-xs font-semibold text-zinc-300">Target Model Provider</label>
+              <label className="block text-xs font-semibold text-zinc-800">Target Model Provider</label>
               <select
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
-                className="w-full rounded-xl border border-white/[0.08] bg-zinc-950 p-2.5 text-xs text-zinc-200 focus:outline-none focus:border-blue-500 font-mono"
+                className="w-full rounded-xl border border-orange-200 bg-white p-2.5 text-xs text-zinc-900 focus:outline-none focus:border-[#cc6b35] font-mono"
               >
                 <option value="Claude 3.5 Sonnet">Anthropic Claude 3.5 Sonnet</option>
                 <option value="GPT-4o">OpenAI GPT-4o</option>
@@ -190,14 +190,14 @@ ${f.content}
             </div>
 
             {/* Dynamic Prompt Variables */}
-            <div className="space-y-3 pt-2 border-t border-white/[0.06]">
-              <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider block">
+            <div className="space-y-3 pt-2 border-t border-orange-200">
+              <span className="text-[11px] font-mono text-zinc-600 uppercase tracking-wider block">
                 Blueprint Input Variables
               </span>
               {selectedPrompt.requiredVariables.map((v) => (
                 <div key={v.name} className="space-y-1">
-                  <label className="block text-xs font-medium text-zinc-300">
-                    {v.label} {v.required && <span className="text-red-400">*</span>}
+                  <label className="block text-xs font-medium text-zinc-800">
+                    {v.label} {v.required && <span className="text-red-700">*</span>}
                   </label>
                   <Input
                     type="text"
@@ -217,7 +217,7 @@ ${f.content}
               size="lg"
               disabled={isGenerating}
               onClick={handleGenerate}
-              className="w-full text-xs font-semibold bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white gap-2 shadow-lg shadow-blue-500/20 py-3"
+              className="w-full text-xs font-semibold bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white gap-2 shadow-lg shadow-blue-500/20 py-3"
             >
               {isGenerating ? (
                 <>
@@ -238,10 +238,10 @@ ${f.content}
         <div className="lg:col-span-7 space-y-4">
           {generatedFiles.length === 0 ? (
             /* Empty State */
-            <div className="rounded-2xl border border-dashed border-white/[0.1] bg-[#0c0e14]/50 p-16 text-center space-y-3">
+            <div className="rounded-2xl border border-dashed border-orange-200 bg-white p-16 text-center space-y-3">
               <Bot className="h-10 w-10 text-zinc-600 mx-auto" />
-              <h3 className="text-sm font-semibold text-white">No project files generated yet</h3>
-              <p className="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed">
+              <h3 className="text-sm font-semibold text-zinc-950">No project files generated yet</h3>
+              <p className="text-xs text-zinc-600 max-w-sm mx-auto leading-relaxed">
                 Choose a prompt blueprint on the left, configure your parameters, and click Generate to produce a full multi-file codebase.
               </p>
             </div>
@@ -250,9 +250,9 @@ ${f.content}
             <div className="space-y-4">
               {/* Actions Bar */}
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-                  <FolderTree className="h-4 w-4 text-emerald-400" />
-                  <span className="font-bold text-white">{generatedFiles.length} files generated</span>
+                <div className="flex items-center gap-2 text-xs font-mono text-zinc-600">
+                  <FolderTree className="h-4 w-4 text-[#b8531e]" />
+                  <span className="font-bold text-zinc-950">{generatedFiles.length} files generated</span>
                   <span className="text-zinc-600">•</span>
                   <span>{selectedModel}</span>
                 </div>
@@ -261,14 +261,14 @@ ${f.content}
                   <button
                     type="button"
                     onClick={handleDownloadAll}
-                    className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-zinc-900 px-3 py-1.5 text-xs text-zinc-300 hover:text-white transition-colors font-mono"
+                    className="flex items-center gap-1.5 rounded-lg border border-orange-200 bg-[#faf5ef] px-3 py-1.5 text-xs text-zinc-800 hover:text-zinc-950 transition-colors font-mono"
                   >
-                    <Download className="h-3.5 w-3.5 text-emerald-400" />
+                    <Download className="h-3.5 w-3.5 text-[#b8531e]" />
                     <span>Download Bundle</span>
                   </button>
 
                   <Link href={`/seller/new-kit?title=${encodeURIComponent(variables.project_name || 'My Generated Project')}`}>
-                    <Button variant="outline" size="sm" className="text-xs text-emerald-400 border-emerald-500/30">
+                    <Button variant="outline" size="sm" className="text-xs text-[#b8531e] border-[#cc6b35]">
                       Publish to Marketplace →
                     </Button>
                   </Link>
@@ -276,9 +276,9 @@ ${f.content}
               </div>
 
               {/* Code Viewer Box */}
-              <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14] overflow-hidden shadow-2xl">
+              <div className="rounded-2xl border border-orange-200 bg-white overflow-hidden shadow-2xl">
                 {/* File Tabs */}
-                <div className="flex items-center gap-1 px-3 py-2 border-b border-white/[0.08] bg-[#0e111a] overflow-x-auto text-xs font-mono">
+                <div className="flex items-center gap-1 px-3 py-2 border-b border-orange-200 bg-white overflow-x-auto text-xs font-mono">
                   {generatedFiles.map((file) => (
                     <button
                       key={file.path}
@@ -286,11 +286,11 @@ ${f.content}
                       onClick={() => setSelectedFile(file)}
                       className={`px-3 py-1.5 rounded-lg transition-colors shrink-0 flex items-center gap-1.5 ${
                         selectedFile?.path === file.path
-                          ? 'bg-blue-600/30 border border-blue-500/40 text-white font-bold'
-                          : 'text-zinc-400 hover:text-zinc-200'
+                          ? 'bg-[#f7ece1] border border-[#cc6b35] text-zinc-950 font-bold'
+                          : 'text-zinc-600 hover:text-zinc-900'
                       }`}
                     >
-                      <FileCode className="h-3.5 w-3.5 text-zinc-400" />
+                      <FileCode className="h-3.5 w-3.5 text-zinc-600" />
                       <span>{file.path}</span>
                     </button>
                   ))}
@@ -298,24 +298,24 @@ ${f.content}
                   <button
                     type="button"
                     onClick={handleCopyCode}
-                    className="ml-auto text-xs font-mono text-zinc-400 hover:text-white flex items-center gap-1 shrink-0 px-2"
+                    className="ml-auto text-xs font-mono text-zinc-600 hover:text-zinc-950 flex items-center gap-1 shrink-0 px-2"
                   >
-                    {copiedFile ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
+                    {copiedFile ? <Check className="h-3.5 w-3.5 text-[#b8531e]" /> : <Copy className="h-3.5 w-3.5" />}
                     <span>{copiedFile ? 'Copied!' : 'Copy'}</span>
                   </button>
                 </div>
 
                 {/* File Code Content */}
-                <pre className="p-4 text-xs font-mono text-zinc-200 overflow-x-auto leading-relaxed max-h-[500px] bg-black/40">
+                <pre className="p-4 text-xs font-mono text-zinc-900 overflow-x-auto leading-relaxed max-h-[500px] bg-white">
                   <code>{selectedFile?.content}</code>
                 </pre>
               </div>
 
               {/* Architectural Plan Box */}
               {projectPlan && (
-                <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/80 p-5 space-y-2 text-xs">
-                  <span className="font-bold text-white block">Project Architectural Plan:</span>
-                  <div className="text-zinc-300 font-sans leading-relaxed whitespace-pre-line text-xs">
+                <div className="rounded-2xl border border-orange-200 bg-white p-5 space-y-2 text-xs">
+                  <span className="font-bold text-zinc-950 block">Project Architectural Plan:</span>
+                  <div className="text-zinc-800 font-sans leading-relaxed whitespace-pre-line text-xs">
                     {projectPlan}
                   </div>
                 </div>
@@ -330,7 +330,7 @@ ${f.content}
 
 export default function StudioPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-xs text-zinc-500">Loading AI Studio...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-xs text-zinc-600">Loading AI Studio...</div>}>
       <StudioContent />
     </Suspense>
   );

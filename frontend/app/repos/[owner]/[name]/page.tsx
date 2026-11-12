@@ -164,8 +164,8 @@ export default function RepositoryDetailPage() {
   if (!repo) {
     return (
       <div className="max-w-6xl mx-auto py-16 text-center space-y-4">
-        <div className="animate-spin h-8 w-8 border-2 border-blue-500 border-t-transparent rounded-full mx-auto" />
-        <p className="text-xs text-zinc-400">Loading repository...</p>
+        <div className="animate-spin h-8 w-8 border-2 border-[#cc6b35] border-t-transparent rounded-full mx-auto" />
+        <p className="text-xs text-zinc-600">Loading repository...</p>
       </div>
     );
   }
@@ -173,40 +173,40 @@ export default function RepositoryDetailPage() {
   return (
     <div className="max-w-7xl mx-auto pb-20 space-y-6">
       {/* ─── Top Header: Breadcrumbs & Action Buttons ─── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-200 pb-6">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2 text-base sm:text-lg">
-            <BookMarked className="h-5 w-5 text-zinc-400 shrink-0" />
-            <Link href={`/${repo.ownerUsername}`} className="font-semibold text-blue-400 hover:underline">
+            <BookMarked className="h-5 w-5 text-zinc-600 shrink-0" />
+            <Link href={`/${repo.ownerUsername}`} className="font-semibold text-[#b8531e] hover:underline">
               {repo.ownerUsername}
             </Link>
             <span className="text-zinc-600">/</span>
-            <span className="font-extrabold text-white">{repo.name}</span>
+            <span className="font-extrabold text-zinc-950">{repo.name}</span>
             <Badge variant="secondary" size="sm" className="font-mono text-[9px] uppercase ml-1">
               {repo.visibility}
             </Badge>
           </div>
-          <p className="text-xs text-zinc-400 max-w-2xl">{repo.description}</p>
+          <p className="text-xs text-zinc-600 max-w-2xl">{repo.description}</p>
         </div>
 
         {/* Action Counters (Watch, Fork, Star) */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-lg border border-white/[0.1] bg-zinc-900 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800 transition-colors font-mono"
+            className="flex items-center gap-1.5 rounded-lg border border-orange-200 bg-[#faf5ef] px-3 py-1.5 text-xs text-zinc-800 hover:bg-orange-100 transition-colors font-mono"
           >
-            <Eye className="h-3.5 w-3.5 text-zinc-400" />
+            <Eye className="h-3.5 w-3.5 text-zinc-600" />
             <span>Watch</span>
-            <span className="ml-1 pl-1.5 border-l border-white/[0.1] text-zinc-500">{repo.watchersCount}</span>
+            <span className="ml-1 pl-1.5 border-l border-orange-200 text-zinc-600">{repo.watchersCount}</span>
           </button>
 
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-lg border border-white/[0.1] bg-zinc-900 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800 transition-colors font-mono"
+            className="flex items-center gap-1.5 rounded-lg border border-orange-200 bg-[#faf5ef] px-3 py-1.5 text-xs text-zinc-800 hover:bg-orange-100 transition-colors font-mono"
           >
-            <FolderGit2 className="h-3.5 w-3.5 text-zinc-400" />
+            <FolderGit2 className="h-3.5 w-3.5 text-zinc-600" />
             <span>Fork</span>
-            <span className="ml-1 pl-1.5 border-l border-white/[0.1] text-zinc-500">{repo.forksCount}</span>
+            <span className="ml-1 pl-1.5 border-l border-orange-200 text-zinc-600">{repo.forksCount}</span>
           </button>
 
           <button
@@ -214,19 +214,19 @@ export default function RepositoryDetailPage() {
             onClick={handleStar}
             className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold font-mono transition-colors ${
               isStarred
-                ? 'border-amber-500/40 bg-amber-950/20 text-amber-300'
-                : 'border-white/[0.1] bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800'
+                ? 'border-[#cc6b35] bg-[#f7ece1] text-[#b8531e]'
+                : 'border-orange-200 bg-[#faf5ef] text-zinc-800 hover:text-zinc-950 hover:bg-orange-100'
             }`}
           >
             <Star className={`h-3.5 w-3.5 ${isStarred ? 'fill-amber-400 text-amber-400' : ''}`} />
             <span>{isStarred ? 'Starred' : 'Star'}</span>
-            <span className="ml-1 pl-1.5 border-l border-white/[0.1] text-zinc-500">{repo.starsCount}</span>
+            <span className="ml-1 pl-1.5 border-l border-orange-200 text-zinc-600">{repo.starsCount}</span>
           </button>
         </div>
       </div>
 
       {/* ─── Contextual Navigation Tabs ─── */}
-      <div className="flex items-center gap-2 border-b border-white/[0.08] text-xs font-medium pb-1">
+      <div className="flex items-center gap-2 border-b border-orange-200 text-xs font-medium pb-1">
         <button
           type="button"
           onClick={() => {
@@ -234,7 +234,7 @@ export default function RepositoryDetailPage() {
             setSelectedFile(null);
           }}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors ${
-            activeTab === 'code' ? 'bg-white/[0.08] text-white font-bold' : 'text-zinc-400 hover:text-white'
+            activeTab === 'code' ? 'bg-[#faf5ef] text-zinc-950 font-bold' : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           <FileCode className="h-4 w-4" />
@@ -245,31 +245,31 @@ export default function RepositoryDetailPage() {
           type="button"
           onClick={() => setActiveTab('issues')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors ${
-            activeTab === 'issues' ? 'bg-white/[0.08] text-white font-bold' : 'text-zinc-400 hover:text-white'
+            activeTab === 'issues' ? 'bg-[#faf5ef] text-zinc-950 font-bold' : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           <CircleDot className="h-4 w-4" />
           <span>Issues</span>
-          <span className="rounded-full bg-white/[0.08] px-2 py-0.2 text-[10px] font-mono">{repo.issuesCount}</span>
+          <span className="rounded-full bg-[#faf5ef] px-2 py-0.2 text-[10px] font-mono">{repo.issuesCount}</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('pulls')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors ${
-            activeTab === 'pulls' ? 'bg-white/[0.08] text-white font-bold' : 'text-zinc-400 hover:text-white'
+            activeTab === 'pulls' ? 'bg-[#faf5ef] text-zinc-950 font-bold' : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           <GitPullRequest className="h-4 w-4" />
           <span>Pull Requests</span>
-          <span className="rounded-full bg-white/[0.08] px-2 py-0.2 text-[10px] font-mono">{repo.pullRequestsCount}</span>
+          <span className="rounded-full bg-[#faf5ef] px-2 py-0.2 text-[10px] font-mono">{repo.pullRequestsCount}</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('discussions')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors ${
-            activeTab === 'discussions' ? 'bg-white/[0.08] text-white font-bold' : 'text-zinc-400 hover:text-white'
+            activeTab === 'discussions' ? 'bg-[#faf5ef] text-zinc-950 font-bold' : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           <MessageSquare className="h-4 w-4" />
@@ -285,11 +285,11 @@ export default function RepositoryDetailPage() {
             {/* Branch Selector + Clone Code Button */}
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-zinc-950 px-3 py-1.5 text-xs text-zinc-300 font-mono">
-                  <GitBranch className="h-3.5 w-3.5 text-zinc-400" />
+                <div className="flex items-center gap-1.5 rounded-lg border border-orange-200 bg-white px-3 py-1.5 text-xs text-zinc-800 font-mono">
+                  <GitBranch className="h-3.5 w-3.5 text-zinc-600" />
                   <span>{repo.defaultBranch}</span>
                 </div>
-                <span className="text-xs text-zinc-500 font-mono">
+                <span className="text-xs text-zinc-600 font-mono">
                   1 branch • 1 release
                 </span>
               </div>
@@ -298,9 +298,9 @@ export default function RepositoryDetailPage() {
                 <button
                   type="button"
                   onClick={handleCopyClone}
-                  className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-zinc-900 px-3 py-1.5 text-xs font-mono text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                  className="flex items-center gap-1.5 rounded-lg border border-orange-200 bg-[#faf5ef] px-3 py-1.5 text-xs font-mono text-zinc-800 hover:text-zinc-950 hover:bg-orange-100 transition-colors"
                 >
-                  {copiedClone ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Terminal className="h-3.5 w-3.5" />}
+                  {copiedClone ? <Check className="h-3.5 w-3.5 text-[#b8531e]" /> : <Terminal className="h-3.5 w-3.5" />}
                   <span>{copiedClone ? 'Copied Clone URL!' : 'Clone'}</span>
                 </button>
               </div>
@@ -308,80 +308,80 @@ export default function RepositoryDetailPage() {
 
             {/* If a file is selected: Code Viewer */}
             {selectedFile ? (
-              <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14] overflow-hidden shadow-2xl">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.08] bg-[#0e111a] text-xs font-mono">
-                  <div className="flex items-center gap-2 text-zinc-300">
+              <div className="rounded-2xl border border-orange-200 bg-white overflow-hidden shadow-2xl">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-orange-200 bg-white text-xs font-mono">
+                  <div className="flex items-center gap-2 text-zinc-800">
                     <button
                       type="button"
                       onClick={() => setSelectedFile(null)}
-                      className="text-blue-400 hover:underline"
+                      className="text-[#b8531e] hover:underline"
                     >
                       {repo.name}
                     </button>
                     <span>/</span>
-                    <span className="font-bold text-white">{selectedFile.name}</span>
-                    <span className="text-zinc-500 text-[10px]">({selectedFile.size || 'text'})</span>
+                    <span className="font-bold text-zinc-950">{selectedFile.name}</span>
+                    <span className="text-zinc-600 text-[10px]">({selectedFile.size || 'text'})</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => handleCopyFileContent(selectedFile.content)}
-                      className="flex items-center gap-1 text-[11px] text-zinc-400 hover:text-white"
+                      className="flex items-center gap-1 text-[11px] text-zinc-600 hover:text-zinc-950"
                     >
-                      {copiedFile ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                      {copiedFile ? <Check className="h-3 w-3 text-[#b8531e]" /> : <Copy className="h-3 w-3" />}
                       <span>{copiedFile ? 'Copied!' : 'Copy'}</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setSelectedFile(null)}
-                      className="text-[11px] text-zinc-500 hover:text-zinc-300"
+                      className="text-[11px] text-zinc-600 hover:text-zinc-800"
                     >
                       Close ✕
                     </button>
                   </div>
                 </div>
 
-                <pre className="p-4 text-xs font-mono text-zinc-200 overflow-x-auto leading-relaxed bg-black/40">
+                <pre className="p-4 text-xs font-mono text-zinc-900 overflow-x-auto leading-relaxed bg-white">
                   <code>{selectedFile.content || '// Empty file'}</code>
                 </pre>
               </div>
             ) : (
               /* Files Table */
-              <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/90 overflow-hidden shadow-xl">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.08] bg-zinc-950/60 text-xs font-mono text-zinc-400">
+              <div className="rounded-2xl border border-orange-200 bg-white overflow-hidden shadow-xl">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-orange-200 bg-white text-xs font-mono text-zinc-600">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white">{repo.ownerUsername}</span>
+                    <span className="font-bold text-zinc-950">{repo.ownerUsername}</span>
                     <span className="text-zinc-600">/</span>
                     <span>latest commit on {repo.defaultBranch}</span>
                   </div>
-                  <span className="text-[10px] text-zinc-500">History: 24 commits</span>
+                  <span className="text-[10px] text-zinc-600">History: 24 commits</span>
                 </div>
 
-                <div className="divide-y divide-white/[0.04] text-xs font-mono">
+                <div className="divide-y divide-orange-100 text-xs font-mono">
                   {files.map((file) => (
                     <div
                       key={file.name}
                       onClick={() => {
                         if (file.type === 'file') setSelectedFile(file);
                       }}
-                      className="flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.03] transition-colors cursor-pointer group"
+                      className="flex items-center justify-between px-4 py-2.5 hover:bg-[#faf5ef] transition-colors cursor-pointer group"
                     >
                       <div className="flex items-center gap-3 min-w-[180px]">
                         {file.type === 'folder' ? (
-                          <Folder className="h-4 w-4 text-blue-400 fill-blue-400/20 shrink-0" />
+                          <Folder className="h-4 w-4 text-[#b8531e] fill-blue-400/20 shrink-0" />
                         ) : (
-                          <FileText className="h-4 w-4 text-zinc-400 shrink-0" />
+                          <FileText className="h-4 w-4 text-zinc-600 shrink-0" />
                         )}
-                        <span className="text-zinc-200 group-hover:text-blue-400 transition-colors truncate">
+                        <span className="text-zinc-900 group-hover:text-[#b8531e] transition-colors truncate">
                           {file.name}
                         </span>
                       </div>
 
-                      <span className="text-zinc-400 text-[11px] truncate flex-1 px-4 hidden sm:block">
+                      <span className="text-zinc-600 text-[11px] truncate flex-1 px-4 hidden sm:block">
                         {file.message}
                       </span>
 
-                      <span className="text-zinc-500 text-[10px] shrink-0">{file.time}</span>
+                      <span className="text-zinc-600 text-[10px] shrink-0">{file.time}</span>
                     </div>
                   ))}
                 </div>
@@ -389,16 +389,16 @@ export default function RepositoryDetailPage() {
             )}
 
             {/* README Rendering Box */}
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/80 p-6 space-y-4 shadow-xl">
-              <div className="flex items-center justify-between border-b border-white/[0.06] pb-3 text-xs font-mono text-zinc-400">
+            <div className="rounded-2xl border border-orange-200 bg-white p-6 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between border-b border-orange-200 pb-3 text-xs font-mono text-zinc-600">
                 <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-zinc-400" />
-                  <span className="font-bold text-white">README.md</span>
+                  <FileText className="h-4 w-4 text-zinc-600" />
+                  <span className="font-bold text-zinc-950">README.md</span>
                 </div>
-                <span className="text-[10px] text-zinc-500">Rendered markdown</span>
+                <span className="text-[10px] text-zinc-600">Rendered markdown</span>
               </div>
 
-              <div className="prose prose-invert max-w-none text-xs text-zinc-300 leading-relaxed whitespace-pre-line font-sans">
+              <div className="prose prose-invert max-w-none text-xs text-zinc-800 leading-relaxed whitespace-pre-line font-sans">
                 {repo.readme}
               </div>
             </div>
@@ -406,23 +406,23 @@ export default function RepositoryDetailPage() {
 
           {/* Right Sidebar: About, Languages, Topics, Marketplace Link */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/80 p-5 space-y-4 shadow-xl">
+            <div className="rounded-2xl border border-orange-200 bg-white p-5 space-y-4 shadow-xl">
               <div>
-                <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono mb-2">About</h3>
-                <p className="text-xs text-zinc-300 leading-relaxed">{repo.description}</p>
+                <h3 className="text-xs font-bold text-zinc-950 uppercase tracking-wider font-mono mb-2">About</h3>
+                <p className="text-xs text-zinc-800 leading-relaxed">{repo.description}</p>
               </div>
 
               {/* Marketplace Link Badge if associated */}
               {repo.associatedKitSlug && (
-                <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-3 space-y-2">
-                  <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold block">
+                <div className="rounded-xl border border-[#cc6b35] bg-[#f7ece1] p-3 space-y-2">
+                  <span className="text-[10px] font-mono uppercase text-[#b8531e] font-bold block">
                     ⚡ Production Code Kit
                   </span>
-                  <p className="text-[11px] text-zinc-300">
+                  <p className="text-[11px] text-zinc-800">
                     A commercially licensed, verified package with instant download is available for this repo.
                   </p>
                   <Link href={`/kits/${repo.associatedKitSlug}`}>
-                    <Button variant="primary" size="sm" className="w-full text-xs bg-emerald-500 text-black font-semibold">
+                    <Button variant="primary" size="sm" className="w-full text-xs bg-[#b8531e] text-white font-semibold">
                       Buy &amp; Download Kit
                     </Button>
                   </Link>
@@ -430,13 +430,13 @@ export default function RepositoryDetailPage() {
               )}
 
               {/* Topics */}
-              <div className="space-y-1.5 pt-2 border-t border-white/[0.06]">
-                <h4 className="text-[11px] font-mono text-zinc-500 uppercase">Topics</h4>
+              <div className="space-y-1.5 pt-2 border-t border-orange-200">
+                <h4 className="text-[11px] font-mono text-zinc-600 uppercase">Topics</h4>
                 <div className="flex flex-wrap gap-1.5">
                   {repo.topics.map((topic) => (
                     <span
                       key={topic}
-                      className="rounded-md border border-white/[0.08] bg-zinc-950 px-2 py-0.5 text-[10px] font-mono text-blue-300"
+                      className="rounded-md border border-orange-200 bg-white px-2 py-0.5 text-[10px] font-mono text-[#b8531e]"
                     >
                       {topic}
                     </span>
@@ -445,20 +445,20 @@ export default function RepositoryDetailPage() {
               </div>
 
               {/* Languages Breakdown */}
-              <div className="space-y-2 pt-2 border-t border-white/[0.06]">
-                <h4 className="text-[11px] font-mono text-zinc-500 uppercase">Languages</h4>
-                <div className="w-full bg-zinc-900 rounded-full h-2 flex overflow-hidden">
-                  <div className="bg-blue-500 h-full w-[85%]" />
-                  <div className="bg-emerald-500 h-full w-[12%]" />
+              <div className="space-y-2 pt-2 border-t border-orange-200">
+                <h4 className="text-[11px] font-mono text-zinc-600 uppercase">Languages</h4>
+                <div className="w-full bg-[#faf5ef] rounded-full h-2 flex overflow-hidden">
+                  <div className="bg-[#b8531e] h-full w-[85%]" />
+                  <div className="bg-[#b8531e] h-full w-[12%]" />
                   <div className="bg-amber-500 h-full w-[3%]" />
                 </div>
-                <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono text-zinc-400 pt-1">
+                <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono text-zinc-600 pt-1">
                   <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-blue-500" />
+                    <span className="h-2 w-2 rounded-full bg-[#b8531e]" />
                     <span>TypeScript 85%</span>
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                    <span className="h-2 w-2 rounded-full bg-[#b8531e]" />
                     <span>CSS 12%</span>
                   </span>
                 </div>
@@ -470,10 +470,10 @@ export default function RepositoryDetailPage() {
 
       {/* ─── TAB: ISSUES ─── */}
       {activeTab === 'issues' && (
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/80 p-8 text-center space-y-3">
-          <CircleDot className="h-8 w-8 text-emerald-400 mx-auto" />
-          <h3 className="text-base font-bold text-white">Repository Issues &amp; Bug Tracking</h3>
-          <p className="text-xs text-zinc-400 max-w-md mx-auto">
+        <div className="rounded-2xl border border-orange-200 bg-white p-8 text-center space-y-3">
+          <CircleDot className="h-8 w-8 text-[#b8531e] mx-auto" />
+          <h3 className="text-base font-bold text-zinc-950">Repository Issues &amp; Bug Tracking</h3>
+          <p className="text-xs text-zinc-600 max-w-md mx-auto">
             Report issues, request integrations, or track milestones for {repo.name}.
           </p>
           <Button variant="outline" size="sm" className="text-xs">
@@ -484,10 +484,10 @@ export default function RepositoryDetailPage() {
 
       {/* ─── TAB: PULL REQUESTS ─── */}
       {activeTab === 'pulls' && (
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/80 p-8 text-center space-y-3">
-          <GitPullRequest className="h-8 w-8 text-purple-400 mx-auto" />
-          <h3 className="text-base font-bold text-white">Pull Requests &amp; Code Review</h3>
-          <p className="text-xs text-zinc-400 max-w-md mx-auto">
+        <div className="rounded-2xl border border-orange-200 bg-white p-8 text-center space-y-3">
+          <GitPullRequest className="h-8 w-8 text-[#b8531e] mx-auto" />
+          <h3 className="text-base font-bold text-zinc-950">Pull Requests &amp; Code Review</h3>
+          <p className="text-xs text-zinc-600 max-w-md mx-auto">
             Inspect incoming branches, compare file diffs, and review contributions.
           </p>
         </div>
@@ -495,10 +495,10 @@ export default function RepositoryDetailPage() {
 
       {/* ─── TAB: DISCUSSIONS ─── */}
       {activeTab === 'discussions' && (
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/80 p-8 text-center space-y-3">
-          <MessageSquare className="h-8 w-8 text-blue-400 mx-auto" />
-          <h3 className="text-base font-bold text-white">Repository Discussions &amp; Q&amp;A</h3>
-          <p className="text-xs text-zinc-400 max-w-md mx-auto">
+        <div className="rounded-2xl border border-orange-200 bg-white p-8 text-center space-y-3">
+          <MessageSquare className="h-8 w-8 text-[#b8531e] mx-auto" />
+          <h3 className="text-base font-bold text-zinc-950">Repository Discussions &amp; Q&amp;A</h3>
+          <p className="text-xs text-zinc-600 max-w-md mx-auto">
             Ask technical implementation questions and share building advice with the author.
           </p>
         </div>

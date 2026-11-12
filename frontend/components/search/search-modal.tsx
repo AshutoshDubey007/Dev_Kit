@@ -78,17 +78,15 @@ export function SearchModal({ isOpen, onClose, kits }: SearchModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-zinc-950/60 backdrop-blur-sm animate-fade-in">
       {/* Backdrop click to close */}
       <div className="fixed inset-0" onClick={onClose} />
 
       {/* Modal Dialog Card */}
-      <div className="relative w-full max-w-xl rounded-2xl border border-white/[0.12] bg-[#0c0d12]/95 p-2 shadow-2xl backdrop-blur-2xl overflow-hidden z-10">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
-        
+      <div className="relative w-full max-w-xl rounded-2xl border-2 border-[#cc6b35] bg-white p-2 shadow-[6px_6px_0px_#cc6b35] overflow-hidden z-10">
         {/* Search Input Bar */}
-        <div className="flex items-center gap-3 border-b border-white/[0.08] px-4 py-3">
-          <span className="text-zinc-400 text-sm">🔍</span>
+        <div className="flex items-center gap-3 border-b-2 border-orange-100 px-4 py-3">
+          <span className="text-[#b8531e] text-sm">🔍</span>
           <input
             ref={inputRef}
             type="text"
@@ -99,9 +97,9 @@ export function SearchModal({ isOpen, onClose, kits }: SearchModalProps) {
             }}
             onKeyDown={handleKeyDown}
             placeholder="Type an integration name, feature, or tech stack..."
-            className="w-full bg-transparent text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none"
+            className="w-full bg-transparent text-sm text-zinc-950 placeholder:text-zinc-500 focus:outline-none"
           />
-          <kbd className="keycap rounded px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
+          <kbd className="keycap rounded px-1.5 py-0.5 text-[10px] font-pixel">
             ESC
           </kbd>
         </div>
@@ -109,7 +107,7 @@ export function SearchModal({ isOpen, onClose, kits }: SearchModalProps) {
         {/* Results List */}
         <div className="max-h-80 overflow-y-auto p-2 space-y-1">
           {filteredKits.length === 0 ? (
-            <div className="py-8 text-center text-xs text-zinc-500">
+            <div className="py-8 text-center text-xs text-zinc-600 font-pixel">
               No verified kits found for "{query}"
             </div>
           ) : (
@@ -122,29 +120,29 @@ export function SearchModal({ isOpen, onClose, kits }: SearchModalProps) {
                   onMouseEnter={() => setSelectedIndex(idx)}
                   className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 cursor-pointer transition-colors ${
                     isSelected
-                      ? 'bg-indigo-600/20 border border-indigo-500/30 text-white'
-                      : 'hover:bg-zinc-900/80 text-zinc-300 border border-transparent'
+                      ? 'bg-[#f7ece1] border-2 border-[#cc6b35] text-zinc-950'
+                      : 'hover:bg-orange-50 text-zinc-800 border-2 border-transparent'
                   }`}
                 >
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-zinc-100">
+                      <span className="text-sm font-pixel font-bold text-zinc-950">
                         {kit.title}
                       </span>
                       <Badge variant="success" size="sm" className="text-[10px]">
                         Tested
                       </Badge>
                     </div>
-                    <span className="text-xs text-zinc-400 line-clamp-1">
+                    <span className="text-xs text-zinc-600 line-clamp-1">
                       {kit.tagline}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-xs font-mono font-semibold text-zinc-200">
+                    <span className="text-xs font-pixel font-bold text-[#b8531e]">
                       {formatPriceINR(kit.priceINR)}
                     </span>
-                    <span className="text-zinc-500 text-xs">↵</span>
+                    <span className="text-[#cc6b35] text-xs font-bold">↵</span>
                   </div>
                 </div>
               );
@@ -153,7 +151,7 @@ export function SearchModal({ isOpen, onClose, kits }: SearchModalProps) {
         </div>
 
         {/* Modal Footer Hotkeys */}
-        <div className="flex items-center justify-between border-t border-zinc-800/80 bg-zinc-900/40 px-4 py-2 text-[11px] text-zinc-500 font-mono">
+        <div className="flex items-center justify-between border-t-2 border-orange-100 bg-[#faf5ef] px-4 py-2 text-[11px] text-[#964115] font-pixel">
           <div className="flex items-center gap-2">
             <span>↑↓ Navigate</span>
             <span>•</span>

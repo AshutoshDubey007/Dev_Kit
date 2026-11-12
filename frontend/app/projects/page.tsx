@@ -103,16 +103,16 @@ export default function ProjectsPage() {
   return (
     <div className="max-w-7xl mx-auto pb-20 space-y-8">
       {/* ─── Header ─── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-200 pb-6">
         <div>
-          <div className="flex items-center gap-2 mb-2 text-xs text-blue-400 font-mono">
+          <div className="flex items-center gap-2 mb-2 text-xs text-[#b8531e] font-mono">
             <span>●</span>
             <span>Developer Project Management</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl font-extrabold text-zinc-950 tracking-tight">
             Projects &amp; Tasks
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
+          <p className="mt-1 text-xs sm:text-sm text-zinc-600">
             Collaborative Kanban boards, milestone tracking, and task dispatching across your repositories.
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function ProjectsPage() {
             variant="primary"
             size="sm"
             onClick={() => setShowNewTaskModal(true)}
-            className="text-xs bg-gradient-to-r from-emerald-500 to-blue-500 text-black font-semibold gap-1.5 shadow-lg shadow-emerald-500/20"
+            className="text-xs bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white font-semibold gap-1.5 shadow-lg shadow-[#e8c3a8]"
           >
             <Plus className="h-4 w-4" />
             <span>New Task</span>
@@ -133,11 +133,11 @@ export default function ProjectsPage() {
       {/* ─── Kanban Board ─── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
         {/* Column: To Do */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/90 p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+        <div className="rounded-2xl border border-orange-200 bg-white p-4 space-y-4">
+          <div className="flex items-center justify-between border-b border-orange-200 pb-3">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-zinc-400" />
-              <h3 className="text-xs font-bold text-white uppercase font-mono">To Do</h3>
+              <h3 className="text-xs font-bold text-zinc-950 uppercase font-mono">To Do</h3>
             </div>
             <Badge variant="secondary" size="sm" className="font-mono text-[10px]">
               {todoTasks.length}
@@ -148,21 +148,21 @@ export default function ProjectsPage() {
             {todoTasks.map((task) => (
               <div
                 key={task.id}
-                className="rounded-xl border border-white/[0.08] bg-zinc-950 p-4 space-y-2.5 shadow-md"
+                className="rounded-xl border border-orange-200 bg-white p-4 space-y-2.5 shadow-md"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h4 className="text-xs font-bold text-white leading-snug">{task.title}</h4>
+                  <h4 className="text-xs font-bold text-zinc-950 leading-snug">{task.title}</h4>
                   <button
                     type="button"
                     onClick={() => handleStatusChange(task.id, 'in_progress')}
-                    className="text-[10px] text-blue-400 hover:underline font-mono shrink-0"
+                    className="text-[10px] text-[#b8531e] hover:underline font-mono shrink-0"
                   >
                     Start →
                   </button>
                 </div>
-                <p className="text-[11px] text-zinc-400 leading-relaxed">{task.description}</p>
-                <div className="flex items-center justify-between pt-2 border-t border-white/[0.04] text-[10px] font-mono text-zinc-500">
-                  <span className="flex items-center gap-1 text-zinc-400">
+                <p className="text-[11px] text-zinc-600 leading-relaxed">{task.description}</p>
+                <div className="flex items-center justify-between pt-2 border-t border-orange-200 text-[10px] font-mono text-zinc-600">
+                  <span className="flex items-center gap-1 text-zinc-600">
                     <BookMarked className="h-3 w-3" />
                     <span>{task.repo}</span>
                   </span>
@@ -174,11 +174,11 @@ export default function ProjectsPage() {
         </div>
 
         {/* Column: In Progress */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/90 p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+        <div className="rounded-2xl border border-orange-200 bg-white p-4 space-y-4">
+          <div className="flex items-center justify-between border-b border-orange-200 pb-3">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
-              <h3 className="text-xs font-bold text-white uppercase font-mono">In Progress</h3>
+              <h3 className="text-xs font-bold text-zinc-950 uppercase font-mono">In Progress</h3>
             </div>
             <Badge variant="secondary" size="sm" className="font-mono text-[10px]">
               {inProgressTasks.length}
@@ -189,21 +189,21 @@ export default function ProjectsPage() {
             {inProgressTasks.map((task) => (
               <div
                 key={task.id}
-                className="rounded-xl border border-blue-500/30 bg-blue-950/10 p-4 space-y-2.5 shadow-md"
+                className="rounded-xl border border-[#cc6b35] bg-[#f7ece1] p-4 space-y-2.5 shadow-md"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h4 className="text-xs font-bold text-white leading-snug">{task.title}</h4>
+                  <h4 className="text-xs font-bold text-zinc-950 leading-snug">{task.title}</h4>
                   <button
                     type="button"
                     onClick={() => handleStatusChange(task.id, 'done')}
-                    className="text-[10px] text-emerald-400 hover:underline font-mono shrink-0"
+                    className="text-[10px] text-[#b8531e] hover:underline font-mono shrink-0"
                   >
                     Complete ✓
                   </button>
                 </div>
-                <p className="text-[11px] text-zinc-400 leading-relaxed">{task.description}</p>
-                <div className="flex items-center justify-between pt-2 border-t border-white/[0.04] text-[10px] font-mono text-zinc-500">
-                  <span className="flex items-center gap-1 text-zinc-300">
+                <p className="text-[11px] text-zinc-600 leading-relaxed">{task.description}</p>
+                <div className="flex items-center justify-between pt-2 border-t border-orange-200 text-[10px] font-mono text-zinc-600">
+                  <span className="flex items-center gap-1 text-zinc-800">
                     <BookMarked className="h-3 w-3" />
                     <span>{task.repo}</span>
                   </span>
@@ -215,11 +215,11 @@ export default function ProjectsPage() {
         </div>
 
         {/* Column: Completed */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/90 p-4 space-y-4">
-          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+        <div className="rounded-2xl border border-orange-200 bg-white p-4 space-y-4">
+          <div className="flex items-center justify-between border-b border-orange-200 pb-3">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              <h3 className="text-xs font-bold text-white uppercase font-mono">Done</h3>
+              <span className="h-2 w-2 rounded-full bg-[#cc6b35]" />
+              <h3 className="text-xs font-bold text-zinc-950 uppercase font-mono">Done</h3>
             </div>
             <Badge variant="secondary" size="sm" className="font-mono text-[10px]">
               {doneTasks.length}
@@ -230,16 +230,16 @@ export default function ProjectsPage() {
             {doneTasks.map((task) => (
               <div
                 key={task.id}
-                className="rounded-xl border border-white/[0.06] bg-zinc-950/70 p-4 space-y-2.5 opacity-80"
+                className="rounded-xl border border-orange-200 bg-white p-4 space-y-2.5 opacity-80"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h4 className="text-xs font-bold text-zinc-300 line-through leading-snug">{task.title}</h4>
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                  <h4 className="text-xs font-bold text-zinc-800 line-through leading-snug">{task.title}</h4>
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#b8531e] shrink-0" />
                 </div>
-                <p className="text-[11px] text-zinc-500 leading-relaxed">{task.description}</p>
-                <div className="flex items-center justify-between pt-2 border-t border-white/[0.04] text-[10px] font-mono text-zinc-500">
+                <p className="text-[11px] text-zinc-600 leading-relaxed">{task.description}</p>
+                <div className="flex items-center justify-between pt-2 border-t border-orange-200 text-[10px] font-mono text-zinc-600">
                   <span>{task.repo}</span>
-                  <span className="text-emerald-400">Completed</span>
+                  <span className="text-[#b8531e]">Completed</span>
                 </div>
               </div>
             ))}
@@ -249,12 +249,12 @@ export default function ProjectsPage() {
 
       {/* Modal for adding task */}
       {showNewTaskModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-md">
           <form
             onSubmit={handleAddTask}
-            className="relative w-full max-w-md rounded-2xl border border-white/[0.1] bg-[#0c0e14] p-6 space-y-4 shadow-2xl"
+            className="relative w-full max-w-md rounded-2xl border border-orange-200 bg-white p-6 space-y-4 shadow-2xl"
           >
-            <h3 className="text-sm font-bold text-white">Create New Task</h3>
+            <h3 className="text-sm font-bold text-zinc-950">Create New Task</h3>
             <Input
               type="text"
               required
@@ -267,7 +267,7 @@ export default function ProjectsPage() {
               <Button type="button" variant="outline" size="sm" onClick={() => setShowNewTaskModal(false)}>
                 Cancel
               </Button>
-              <Button type="submit" variant="primary" size="sm" className="bg-emerald-500 text-black font-semibold">
+              <Button type="submit" variant="primary" size="sm" className="bg-[#b8531e] text-white font-semibold">
                 Add Task
               </Button>
             </div>

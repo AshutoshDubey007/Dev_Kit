@@ -58,27 +58,26 @@ export function LoginModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm animate-fade-in">
       <div className="fixed inset-0" onClick={closeLoginModal} />
 
-      <div className="relative w-full max-w-md rounded-2xl border border-white/[0.1] bg-[#0c0d12]/95 p-6 shadow-2xl backdrop-blur-2xl z-10 space-y-5 overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
-
+      <div className="relative w-full max-w-md rounded-2xl border-2 border-[#cc6b35] bg-white p-6 shadow-[6px_6px_0px_#cc6b35] z-10 space-y-5 overflow-hidden">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+        <div className="flex items-center justify-between border-b-2 border-orange-100 pb-3">
           <div className="flex items-center gap-3">
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl overflow-hidden border border-white/20 shadow-md shadow-indigo-500/20 bg-black shrink-0">
+            <div className="relative flex h-9 w-9 items-center justify-center rounded-lg overflow-hidden border-2 border-[#cc6b35] bg-white shrink-0">
               <Image
-                src="/logo.png"
+                src="/logo.png?v=2"
                 alt="DevKit Marketplace Logo"
-                width={32}
-                height={32}
+                width={36}
+                height={36}
+                unoptimized
                 className="h-full w-full object-cover"
               />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white leading-tight">Sign In to DevKit</h3>
-              <p className="text-[11px] text-zinc-400 mt-0.5">
+              <h3 className="text-base font-pixel font-bold text-zinc-950 leading-tight">Sign In to DevKit</h3>
+              <p className="text-[11px] text-zinc-600 mt-0.5">
                 Access your downloads, orders, and support chats.
               </p>
             </div>
@@ -86,7 +85,7 @@ export function LoginModal() {
           <button
             type="button"
             onClick={closeLoginModal}
-            className="text-zinc-500 hover:text-white font-mono text-sm"
+            className="text-[#b8531e] hover:text-zinc-950 font-pixel text-sm font-bold"
           >
             ✕
           </button>
@@ -98,7 +97,7 @@ export function LoginModal() {
             type="button"
             disabled={isLoading}
             onClick={() => handleOAuthLogin('google')}
-            className="flex items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-[#141822] px-3 py-2.5 text-xs font-medium text-white transition-all hover:border-emerald-500/50 hover:bg-[#1a202e] disabled:opacity-60"
+            className="flex items-center justify-center gap-2 rounded-xl border-2 border-orange-300 bg-[#faf5ef] px-3 py-2.5 text-xs font-pixel font-bold text-zinc-950 transition-all hover:border-[#cc6b35] hover:bg-orange-100 disabled:opacity-60"
           >
             <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
               <path
@@ -125,9 +124,9 @@ export function LoginModal() {
             type="button"
             disabled={isLoading}
             onClick={() => handleOAuthLogin('github')}
-            className="flex items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-[#141822] px-3 py-2.5 text-xs font-medium text-white transition-all hover:border-blue-500/50 hover:bg-[#1a202e] disabled:opacity-60"
+            className="flex items-center justify-center gap-2 rounded-xl border-2 border-orange-300 bg-[#faf5ef] px-3 py-2.5 text-xs font-pixel font-bold text-zinc-950 transition-all hover:border-[#cc6b35] hover:bg-orange-100 disabled:opacity-60"
           >
-            <svg className="h-4 w-4 shrink-0 fill-current text-white" viewBox="0 0 24 24">
+            <svg className="h-4 w-4 shrink-0 fill-current text-zinc-950" viewBox="0 0 24 24">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -141,15 +140,15 @@ export function LoginModal() {
         {/* Divider */}
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-white/[0.08]" />
+            <div className="w-full border-t-2 border-orange-100" />
           </div>
-          <span className="relative bg-[#0c0d12] px-2.5 text-[10px] font-mono text-zinc-500 uppercase">
+          <span className="relative bg-white px-2.5 text-[10px] font-pixel text-zinc-600 uppercase">
             or continue with email
           </span>
         </div>
 
         {errorMsg && (
-          <div className="p-2.5 rounded-xl border border-red-500/30 bg-red-950/40 text-red-300 text-xs">
+          <div className="p-2.5 rounded-xl border-2 border-red-400 bg-red-50 text-red-800 text-xs font-medium">
             {errorMsg}
           </div>
         )}
@@ -157,7 +156,7 @@ export function LoginModal() {
         {/* Basic Email Form */}
         <form onSubmit={handleEmailSubmit} className="space-y-3.5 text-xs">
           <div>
-            <label className="block font-medium text-zinc-300 mb-1">
+            <label className="block font-pixel font-bold text-zinc-800 mb-1">
               Email Address
             </label>
             <Input
@@ -170,7 +169,7 @@ export function LoginModal() {
           </div>
 
           <div>
-            <label className="block font-medium text-zinc-300 mb-1">
+            <label className="block font-pixel font-bold text-zinc-800 mb-1">
               Password
             </label>
             <Input
@@ -187,19 +186,19 @@ export function LoginModal() {
             variant="primary"
             size="md"
             disabled={isLoading}
-            className="w-full text-xs font-semibold mt-1 bg-gradient-to-r from-emerald-500 to-blue-500 text-black hover:opacity-90 shadow-md shadow-emerald-500/20 py-2.5"
+            className="w-full text-xs mt-1 py-2.5"
           >
             {isLoading ? 'Signing In…' : 'Sign In →'}
           </Button>
         </form>
 
         {/* Footer Link */}
-        <div className="text-center pt-2 text-[11px] text-zinc-400 border-t border-white/[0.07]">
+        <div className="text-center pt-2 text-[11px] text-zinc-600 border-t-2 border-orange-100">
           Don&apos;t have an account?{' '}
           <Link
             href="/signup"
             onClick={closeLoginModal}
-            className="font-semibold text-emerald-400 hover:underline"
+            className="font-pixel font-bold text-[#b8531e] hover:underline"
           >
             Create account
           </Link>

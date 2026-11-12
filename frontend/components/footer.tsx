@@ -4,57 +4,59 @@ import Image from 'next/image';
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/[0.07] bg-[#070709] text-zinc-400 text-xs">
+    <footer className="relative z-20 border-t-2 border-[#cc6b35] bg-white text-zinc-700 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand & Value Proposition */}
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="relative flex h-8 w-8 items-center justify-center rounded-xl overflow-hidden border border-white/20 shadow-md shadow-indigo-500/20 bg-black">
+              <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg overflow-hidden border-2 border-[#cc6b35] shadow-[2px_2px_0px_#cc6b35] bg-white">
                 <Image
-                  src="/logo.png"
+                  src="/logo.png?v=2"
                   alt="DevKit Marketplace Logo"
-                  width={32}
-                  height={32}
+                  width={36}
+                  height={36}
+                  unoptimized
+                  priority
                   className="h-full w-full object-cover"
                 />
               </div>
-              <span className="font-bold text-zinc-100 text-sm tracking-tight">
+              <span className="font-arcade text-zinc-950 text-xs tracking-tight">
                 DevKit Marketplace
               </span>
             </div>
-            <p className="text-zinc-400 text-xs leading-relaxed max-w-sm">
+            <p className="text-zinc-600 text-xs leading-relaxed max-w-sm">
               The curated marketplace of verified, drop-in integrations for Next.js developers and software agencies. Tested from clean installs so you can ship without debugging technical debt.
             </p>
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-900/60 bg-emerald-950/30 px-3 py-1 text-[11px] text-emerald-400 font-mono">
-              <span>●</span>
+            <div className="inline-flex items-center gap-2 rounded-md border-2 border-[#cc6b35] bg-[#f7ece1] px-3 py-1 text-[11px] text-[#964115] font-pixel font-bold">
+              <span className="text-[#cc6b35]">●</span>
               <span>100% Automated Test Pass Guarantee</span>
             </div>
           </div>
 
           {/* Categories */}
           <div>
-            <h4 className="font-semibold text-zinc-200 text-xs uppercase tracking-wider mb-3">
+            <h4 className="font-pixel font-bold text-[#b8531e] text-xs uppercase tracking-wider mb-3">
               Verified Categories
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/categories/payments" className="hover:text-zinc-100 transition-colors">
+                <Link href="/categories/payments" className="hover:text-[#b8531e] transition-colors font-medium">
                   Razorpay & Payments
                 </Link>
               </li>
               <li>
-                <Link href="/categories/auth" className="hover:text-zinc-100 transition-colors">
+                <Link href="/categories/auth" className="hover:text-[#b8531e] transition-colors font-medium">
                   Authentication & RBAC
                 </Link>
               </li>
               <li>
-                <Link href="/categories/ai" className="hover:text-zinc-100 transition-colors">
+                <Link href="/categories/ai" className="hover:text-[#b8531e] transition-colors font-medium">
                   RAG & AI Search
                 </Link>
               </li>
               <li>
-                <Link href="/categories/devops" className="hover:text-zinc-100 transition-colors">
+                <Link href="/categories/devops" className="hover:text-[#b8531e] transition-colors font-medium">
                   Docker & CI/CD Pipelines
                 </Link>
               </li>
@@ -63,37 +65,37 @@ export function Footer() {
 
           {/* Trust & Guarantees */}
           <div>
-            <h4 className="font-semibold text-zinc-200 text-xs uppercase tracking-wider mb-3">
+            <h4 className="font-pixel font-bold text-[#b8531e] text-xs uppercase tracking-wider mb-3">
               Standards &amp; Terms
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/guarantee" className="hover:text-emerald-400 transition-colors">
+                <Link href="/guarantee" className="hover:text-[#b8531e] transition-colors font-medium">
                   7-Day Guarantee &amp; Refund Policy
                 </Link>
               </li>
               <li>
-                <Link href="/verify" className="hover:text-zinc-100 transition-colors">
+                <Link href="/verify" className="hover:text-[#b8531e] transition-colors font-medium">
                   Verification Audit Standard
                 </Link>
               </li>
               <li>
-                <Link href="/seller/guidelines" className="hover:text-zinc-100 transition-colors">
+                <Link href="/seller/guidelines" className="hover:text-[#b8531e] transition-colors font-medium">
                   Seller Quality Guidelines
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-zinc-100 transition-colors">
+                <Link href="/terms" className="hover:text-[#b8531e] transition-colors font-medium">
                   Terms &amp; Commercial License
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-zinc-100 transition-colors">
+                <Link href="/privacy" className="hover:text-[#b8531e] transition-colors font-medium">
                   Privacy Policy &amp; Data Safety
                 </Link>
               </li>
               <li>
-                <Link href="/feedback" className="text-amber-400 hover:text-amber-300 transition-colors">
+                <Link href="/feedback" className="text-[#b8531e] font-semibold hover:underline transition-colors">
                   ★ Beta Customer Feedback
                 </Link>
               </li>
@@ -102,11 +104,11 @@ export function Footer() {
         </div>
 
         {/* Bottom copyright bar */}
-        <div className="mt-12 pt-6 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
+        <div className="mt-12 pt-6 border-t-2 border-orange-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-600 font-pixel">
           <div>
             © {new Date().getFullYear()} DevKit Store. Built for Next.js & React developers.
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 text-[#b8531e]">
             <span>Next.js 15 App Router</span>
             <span>•</span>
             <span>TypeScript Native</span>

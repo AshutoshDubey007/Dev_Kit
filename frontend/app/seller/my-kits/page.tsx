@@ -56,16 +56,16 @@ export default function MyKitsPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-16">
       {/* Top Banner Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-orange-200 pb-6">
         <div>
-          <div className="flex items-center gap-2 mb-2 text-xs text-emerald-400 font-mono">
+          <div className="flex items-center gap-2 mb-2 text-xs text-[#b8531e] font-mono">
             <span>●</span>
             <span>Seller Creator Portal</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white">
+          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-950">
             My Published Repositories & Kits
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
+          <p className="mt-1 text-xs sm:text-sm text-zinc-600">
             Manage your verified listings, inspect GitHub source repositories, and preview how buyers see your code.
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function MyKitsPage() {
             <Button
               variant="primary"
               size="sm"
-              className="text-xs bg-gradient-to-r from-emerald-500 to-blue-500 text-black font-semibold shadow-lg shadow-emerald-500/20"
+              className="text-xs bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white font-semibold shadow-lg shadow-[#e8c3a8]"
             >
               + List New Repo / Kit
             </Button>
@@ -90,25 +90,25 @@ export default function MyKitsPage() {
 
       {/* Seller Quota & Status Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-5 backdrop-blur-xl">
-          <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider block mb-1">
+        <div className="rounded-2xl border border-orange-200 bg-white p-5 backdrop-blur-xl">
+          <span className="text-[11px] font-mono text-zinc-600 uppercase tracking-wider block mb-1">
             Total Repos Listed
           </span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-white font-mono">{kits.length}</span>
-            <span className="text-xs text-emerald-400 font-mono">active listings</span>
+            <span className="text-3xl font-extrabold text-zinc-950 font-mono">{kits.length}</span>
+            <span className="text-xs text-[#b8531e] font-mono">active listings</span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-5 backdrop-blur-xl">
-          <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider block mb-1">
+        <div className="rounded-2xl border border-orange-200 bg-white p-5 backdrop-blur-xl">
+          <span className="text-[11px] font-mono text-zinc-600 uppercase tracking-wider block mb-1">
             Free Tier Quota
           </span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-white font-mono">
+            <span className="text-3xl font-extrabold text-zinc-950 font-mono">
               {isSubscribed ? '∞' : `${Math.min(kits.length, FREE_PROJECTS_LIMIT)}/${FREE_PROJECTS_LIMIT}`}
             </span>
-            <span className="text-xs text-zinc-400 font-mono">
+            <span className="text-xs text-zinc-600 font-mono">
               {isSubscribed
                 ? 'Unlimited Pro'
                 : `${Math.max(0, FREE_PROJECTS_LIMIT - kits.length)} slots left`}
@@ -116,13 +116,13 @@ export default function MyKitsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-5 backdrop-blur-xl">
-          <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider block mb-1">
+        <div className="rounded-2xl border border-orange-200 bg-white p-5 backdrop-blur-xl">
+          <span className="text-[11px] font-mono text-zinc-600 uppercase tracking-wider block mb-1">
             Buyer Chat Routing
           </span>
           <div className="flex items-baseline gap-2">
-            <span className="text-base font-bold text-emerald-400">⚡ Active</span>
-            <span className="text-xs text-zinc-400 font-mono">Auto-README delivery</span>
+            <span className="text-base font-bold text-[#b8531e]">⚡ Active</span>
+            <span className="text-xs text-zinc-600 font-mono">Auto-README delivery</span>
           </div>
         </div>
       </div>
@@ -130,28 +130,28 @@ export default function MyKitsPage() {
       {/* Repositories List */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
+          <h2 className="text-lg font-bold text-zinc-950 flex items-center gap-2">
             <span>Your Listed Projects</span>
             <Badge variant="secondary" size="sm" className="font-mono text-[11px]">
               {kits.length}
             </Badge>
           </h2>
-          <span className="text-xs text-zinc-500 font-mono">
+          <span className="text-xs text-zinc-600 font-mono">
             Synced with local store &amp; catalog
           </span>
         </div>
 
         {kits.length === 0 ? (
           /* Empty State */
-          <div className="rounded-2xl border border-dashed border-white/[0.12] bg-[#0c0d12]/50 p-12 text-center space-y-4">
-            <div className="h-16 w-16 mx-auto rounded-2xl bg-zinc-900 border border-white/[0.08] flex items-center justify-center text-3xl">
+          <div className="rounded-2xl border border-dashed border-orange-200 bg-white p-12 text-center space-y-4">
+            <div className="h-16 w-16 mx-auto rounded-2xl bg-[#faf5ef] border border-orange-200 flex items-center justify-center text-3xl">
               📦
             </div>
             <div className="max-w-md mx-auto space-y-1">
-              <h3 className="text-base font-semibold text-white">
+              <h3 className="text-base font-semibold text-zinc-950">
                 No repositories or kits published yet
               </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
+              <p className="text-xs text-zinc-600 leading-relaxed">
                 Connect your GitHub repository or drop a ZIP template to publish your first verified code kit. The first 3 listings are 100% free!
               </p>
             </div>
@@ -159,7 +159,7 @@ export default function MyKitsPage() {
               <Button
                 variant="primary"
                 size="md"
-                className="text-xs bg-gradient-to-r from-emerald-500 to-blue-500 text-black font-semibold shadow-lg shadow-emerald-500/20"
+                className="text-xs bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white font-semibold shadow-lg shadow-[#e8c3a8]"
               >
                 🚀 Publish Your First Repo / Kit
               </Button>
@@ -171,12 +171,12 @@ export default function MyKitsPage() {
             {kits.map((kit) => (
               <div
                 key={kit.id}
-                className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/80 p-5 backdrop-blur-xl hover:border-emerald-500/30 transition-all duration-300 shadow-xl space-y-4"
+                className="rounded-2xl border border-orange-200 bg-white p-5 backdrop-blur-xl hover:border-[#cc6b35] transition-all duration-300 shadow-xl space-y-4"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-base font-bold text-white hover:text-emerald-400 transition-colors">
+                      <span className="text-base font-bold text-zinc-950 hover:text-[#b8531e] transition-colors">
                         <Link href={`/kits/${kit.slug}`}>{kit.title}</Link>
                       </span>
                       <Badge variant="success" size="sm" className="font-mono text-[10px]">
@@ -191,53 +191,53 @@ export default function MyKitsPage() {
                         </Badge>
                       )}
                     </div>
-                    <p className="text-xs text-zinc-400 line-clamp-1">{kit.tagline}</p>
+                    <p className="text-xs text-zinc-600 line-clamp-1">{kit.tagline}</p>
                   </div>
 
                   <div className="flex items-baseline gap-2 font-mono sm:text-right">
-                    <span className="text-lg font-bold text-emerald-400">
+                    <span className="text-lg font-bold text-[#b8531e]">
                       {formatPriceINR(kit.priceINR)}
                     </span>
-                    <span className="text-[11px] text-zinc-500">
+                    <span className="text-[11px] text-zinc-600">
                       (~${kit.priceUSD})
                     </span>
                   </div>
                 </div>
 
                 {/* Source details bar */}
-                <div className="rounded-xl bg-zinc-950/80 border border-white/[0.06] p-3 text-xs flex flex-wrap items-center justify-between gap-2">
+                <div className="rounded-xl bg-white border border-orange-200 p-3 text-xs flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     {kit.uploadMethod === 'github' || kit.githubPreviewUrl ? (
-                      <div className="flex items-center gap-2 text-zinc-300">
+                      <div className="flex items-center gap-2 text-zinc-800">
                         <span className="text-sm">🐙</span>
-                        <span className="text-[11px] text-zinc-400 font-mono">GitHub Repo:</span>
+                        <span className="text-[11px] text-zinc-600 font-mono">GitHub Repo:</span>
                         <a
                           href={kit.githubPreviewUrl || kit.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-emerald-400 underline font-mono text-[11px] hover:text-emerald-300 truncate max-w-xs"
+                          className="text-[#b8531e] underline font-mono text-[11px] hover:text-[#b8531e] truncate max-w-xs"
                         >
                           {kit.githubPreviewUrl || kit.githubUrl}
                         </a>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2 text-zinc-300">
+                      <div className="flex items-center gap-2 text-zinc-800">
                         <span className="text-sm">📁</span>
-                        <span className="text-[11px] text-zinc-400 font-mono">ZIP Archive:</span>
-                        <span className="text-zinc-200 font-mono text-[11px]">
+                        <span className="text-[11px] text-zinc-600 font-mono">ZIP Archive:</span>
+                        <span className="text-zinc-900 font-mono text-[11px]">
                           {kit.zipFileName || 'package.zip'} ({kit.zipFileSize || 'Direct upload'})
                         </span>
                       </div>
                     )}
                   </div>
 
-                  <span className="text-[11px] text-zinc-500 font-mono">
+                  <span className="text-[11px] text-zinc-600 font-mono">
                     Updated: {kit.lastUpdated}
                   </span>
                 </div>
 
                 {/* Bottom action buttons */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/[0.04]">
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-orange-200">
                   <div className="flex items-center gap-2">
                     <Link href={`/kits/${kit.slug}`}>
                       <Button variant="outline" size="sm" className="text-xs">
@@ -247,12 +247,12 @@ export default function MyKitsPage() {
                     <button
                       type="button"
                       onClick={() => handleCopyLink(kit.slug)}
-                      className="rounded-lg border border-white/[0.08] bg-zinc-900 px-3 py-1.5 text-xs text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors font-mono"
+                      className="rounded-lg border border-orange-200 bg-[#faf5ef] px-3 py-1.5 text-xs text-zinc-800 hover:text-zinc-950 hover:bg-orange-100 transition-colors font-mono"
                     >
                       {copiedSlug === kit.slug ? '✓ Link Copied!' : '🔗 Copy Link'}
                     </button>
                     <Link href="/chat">
-                      <Button variant="ghost" size="sm" className="text-xs text-zinc-400 hover:text-zinc-200">
+                      <Button variant="ghost" size="sm" className="text-xs text-zinc-600 hover:text-zinc-900">
                         💬 In-App Support Chat
                       </Button>
                     </Link>
@@ -261,7 +261,7 @@ export default function MyKitsPage() {
                   <button
                     type="button"
                     onClick={() => handleDelete(kit.id, kit.title)}
-                    className="text-xs text-zinc-500 hover:text-red-400 transition-colors font-mono"
+                    className="text-xs text-zinc-600 hover:text-red-700 transition-colors font-mono"
                   >
                     Remove Listing
                   </button>

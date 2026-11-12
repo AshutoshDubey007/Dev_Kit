@@ -301,24 +301,24 @@ export default function NewKitPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-8 pb-16">
       {/* Header */}
-      <div className="border-b border-white/[0.08] pb-6">
-        <div className="flex items-center gap-2 mb-2 text-xs text-emerald-400 font-mono">
+      <div className="border-b border-orange-200 pb-6">
+        <div className="flex items-center gap-2 mb-2 text-xs text-[#b8531e] font-mono">
           <span>●</span>
           <span>Seller Creator Studio</span>
         </div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-white">
+        <h1 className="text-3xl font-extrabold tracking-tight text-zinc-950">
           List a Verified Code Kit
         </h1>
-        <p className="mt-1 text-xs sm:text-sm text-zinc-400">
+        <p className="mt-1 text-xs sm:text-sm text-zinc-600">
           Upload your code via GitHub or ZIP archive. Once a buyer purchases, your README is automatically injected into their private support chat thread.
         </p>
       </div>
 
       {/* Seller Listing Quota Bar */}
-      <div className="rounded-2xl border border-white/[0.1] bg-[#0c0d12]/90 p-5 backdrop-blur-xl shadow-xl space-y-3">
+      <div className="rounded-2xl border border-orange-200 bg-white p-5 backdrop-blur-xl shadow-xl space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-white">Your Listing Quota:</span>
+            <span className="text-xs font-semibold text-zinc-950">Your Listing Quota:</span>
             <Badge
               variant={isFreeTierAvailable ? 'success' : isSubscribed ? 'purple' : 'warning'}
               size="sm"
@@ -329,7 +329,7 @@ export default function NewKitPage() {
                 : `${totalListed} of ${FREE_PROJECTS_LIMIT} Free Projects Listed`}
             </Badge>
           </div>
-          <span className="text-[11px] text-zinc-400 font-mono">
+          <span className="text-[11px] text-zinc-600 font-mono">
             {FREE_PROJECTS_LIMIT - totalListed > 0
               ? `${FREE_PROJECTS_LIMIT - totalListed} free slots remaining`
               : 'Free slots used'}
@@ -337,14 +337,14 @@ export default function NewKitPage() {
         </div>
 
         {/* Progress bar */}
-        <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden border border-white/[0.06]">
+        <div className="w-full bg-[#faf5ef] rounded-full h-2 overflow-hidden border border-orange-200">
           <div
             className={`h-full transition-all duration-500 ${
               isSubscribed
                 ? 'bg-purple-500 w-full'
                 : totalListed >= FREE_PROJECTS_LIMIT
                 ? 'bg-amber-500 w-full'
-                : 'bg-emerald-500'
+                : 'bg-[#b8531e]'
             }`}
             style={{
               width: isSubscribed ? '100%' : `${(totalListed / FREE_PROJECTS_LIMIT) * 100}%`,
@@ -352,27 +352,27 @@ export default function NewKitPage() {
           />
         </div>
 
-        <p className="text-[11px] text-zinc-400">
+        <p className="text-[11px] text-zinc-600">
           💡 <strong>Policy:</strong> Every seller gets their first <strong>3 integration kits 100% Free</strong>. After 3 projects, a micro-subscription pass of <strong>₹99/mo</strong> is required to maintain quality.
         </p>
       </div>
 
       {/* Subscription Paywall Barrier (If 3 free kits used) */}
       {requiresSubscription && (
-        <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-b from-amber-950/20 to-zinc-950 p-6 space-y-4 text-center shadow-xl">
-          <div className="h-12 w-12 mx-auto flex items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/30 text-2xl text-amber-400">
+        <div className="rounded-2xl border border-[#cc6b35] bg-gradient-to-b from-amber-950/20 to-zinc-950 p-6 space-y-4 text-center shadow-xl">
+          <div className="h-12 w-12 mx-auto flex items-center justify-center rounded-xl bg-[#f7ece1] border border-[#cc6b35] text-2xl text-[#b8531e]">
             ⭐
           </div>
-          <h2 className="text-xl font-bold text-white">
+          <h2 className="text-xl font-bold text-zinc-950">
             Free Listing Limit Reached (3 of 3 used)
           </h2>
-          <p className="text-xs text-zinc-300 max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-zinc-800 max-w-md mx-auto leading-relaxed">
             You&apos;ve published your 3 free starter projects! To publish this 4th kit, unlock the <strong>Seller Pro Pass</strong> for just ₹99/month.
           </p>
 
-          <div className="inline-flex items-baseline gap-1 text-2xl font-extrabold text-white font-mono">
+          <div className="inline-flex items-baseline gap-1 text-2xl font-extrabold text-zinc-950 font-mono">
             <span>₹99</span>
-            <span className="text-xs text-zinc-400 font-normal">/ month</span>
+            <span className="text-xs text-zinc-600 font-normal">/ month</span>
           </div>
 
           <div className="pt-2">
@@ -391,30 +391,30 @@ export default function NewKitPage() {
       {/* Main Upload & Publish Form */}
       <form onSubmit={handlePublish} className="space-y-6">
         {/* Step 1: Code Delivery Method */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/70 p-6 space-y-5">
-          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+        <div className="rounded-2xl border border-orange-200 bg-white p-6 space-y-5">
+          <div className="flex items-center justify-between border-b border-orange-200 pb-3">
             <div>
-              <h3 className="text-sm font-bold text-white">
+              <h3 className="text-sm font-bold text-zinc-950">
                 Step 1: Connect Source Code
               </h3>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-600">
                 Choose how buyers will receive your code package.
               </p>
             </div>
-            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-mono text-[#b8531e] bg-[#f7ece1] border border-[#cc6b35] px-2 py-0.5 rounded-full">
               Automated Verification
             </span>
           </div>
 
           {/* Upload Method Switcher Tabs */}
-          <div className="grid grid-cols-2 gap-3 p-1 rounded-xl bg-zinc-900/60 border border-white/[0.06]">
+          <div className="grid grid-cols-2 gap-3 p-1 rounded-xl bg-[#faf5ef] border border-orange-200">
             <button
               type="button"
               onClick={() => setUploadMethod('github')}
               className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-xs font-semibold transition-all ${
                 uploadMethod === 'github'
-                  ? 'bg-gradient-to-r from-emerald-600 to-blue-600 text-white shadow-md'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white shadow-md'
+                  : 'text-zinc-600 hover:text-zinc-950'
               }`}
             >
               <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -432,8 +432,8 @@ export default function NewKitPage() {
               onClick={() => setUploadMethod('zip')}
               className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-xs font-semibold transition-all ${
                 uploadMethod === 'zip'
-                  ? 'bg-gradient-to-r from-emerald-600 to-blue-600 text-white shadow-md'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white shadow-md'
+                  : 'text-zinc-600 hover:text-zinc-950'
               }`}
             >
               <span>📦 Upload ZIP / Folder</span>
@@ -444,7 +444,7 @@ export default function NewKitPage() {
           {uploadMethod === 'github' ? (
             <div className="space-y-4 pt-1">
               <div>
-                <label className="block text-xs font-semibold text-zinc-300 mb-1">
+                <label className="block text-xs font-semibold text-zinc-800 mb-1">
                   GitHub Repository URL
                 </label>
                 <div className="flex gap-2">
@@ -461,30 +461,30 @@ export default function NewKitPage() {
                     size="sm"
                     disabled={isInspectingRepo}
                     onClick={handleInspectGithub}
-                    className="shrink-0 text-xs border-emerald-500/40 text-emerald-300 hover:bg-emerald-950/40"
+                    className="shrink-0 text-xs border-[#cc6b35] text-[#b8531e] hover:bg-[#f7ece1]"
                   >
                     {isInspectingRepo ? 'Inspecting…' : 'Inspect & Auto-Fill ⚡'}
                   </Button>
                 </div>
-                <span className="text-[11px] text-zinc-500 block mt-1">
+                <span className="text-[11px] text-zinc-600 block mt-1">
                   We automatically extract your <strong>README.md</strong>, test suite coverage, and package dependencies.
                 </span>
               </div>
 
               {repoInspectedSuccess && (
-                <div className="p-3.5 rounded-xl border border-emerald-500/40 bg-emerald-950/20 text-xs space-y-1.5 animate-fade-in">
-                  <div className="flex items-center justify-between text-emerald-300 font-semibold">
+                <div className="p-3.5 rounded-xl border border-[#cc6b35] bg-[#f7ece1] text-xs space-y-1.5 animate-fade-in">
+                  <div className="flex items-center justify-between text-[#b8531e] font-semibold">
                     <span>✓ Repository Inspected Successfully</span>
                     <span className="font-mono text-[10px]">Branch: {githubBranch}</span>
                   </div>
-                  <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-[11px] text-zinc-300">
-                    <div className="p-2 rounded bg-black/40 border border-white/[0.06]">
+                  <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-[11px] text-zinc-800">
+                    <div className="p-2 rounded bg-white border border-orange-200">
                       ✓ 0 node_modules leaked
                     </div>
-                    <div className="p-2 rounded bg-black/40 border border-white/[0.06]">
+                    <div className="p-2 rounded bg-white border border-orange-200">
                       ✓ Next.js 15 verified
                     </div>
-                    <div className="p-2 rounded bg-black/40 border border-white/[0.06]">
+                    <div className="p-2 rounded bg-white border border-orange-200">
                       ✓ README detected
                     </div>
                   </div>
@@ -512,26 +512,26 @@ export default function NewKitPage() {
                 onClick={() => fileInputRef.current?.click()}
                 className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
                   isDragging
-                    ? 'border-emerald-400 bg-emerald-950/20'
-                    : 'border-white/[0.12] bg-zinc-950/60 hover:border-emerald-500/50 hover:bg-zinc-900/40'
+                    ? 'border-[#cc6b35] bg-[#f7ece1]'
+                    : 'border-orange-200 bg-white hover:border-[#cc6b35] hover:bg-[#faf5ef]'
                 }`}
               >
-                <div className="h-12 w-12 mx-auto flex items-center justify-center rounded-2xl bg-zinc-900 border border-white/[0.08] text-2xl mb-3">
+                <div className="h-12 w-12 mx-auto flex items-center justify-center rounded-2xl bg-[#faf5ef] border border-orange-200 text-2xl mb-3">
                   📦
                 </div>
-                <h4 className="text-sm font-semibold text-white">
+                <h4 className="text-sm font-semibold text-zinc-950">
                   {uploadedFile ? uploadedFile.name : 'Drop your project .zip archive here'}
                 </h4>
-                <p className="text-xs text-zinc-400 mt-1">
+                <p className="text-xs text-zinc-600 mt-1">
                   {uploadedFile
                     ? `Size: ${uploadedFile.size} • Click to change file`
                     : 'or browse from your computer (zip, tar.gz)'}
                 </p>
 
-                <div className="mt-4 inline-flex items-center gap-2 text-[11px] font-mono text-emerald-400 bg-emerald-950/50 border border-emerald-800/50 px-3 py-1 rounded-full">
+                <div className="mt-4 inline-flex items-center gap-2 text-[11px] font-mono text-[#b8531e] bg-[#f7ece1] border border-[#cc6b35] px-3 py-1 rounded-full">
                   <span>🛡️ Automatic Sanitizer</span>
                   <span>|</span>
-                  <span className="text-zinc-400">Excludes node_modules &amp; .env.local</span>
+                  <span className="text-zinc-600">Excludes node_modules &amp; .env.local</span>
                 </div>
               </div>
             </div>
@@ -539,18 +539,18 @@ export default function NewKitPage() {
         </div>
 
         {/* Step 2: Listing Details */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/70 p-6 space-y-5">
-          <div className="border-b border-white/[0.06] pb-3">
-            <h3 className="text-sm font-bold text-white">
+        <div className="rounded-2xl border border-orange-200 bg-white p-6 space-y-5">
+          <div className="border-b border-orange-200 pb-3">
+            <h3 className="text-sm font-bold text-zinc-950">
               Step 2: Marketplace Listing Details
             </h3>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-600">
               Provide product details shown on the catalogue card.
             </p>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-300 mb-1">
+            <label className="block text-xs font-semibold text-zinc-800 mb-1">
               Integration Kit Title
             </label>
             <Input
@@ -564,7 +564,7 @@ export default function NewKitPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-300 mb-1">
+            <label className="block text-xs font-semibold text-zinc-800 mb-1">
               One-Line Value Tagline
             </label>
             <Input
@@ -579,13 +579,13 @@ export default function NewKitPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-zinc-300 mb-1">
+              <label className="block text-xs font-semibold text-zinc-800 mb-1">
                 Category
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-lg border border-white/[0.08] bg-zinc-900 px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-emerald-500"
+                className="w-full rounded-lg border border-orange-200 bg-[#faf5ef] px-3 py-2 text-xs text-zinc-900 focus:outline-none focus:border-[#cc6b35]"
               >
                 <option value="payments">Payments &amp; Billing</option>
                 <option value="auth">Auth &amp; RBAC</option>
@@ -595,7 +595,7 @@ export default function NewKitPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-zinc-300 mb-1">
+              <label className="block text-xs font-semibold text-zinc-800 mb-1">
                 Price (INR ₹)
               </label>
               <Input
@@ -613,10 +613,10 @@ export default function NewKitPage() {
           {/* Seller Setup README */}
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs font-semibold text-zinc-300">
+              <label className="block text-xs font-semibold text-zinc-800">
                 Setup README.md (Auto-injected into Buyer Chat)
               </label>
-              <span className="text-[11px] text-emerald-400 font-mono">
+              <span className="text-[11px] text-[#b8531e] font-mono">
                 ⚡ Auto-dispatched on purchase
               </span>
             </div>
@@ -625,9 +625,9 @@ export default function NewKitPage() {
               required
               value={readmeContent}
               onChange={(e) => setReadmeContent(e.target.value)}
-              className="w-full rounded-xl border border-white/[0.08] bg-zinc-950 p-3.5 text-xs text-zinc-200 font-mono focus:outline-none focus:border-emerald-500 leading-relaxed resize-y"
+              className="w-full rounded-xl border border-orange-200 bg-white p-3.5 text-xs text-zinc-900 font-mono focus:outline-none focus:border-[#cc6b35] leading-relaxed resize-y"
             />
-            <span className="text-[11px] text-zinc-500 block mt-1">
+            <span className="text-[11px] text-zinc-600 block mt-1">
               Provide exact installation steps and environment variables so buyers can integrate in under 5 minutes without friction.
             </span>
           </div>
@@ -639,7 +639,7 @@ export default function NewKitPage() {
           variant="primary"
           size="lg"
           disabled={requiresSubscription || isPublishing}
-          className="w-full text-xs font-semibold bg-gradient-to-r from-emerald-500 to-blue-500 text-black hover:opacity-90 shadow-lg shadow-emerald-500/20 py-3"
+          className="w-full text-xs font-semibold bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white hover:opacity-90 shadow-lg shadow-[#e8c3a8] py-3"
         >
           {isPublishing
             ? 'Publishing Kit…'
@@ -653,89 +653,89 @@ export default function NewKitPage() {
 
       {/* Celebratory Publishing Success Modal */}
       {publishedSuccess && publishedKit && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-          <div className="relative w-full max-w-lg rounded-3xl border border-emerald-500/40 bg-[#0c0d12] p-6 sm:p-8 shadow-2xl shadow-emerald-500/20 text-center space-y-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/85 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-lg rounded-3xl border border-[#cc6b35] bg-white p-6 sm:p-8 shadow-2xl shadow-[#e8c3a8] text-center space-y-6">
             {/* Ambient Background Glow */}
-            <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-48 h-48 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-48 h-48 bg-[#f7ece1] rounded-full blur-3xl pointer-events-none" />
 
             {/* Celebratory Icon */}
-            <div className="h-16 w-16 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-3xl shadow-inner shadow-emerald-500/30">
+            <div className="h-16 w-16 mx-auto rounded-2xl bg-[#f7ece1] border border-[#cc6b35] flex items-center justify-center text-3xl shadow-inner shadow-[#e8c3a8]">
               🎉
             </div>
 
             {/* Header text */}
             <div className="space-y-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-semibold">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-[#b8531e] font-semibold">
                 ● Live on Marketplace
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 tracking-tight">
                 Repository Published!
               </h2>
-              <p className="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed">
+              <p className="text-xs text-zinc-600 max-w-sm mx-auto leading-relaxed">
                 Your integration has been verified and published to DevKit. Buyers can now find, inspect, and purchase your code.
               </p>
             </div>
 
             {/* Published Kit Summary Card */}
-            <div className="rounded-2xl border border-white/[0.08] bg-zinc-950/80 p-4 text-left space-y-3">
+            <div className="rounded-2xl border border-orange-200 bg-white p-4 text-left space-y-3">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h3 className="text-sm font-bold text-white line-clamp-1">
+                  <h3 className="text-sm font-bold text-zinc-950 line-clamp-1">
                     {publishedKit.title}
                   </h3>
-                  <p className="text-[11px] text-zinc-400 line-clamp-1 mt-0.5">
+                  <p className="text-[11px] text-zinc-600 line-clamp-1 mt-0.5">
                     {publishedKit.tagline}
                   </p>
                 </div>
                 <div className="text-right font-mono shrink-0">
-                  <span className="text-emerald-400 font-bold text-sm block">
+                  <span className="text-[#b8531e] font-bold text-sm block">
                     ₹{publishedKit.priceINR.toLocaleString('en-IN')}
                   </span>
-                  <span className="text-[10px] text-zinc-500">
+                  <span className="text-[10px] text-zinc-600">
                     (~${publishedKit.priceUSD})
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-white/[0.04] text-[11px] font-mono text-zinc-400">
-                <span className="rounded-md bg-emerald-950/60 border border-emerald-800/80 text-emerald-400 px-2 py-0.5">
+              <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-orange-200 text-[11px] font-mono text-zinc-600">
+                <span className="rounded-md bg-[#f7ece1] border border-[#cc6b35] text-[#b8531e] px-2 py-0.5">
                   ● {publishedKit.category}
                 </span>
                 {publishedKit.uploadMethod === 'github' ? (
-                  <span className="truncate max-w-[240px] text-zinc-300">
+                  <span className="truncate max-w-[240px] text-zinc-800">
                     🐙 GitHub: {publishedKit.githubPreviewUrl}
                   </span>
                 ) : (
-                  <span className="text-zinc-300">
+                  <span className="text-zinc-800">
                     📁 ZIP: {publishedKit.zipFileName} ({publishedKit.zipFileSize})
                   </span>
                 )}
               </div>
 
-              <div className="rounded-xl bg-emerald-950/30 border border-emerald-800/50 p-2.5 text-[11px] text-emerald-300/90 flex items-center gap-2">
+              <div className="rounded-xl bg-[#f7ece1] border border-[#cc6b35] p-2.5 text-[11px] text-[#b8531e]/90 flex items-center gap-2">
                 <span>⚡</span>
                 <span>Setup README automatically queued for buyer in-app chat delivery.</span>
               </div>
             </div>
 
             {/* Countdown Bar */}
-            <div className="rounded-xl bg-zinc-900/80 border border-white/[0.06] p-3 text-xs flex items-center justify-between font-mono">
+            <div className="rounded-xl bg-[#faf5ef] border border-orange-200 p-3 text-xs flex items-center justify-between font-mono">
               {autoRedirect ? (
-                <div className="flex items-center gap-2 text-zinc-300">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                <div className="flex items-center gap-2 text-zinc-800">
+                  <span className="h-2 w-2 rounded-full bg-[#cc6b35] animate-ping" />
                   <span>
                     Auto-redirecting in{' '}
-                    <strong className="text-emerald-400 text-sm">{countdown}s</strong>...
+                    <strong className="text-[#b8531e] text-sm">{countdown}s</strong>...
                   </span>
                 </div>
               ) : (
-                <span className="text-zinc-400">Auto-redirect paused</span>
+                <span className="text-zinc-600">Auto-redirect paused</span>
               )}
 
               <button
                 type="button"
                 onClick={() => setAutoRedirect((prev) => !prev)}
-                className="text-[11px] text-zinc-400 hover:text-white underline cursor-pointer"
+                className="text-[11px] text-zinc-600 hover:text-zinc-950 underline cursor-pointer"
               >
                 {autoRedirect ? 'Pause' : 'Resume'}
               </button>
@@ -746,14 +746,14 @@ export default function NewKitPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <Link
                   href={`/kits/${publishedKit.slug}`}
-                  className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-emerald-500 to-blue-500 px-4 py-2.5 text-xs font-semibold text-black hover:opacity-95 shadow-lg shadow-emerald-500/20 transition-all"
+                  className="w-full inline-flex items-center justify-center rounded-xl bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] px-4 py-2.5 text-xs font-semibold text-white hover:opacity-95 shadow-lg shadow-[#e8c3a8] transition-all"
                 >
                   👁 View Live Listing →
                 </Link>
 
                 <Link
                   href="/seller/my-kits"
-                  className="w-full inline-flex items-center justify-center rounded-xl border border-white/[0.1] bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-zinc-800 transition-colors"
+                  className="w-full inline-flex items-center justify-center rounded-xl border border-orange-200 bg-[#faf5ef] px-4 py-2.5 text-xs font-semibold text-zinc-950 hover:bg-orange-100 transition-colors"
                 >
                   📦 My Published Repos
                 </Link>
@@ -762,13 +762,13 @@ export default function NewKitPage() {
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <Link
                   href="/kits"
-                  className="rounded-lg border border-white/[0.06] bg-zinc-950/60 p-2 text-zinc-300 hover:text-white hover:border-white/[0.15] transition-colors"
+                  className="rounded-lg border border-orange-200 bg-white p-2 text-zinc-800 hover:text-zinc-950 hover:border-orange-200 transition-colors"
                 >
                   Browse Catalog (/kits)
                 </Link>
                 <Link
                   href="/"
-                  className="rounded-lg border border-white/[0.06] bg-zinc-950/60 p-2 text-zinc-300 hover:text-white hover:border-white/[0.15] transition-colors"
+                  className="rounded-lg border border-orange-200 bg-white p-2 text-zinc-800 hover:text-zinc-950 hover:border-orange-200 transition-colors"
                 >
                   Home Page (/)
                 </Link>
@@ -777,7 +777,7 @@ export default function NewKitPage() {
               <button
                 type="button"
                 onClick={handleResetForm}
-                className="text-xs text-zinc-400 hover:text-emerald-400 transition-colors underline pt-2 block mx-auto"
+                className="text-xs text-zinc-600 hover:text-[#b8531e] transition-colors underline pt-2 block mx-auto"
               >
                 + List Another Repo / Kit ({FREE_PROJECTS_LIMIT - totalListed} free slots left)
               </button>

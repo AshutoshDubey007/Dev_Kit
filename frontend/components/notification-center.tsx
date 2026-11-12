@@ -84,15 +84,15 @@ export function NotificationCenter() {
   const getIcon = (type: NotificationItem['type']) => {
     switch (type) {
       case 'purchase':
-        return <ShoppingBag className="h-3.5 w-3.5 text-emerald-400" />;
+        return <ShoppingBag className="h-3.5 w-3.5 text-[#b8531e]" />;
       case 'chat':
-        return <MessageSquare className="h-3.5 w-3.5 text-indigo-400" />;
+        return <MessageSquare className="h-3.5 w-3.5 text-[#cc6b35]" />;
       case 'star':
-        return <Star className="h-3.5 w-3.5 text-amber-400" />;
+        return <Star className="h-3.5 w-3.5 text-[#cc6b35]" />;
       case 'security':
-        return <ShieldCheck className="h-3.5 w-3.5 text-purple-400" />;
+        return <ShieldCheck className="h-3.5 w-3.5 text-[#964115]" />;
       default:
-        return <Sparkles className="h-3.5 w-3.5 text-cyan-400" />;
+        return <Sparkles className="h-3.5 w-3.5 text-[#b8531e]" />;
     }
   };
 
@@ -110,17 +110,17 @@ export function NotificationCenter() {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`relative flex h-8 w-8 items-center justify-center rounded-lg border transition-all ${
+        className={`relative flex h-8 w-8 items-center justify-center rounded-lg border-2 transition-all shadow-[2px_2px_0px_#e8c3a8] ${
           isOpen
-            ? 'border-emerald-500/50 bg-emerald-950/30 text-white shadow-sm shadow-emerald-500/20'
-            : 'border-white/[0.08] bg-zinc-900/90 text-zinc-300 hover:text-white hover:border-white/[0.2]'
+            ? 'border-[#b8531e] bg-[#f7ece1] text-[#964115]'
+            : 'border-orange-300 bg-white text-[#b8531e] hover:border-[#cc6b35] hover:bg-orange-50'
         }`}
         aria-label="Notifications"
         title="View Notifications"
       >
         <Bell className="h-4 w-4" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[9px] font-bold text-black ring-2 ring-[#0c0d12] animate-pulse">
+          <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#b8531e] text-[9px] font-bold font-pixel text-white ring-2 ring-white animate-pulse">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -129,7 +129,7 @@ export function NotificationCenter() {
       {/* Mobile Dimmed Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 sm:hidden animate-in fade-in duration-150"
+          className="fixed inset-0 bg-zinc-950/40 backdrop-blur-xs z-40 sm:hidden animate-in fade-in duration-150"
           onClick={() => setIsOpen(false)}
           aria-hidden="true"
         />
@@ -138,17 +138,17 @@ export function NotificationCenter() {
       {/* Popover Panel */}
       {isOpen && (
         <div
-          className="fixed left-3 right-3 top-16 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 rounded-2xl border border-white/[0.1] bg-[#0c0e14] shadow-2xl shadow-black/90 backdrop-blur-2xl z-50 overflow-hidden flex flex-col max-h-[82vh] animate-in fade-in zoom-in-95 duration-150"
+          className="fixed left-3 right-3 top-16 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 rounded-2xl border-2 border-[#cc6b35] bg-white shadow-[6px_6px_0px_#cc6b35] z-50 overflow-hidden flex flex-col max-h-[82vh] animate-in fade-in zoom-in-95 duration-150"
         >
           {/* Header */}
-          <div className="px-4 py-3 border-b border-white/[0.08] bg-zinc-950/80 space-y-2.5 shrink-0">
+          <div className="px-4 py-3 border-b-2 border-orange-100 bg-[#faf5ef] space-y-2.5 shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                <span className="text-xs font-bold text-zinc-950 uppercase tracking-wider font-pixel">
                   Notifications
                 </span>
                 {unreadCount > 0 && (
-                  <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-400 border border-emerald-500/30">
+                  <span className="rounded bg-[#b8531e] px-2 py-0.5 text-[10px] font-pixel font-bold text-white">
                     {unreadCount} unread
                   </span>
                 )}
@@ -159,7 +159,7 @@ export function NotificationCenter() {
                   <button
                     type="button"
                     onClick={handleMarkAllRead}
-                    className="text-[11px] text-zinc-400 hover:text-emerald-400 flex items-center gap-1 transition-colors py-0.5 px-1.5 rounded hover:bg-white/[0.04]"
+                    className="text-[11px] font-pixel text-[#b8531e] hover:underline flex items-center gap-1 transition-colors py-0.5 px-1.5 rounded hover:bg-orange-100"
                     title="Mark all notifications as read"
                   >
                     <CheckCheck className="h-3.5 w-3.5" />
@@ -170,7 +170,7 @@ export function NotificationCenter() {
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="sm:hidden p-1 text-zinc-400 hover:text-white rounded-lg hover:bg-white/[0.06]"
+                  className="sm:hidden p-1 text-[#b8531e] hover:text-zinc-950 rounded-lg hover:bg-orange-100"
                   title="Close"
                 >
                   <X className="h-4 w-4" />
@@ -179,14 +179,14 @@ export function NotificationCenter() {
             </div>
 
             {/* Filter Tabs: All vs Unread */}
-            <div className="flex items-center gap-1 p-0.5 rounded-lg bg-zinc-900/80 border border-white/[0.04] text-[11px]">
+            <div className="flex items-center gap-1 p-0.5 rounded-lg bg-white border-2 border-orange-200 text-[11px] font-pixel">
               <button
                 type="button"
                 onClick={() => setFilter('all')}
                 className={`flex-1 py-1 px-2.5 rounded-md text-center transition-all ${
                   filter === 'all'
-                    ? 'bg-white/[0.1] text-white font-medium shadow-xs'
-                    : 'text-zinc-400 hover:text-white'
+                    ? 'bg-[#b8531e] text-white font-bold'
+                    : 'text-zinc-700 hover:text-[#b8531e]'
                 }`}
               >
                 All ({notifications.length})
@@ -196,8 +196,8 @@ export function NotificationCenter() {
                 onClick={() => setFilter('unread')}
                 className={`flex-1 py-1 px-2.5 rounded-md text-center transition-all ${
                   filter === 'unread'
-                    ? 'bg-emerald-500/20 text-emerald-300 font-medium border border-emerald-500/30 shadow-xs'
-                    : 'text-zinc-400 hover:text-white'
+                    ? 'bg-[#b8531e] text-white font-bold'
+                    : 'text-zinc-700 hover:text-[#b8531e]'
                 }`}
               >
                 Unread ({unreadCount})
@@ -206,14 +206,14 @@ export function NotificationCenter() {
           </div>
 
           {/* List of Notification Items */}
-          <div className="flex-1 overflow-y-auto divide-y divide-white/[0.04] p-1">
+          <div className="flex-1 overflow-y-auto divide-y divide-orange-100 p-1">
             {filteredNotifications.length === 0 ? (
               <div className="py-10 px-4 text-center space-y-1.5">
                 <span className="text-sm block">✨</span>
-                <p className="text-xs text-zinc-300 font-medium">
+                <p className="text-xs font-pixel text-zinc-900 font-bold">
                   {filter === 'unread' ? 'All caught up!' : 'No notifications yet'}
                 </p>
-                <p className="text-[11px] text-zinc-500 max-w-xs mx-auto">
+                <p className="text-[11px] text-zinc-600 max-w-xs mx-auto">
                   {filter === 'unread'
                     ? 'You have answered all incoming order and support updates.'
                     : 'You will receive notifications here about purchases, messages, and security scans.'}
@@ -222,7 +222,7 @@ export function NotificationCenter() {
                   <button
                     type="button"
                     onClick={() => setFilter('all')}
-                    className="text-[11px] text-indigo-400 hover:text-indigo-300 font-mono underline pt-1"
+                    className="text-[11px] text-[#b8531e] hover:underline font-pixel pt-1 font-bold"
                   >
                     View all notifications
                   </button>
@@ -234,8 +234,8 @@ export function NotificationCenter() {
                   key={item.id}
                   className={`group relative rounded-xl transition-all ${
                     !item.read
-                      ? 'bg-white/[0.03] hover:bg-white/[0.06]'
-                      : 'hover:bg-white/[0.02] opacity-80 hover:opacity-100'
+                      ? 'bg-[#faf5ef] hover:bg-orange-100/70'
+                      : 'hover:bg-orange-50/50 opacity-85 hover:opacity-100'
                   }`}
                 >
                   <Link
@@ -248,21 +248,21 @@ export function NotificationCenter() {
                   >
                     <div className="flex items-start gap-3">
                       {/* Icon */}
-                      <div className="mt-0.5 h-7 w-7 rounded-lg bg-[#141822] border border-white/[0.08] flex items-center justify-center shrink-0 shadow-sm">
+                      <div className="mt-0.5 h-7 w-7 rounded-lg bg-white border-2 border-orange-200 flex items-center justify-center shrink-0">
                         {getIcon(item.type)}
                       </div>
 
                       {/* Content */}
                       <div className="min-w-0 flex-1 space-y-1">
                         <div className="flex items-center justify-between gap-1.5">
-                          <span className="text-xs font-semibold text-white truncate max-w-[190px] sm:max-w-[210px]">
+                          <span className="text-xs font-pixel font-bold text-zinc-950 truncate max-w-[190px] sm:max-w-[210px]">
                             {item.title}
                           </span>
                           <span className="text-[10px] text-zinc-500 font-mono shrink-0">
                             {formatRelativeTime(item.createdAt)}
                           </span>
                         </div>
-                        <p className="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
+                        <p className="text-[11px] text-zinc-700 line-clamp-2 leading-relaxed">
                           {item.message}
                         </p>
                       </div>
@@ -275,10 +275,10 @@ export function NotificationCenter() {
                       <button
                         type="button"
                         onClick={(e) => handleMarkSingleRead(item.id, e)}
-                        className="h-5 w-5 rounded-md hover:bg-white/[0.1] text-zinc-400 hover:text-emerald-400 flex items-center justify-center transition-colors"
+                        className="h-5 w-5 rounded-md hover:bg-orange-200 text-[#b8531e] flex items-center justify-center transition-colors"
                         title="Mark as read"
                       >
-                        <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse group-hover:hidden" />
+                        <span className="h-2 w-2 rounded-full bg-[#cc6b35] animate-pulse group-hover:hidden" />
                         <Check className="h-3 w-3 hidden group-hover:block" />
                       </button>
                     ) : null}
@@ -289,18 +289,18 @@ export function NotificationCenter() {
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-2.5 border-t border-white/[0.06] bg-zinc-950/60 flex items-center justify-between text-[11px] shrink-0">
+          <div className="px-4 py-2.5 border-t-2 border-orange-100 bg-[#faf5ef] flex items-center justify-between text-[11px] font-pixel shrink-0">
             <Link
               href="/buyer/verifications"
               onClick={() => setIsOpen(false)}
-              className="text-zinc-400 hover:text-zinc-200 transition-colors"
+              className="text-zinc-700 hover:text-[#b8531e] font-bold transition-colors"
             >
               Order Verifications →
             </Link>
             <Link
               href="/settings"
               onClick={() => setIsOpen(false)}
-              className="text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="text-[#b8531e] font-bold hover:underline transition-colors"
             >
               Settings
             </Link>

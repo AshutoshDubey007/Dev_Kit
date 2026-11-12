@@ -24,16 +24,16 @@ export function CodePreview({ snippets, className = '' }: CodePreviewProps) {
 
   return (
     <div
-      className={`rounded-xl border border-white/[0.09] bg-[#0c0d11] overflow-hidden shadow-2xl font-mono text-xs ${className}`}
+      className={`rounded-xl border-2 border-[#cc6b35] bg-white overflow-hidden shadow-[5px_5px_0px_#cc6b35] font-mono text-xs ${className}`}
     >
-      {/* Authentic Terminal Window Chrome */}
-      <div className="flex items-center justify-between border-b border-white/[0.08] bg-[#121318] px-4 py-2.5">
-        <div className="flex items-center gap-3">
-          {/* Traffic lights */}
-          <div className="flex items-center gap-1.5 mr-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-red-500/80 border border-red-600/60" />
-            <span className="h-2.5 w-2.5 rounded-full bg-amber-500/80 border border-amber-600/60" />
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/80 border border-emerald-600/60" />
+      {/* Arcade Code Window Chrome */}
+      <div className="flex items-center justify-between border-b-2 border-[#cc6b35] bg-[#f7ece1] px-4 py-2.5 gap-2">
+        <div className="flex items-center gap-3 min-w-0">
+          {/* Arcade Dots */}
+          <div className="flex items-center gap-1.5 mr-2 shrink-0">
+            <span className="h-2.5 w-2.5 rounded-sm bg-[#b8531e]" />
+            <span className="h-2.5 w-2.5 rounded-sm bg-[#cc6b35]" />
+            <span className="h-2.5 w-2.5 rounded-sm bg-[#e5a982]" />
           </div>
 
           {/* File Tabs */}
@@ -45,13 +45,13 @@ export function CodePreview({ snippets, className = '' }: CodePreviewProps) {
                   key={snippet.filename}
                   type="button"
                   onClick={() => setActiveTab(idx)}
-                  className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] transition-all ${
+                  className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] font-pixel transition-all ${
                     isActive
-                      ? 'bg-zinc-800/90 text-indigo-300 font-semibold border border-indigo-500/30 shadow-sm'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
+                      ? 'bg-[#b8531e] text-white font-bold border border-[#78330f]'
+                      : 'text-zinc-700 hover:text-[#b8531e] hover:bg-orange-100'
                   }`}
                 >
-                  <span className="text-zinc-500 text-[10px]">📄</span>
+                  <span className="text-[10px]">📄</span>
                   <span>{snippet.filename}</span>
                 </button>
               );
@@ -63,18 +63,18 @@ export function CodePreview({ snippets, className = '' }: CodePreviewProps) {
         <button
           type="button"
           onClick={handleCopy}
-          className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-zinc-800/70 px-2.5 py-1 text-[11px] text-zinc-300 hover:bg-zinc-700 hover:text-white transition-all shadow-inner"
+          className="flex items-center gap-1.5 rounded-md border-2 border-[#cc6b35] bg-white px-2.5 py-1 text-[11px] font-pixel text-[#b8531e] hover:bg-orange-50 transition-all shrink-0 font-bold"
           title="Copy snippet"
         >
           {copied ? (
             <>
-              <span className="text-emerald-400 text-xs">✓</span>
-              <span className="text-emerald-300 font-sans font-medium">Copied!</span>
+              <span className="text-[#b8531e] text-xs">✓</span>
+              <span className="text-[#b8531e]">Copied!</span>
             </>
           ) : (
             <>
-              <span className="text-zinc-400 text-xs">📋</span>
-              <span className="font-sans">Copy</span>
+              <span className="text-xs">📋</span>
+              <span>Copy</span>
             </>
           )}
         </button>
@@ -82,22 +82,22 @@ export function CodePreview({ snippets, className = '' }: CodePreviewProps) {
 
       {/* Snippet Explanation Banner */}
       {currentSnippet.description && (
-        <div className="border-b border-white/[0.06] bg-indigo-950/20 px-4 py-1.5 text-[11px] text-indigo-200/80 font-sans flex items-center gap-2">
-          <span className="text-indigo-400">⚡</span>
+        <div className="border-b border-orange-200 bg-[#fcfaf7] px-4 py-1.5 text-[11px] text-[#964115] font-sans flex items-center gap-2 font-medium">
+          <span className="text-[#cc6b35]">⚡</span>
           <span>{currentSnippet.description}</span>
         </div>
       )}
 
-      {/* Code Area with Syntax Highlighting Look */}
-      <div className="overflow-x-auto p-4 text-zinc-300 bg-[#090a0d] leading-relaxed font-mono">
+      {/* Code Area */}
+      <div className="overflow-x-auto p-4 text-zinc-900 bg-white leading-relaxed font-mono">
         <pre className="text-xs">
           <code>
             {currentSnippet.code.split('\n').map((line, i) => (
               <div key={i} className="table-row group">
-                <span className="table-cell pr-5 select-none text-right text-zinc-600 text-[11px] group-hover:text-zinc-400">
+                <span className="table-cell pr-5 select-none text-right text-orange-400 text-[11px] group-hover:text-[#b8531e]">
                   {i + 1}
                 </span>
-                <span className="table-cell whitespace-pre text-zinc-200">{line}</span>
+                <span className="table-cell whitespace-pre text-zinc-900">{line}</span>
               </div>
             ))}
           </code>

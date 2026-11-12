@@ -49,14 +49,14 @@ export function FilterSidebar({
 
   return (
     <aside
-      className={`flex flex-col gap-6 rounded-2xl border border-white/[0.08] bg-[#0c0d12]/85 p-5 backdrop-blur-xl shadow-xl ${className}`}
+      className={`flex flex-col gap-6 rounded-2xl border-2 border-[#cc6b35] bg-white p-5 shadow-[5px_5px_0px_#cc6b35] ${className}`}
     >
       {/* Header with Reset */}
-      <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
+      <div className="flex items-center justify-between border-b-2 border-orange-100 pb-3">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-zinc-100">Filters</span>
+          <span className="text-sm font-pixel font-bold text-zinc-950">Filters</span>
           {aggregations.totalResults > 0 && (
-            <Badge size="sm" variant="secondary" className="font-mono text-[10px]">
+            <Badge size="sm" variant="default" className="text-[10px]">
               {aggregations.totalResults} kits
             </Badge>
           )}
@@ -65,7 +65,7 @@ export function FilterSidebar({
           <button
             type="button"
             onClick={onReset}
-            className="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+            className="text-xs font-pixel font-bold text-[#b8531e] hover:underline transition-colors"
           >
             Clear all
           </button>
@@ -74,13 +74,13 @@ export function FilterSidebar({
 
       {/* 1. Sort Option */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+        <label className="block text-xs font-pixel font-bold uppercase tracking-wider text-[#964115] mb-2">
           Sort By
         </label>
         <select
           value={filters.sortBy}
           onChange={handleSortChange}
-          className="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs text-zinc-200 focus:border-indigo-500 focus:outline-none"
+          className="w-full rounded-lg border-2 border-orange-300 bg-[#fcfaf7] px-3 py-2 text-xs font-pixel text-zinc-950 focus:border-[#b8531e] focus:outline-none"
         >
           <option value="popular">Most Popular</option>
           <option value="newest">Recently Verified</option>
@@ -91,13 +91,13 @@ export function FilterSidebar({
       </div>
 
       {/* 2. Verification Strictness Toggle */}
-      <div className="rounded-xl border border-emerald-900/40 bg-emerald-950/20 p-3">
-        <label className="flex items-center justify-between cursor-pointer">
+      <div className="rounded-xl border-2 border-[#cc6b35] bg-[#faf5ef] p-3">
+        <label className="flex items-center justify-between cursor-pointer gap-2">
           <div className="flex flex-col">
-            <span className="text-xs font-semibold text-emerald-300">
+            <span className="text-xs font-pixel font-bold text-[#964115]">
               Verified 100% Pass Only
             </span>
-            <span className="text-[11px] text-zinc-400">
+            <span className="text-[11px] text-zinc-600">
               Clean install + 100% test pass
             </span>
           </div>
@@ -107,24 +107,24 @@ export function FilterSidebar({
             onChange={(e) =>
               onFilterChange({ ...filters, verifiedOnly: e.target.checked })
             }
-            className="h-4 w-4 rounded border-zinc-700 text-indigo-600 focus:ring-indigo-500 bg-zinc-900"
+            className="h-4 w-4 rounded border-orange-400 text-[#b8531e] focus:ring-[#cc6b35] bg-white"
           />
         </label>
       </div>
 
       {/* 3. Categories */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2.5">
+        <label className="block text-xs font-pixel font-bold uppercase tracking-wider text-[#964115] mb-2.5">
           Categories
         </label>
         <div className="flex flex-col gap-1">
           <button
             type="button"
             onClick={() => handleCategorySelect('all')}
-            className={`flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xs transition-colors ${
+            className={`flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-pixel transition-colors border ${
               filters.category === 'all'
-                ? 'bg-indigo-600/20 text-indigo-300 font-medium border border-indigo-500/30'
-                : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'
+                ? 'bg-[#b8531e] text-white font-bold border-[#78330f]'
+                : 'border-transparent text-zinc-700 hover:bg-orange-50 hover:text-[#b8531e]'
             }`}
           >
             <span>All Categories</span>
@@ -137,14 +137,14 @@ export function FilterSidebar({
                 key={cat.slug}
                 type="button"
                 onClick={() => handleCategorySelect(cat.slug as CategorySlug)}
-                className={`flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xs transition-colors ${
+                className={`flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-pixel transition-colors border ${
                   isActive
-                    ? 'bg-indigo-600/20 text-indigo-300 font-medium border border-indigo-500/30'
-                    : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'
+                    ? 'bg-[#b8531e] text-white font-bold border-[#78330f]'
+                    : 'border-transparent text-zinc-700 hover:bg-orange-50 hover:text-[#b8531e]'
                 }`}
               >
                 <span>{cat.name}</span>
-                <span className="text-[10px] font-mono text-zinc-500">
+                <span className={`text-[10px] font-mono ${isActive ? 'text-orange-100' : 'text-zinc-500'}`}>
                   {cat.count}
                 </span>
               </button>
@@ -155,7 +155,7 @@ export function FilterSidebar({
 
       {/* 4. Tech Stack Facets */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2.5">
+        <label className="block text-xs font-pixel font-bold uppercase tracking-wider text-[#964115] mb-2.5">
           Tech Stack
         </label>
         <div className="flex flex-wrap gap-1.5">
@@ -170,11 +170,11 @@ export function FilterSidebar({
               >
                 <Badge
                   size="sm"
-                  variant={isChecked ? 'purple' : 'default'}
-                  className="font-mono text-[11px] transition-colors"
+                  variant={isChecked ? 'success' : 'secondary'}
+                  className="text-[11px] transition-colors"
                 >
                   {tech.name}
-                  <span className="text-[9px] opacity-60 ml-0.5">({tech.count})</span>
+                  <span className="text-[9px] opacity-75 ml-0.5">({tech.count})</span>
                 </Badge>
               </button>
             );
@@ -184,7 +184,7 @@ export function FilterSidebar({
 
       {/* 5. Max Price Filter */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2.5">
+        <label className="block text-xs font-pixel font-bold uppercase tracking-wider text-[#964115] mb-2.5">
           Budget Ceiling (INR)
         </label>
         <div className="grid grid-cols-2 gap-1.5">
@@ -200,10 +200,10 @@ export function FilterSidebar({
                 key={option.label}
                 type="button"
                 onClick={() => handlePriceChange(option.val)}
-                className={`rounded-lg px-2.5 py-1.5 text-xs text-center border transition-colors ${
+                className={`rounded-lg px-2.5 py-1.5 text-xs font-pixel text-center border-2 transition-colors ${
                   isSelected
-                    ? 'border-indigo-500 bg-indigo-600/20 text-indigo-300 font-medium'
-                    : 'border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:bg-zinc-800'
+                    ? 'border-[#78330f] bg-[#b8531e] text-white font-bold'
+                    : 'border-orange-200 bg-[#fcfaf7] text-zinc-700 hover:border-[#cc6b35] hover:text-[#b8531e]'
                 }`}
               >
                 {option.label}

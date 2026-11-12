@@ -125,9 +125,13 @@ export default function SettingsPage() {
     try {
       const res = await fetch('/api/user/profile', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(currentUser?.email ? { 'x-user-email': currentUser.email } : {}),
+        },
         body: JSON.stringify({
           username,
+          callerEmail: currentUser?.email,
           name,
           bio,
           company,
@@ -173,22 +177,22 @@ export default function SettingsPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-20">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-orange-200 pb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-950 flex items-center gap-2.5">
             <span>Account Settings</span>
-            <Badge variant="outline" className="text-zinc-400 border-zinc-700 font-mono text-[11px]">
+            <Badge variant="outline" className="text-zinc-600 border-orange-200 font-mono text-[11px]">
               @{username}
             </Badge>
           </h1>
-          <p className="text-xs text-zinc-400 mt-1">
+          <p className="text-xs text-zinc-600 mt-1">
             Manage your developer profile, marketplace payouts, notification alerts, and API authentication.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link href={`/${username}`}>
-            <Button variant="outline" size="sm" className="gap-2 text-xs border-white/[0.1] text-zinc-300 hover:text-white">
+            <Button variant="outline" size="sm" className="gap-2 text-xs border-orange-200 text-zinc-800 hover:text-zinc-950">
               <span>View Public Profile</span>
               <ExternalLink className="h-3.5 w-3.5" />
             </Button>
@@ -197,12 +201,12 @@ export default function SettingsPage() {
             size="sm"
             onClick={handleSave}
             disabled={isSaving}
-            className="gap-2 text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium shadow-lg shadow-emerald-500/20"
+            className="gap-2 text-xs bg-[#b8531e] hover:bg-[#b8531e] text-white font-medium shadow-lg shadow-[#e8c3a8]"
           >
             {isSaving ? (
               <RefreshCw className="h-3.5 w-3.5 animate-spin" />
             ) : saveSuccess ? (
-              <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+              <CheckCircle2 className="h-3.5 w-3.5 text-zinc-950" />
             ) : (
               <Save className="h-3.5 w-3.5" />
             )}
@@ -212,8 +216,8 @@ export default function SettingsPage() {
       </div>
 
       {saveSuccess && (
-        <div className="p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-950/40 text-emerald-300 text-xs flex items-center gap-2">
-          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+        <div className="p-3.5 rounded-xl border border-[#cc6b35] bg-[#f7ece1] text-[#b8531e] text-xs flex items-center gap-2">
+          <CheckCircle2 className="h-4 w-4 shrink-0 text-[#b8531e]" />
           <span>Your settings and profile updates have been successfully saved to MongoDB.</span>
         </div>
       )}
@@ -227,8 +231,8 @@ export default function SettingsPage() {
             onClick={() => setActiveTab('profile')}
             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-left ${
               activeTab === 'profile'
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
+                ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#faf5ef]'
             }`}
           >
             <User className="h-4 w-4" />
@@ -240,8 +244,8 @@ export default function SettingsPage() {
             onClick={() => setActiveTab('payouts')}
             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-left ${
               activeTab === 'payouts'
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
+                ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#faf5ef]'
             }`}
           >
             <CreditCard className="h-4 w-4" />
@@ -253,8 +257,8 @@ export default function SettingsPage() {
             onClick={() => setActiveTab('notifications')}
             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-left ${
               activeTab === 'notifications'
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
+                ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#faf5ef]'
             }`}
           >
             <Bell className="h-4 w-4" />
@@ -266,8 +270,8 @@ export default function SettingsPage() {
             onClick={() => setActiveTab('api')}
             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-left ${
               activeTab === 'api'
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
+                ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#faf5ef]'
             }`}
           >
             <Key className="h-4 w-4" />
@@ -279,8 +283,8 @@ export default function SettingsPage() {
             onClick={() => setActiveTab('security')}
             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-left ${
               activeTab === 'security'
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
+                ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#faf5ef]'
             }`}
           >
             <Shield className="h-4 w-4" />
@@ -292,114 +296,114 @@ export default function SettingsPage() {
         <div className="md:col-span-3 space-y-6">
           {/* TAB 1: PUBLIC PROFILE */}
           {activeTab === 'profile' && (
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-6">
+            <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-6">
               <div>
-                <h2 className="text-base font-semibold text-white">Public Developer Profile</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <h2 className="text-base font-semibold text-zinc-950">Public Developer Profile</h2>
+                <p className="text-xs text-zinc-600 mt-0.5">
                   This information will be displayed publicly on your DevKit profile and repository pages.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-zinc-300">Display Name</label>
+                  <label className="text-xs font-mono text-zinc-800">Display Name</label>
                   <Input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Ashutosh Dubey"
-                    className="border-white/[0.1] bg-[#141822] text-xs text-white"
+                    className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-zinc-300">Username</label>
+                  <label className="text-xs font-mono text-zinc-800">Username</label>
                   <Input
                     value={username}
                     disabled
-                    className="border-white/[0.08] bg-[#0e1017] text-xs text-zinc-500 cursor-not-allowed font-mono"
+                    className="border-orange-200 bg-white text-xs text-zinc-600 cursor-not-allowed font-mono"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-mono text-zinc-300">Bio</label>
+                <label className="text-xs font-mono text-zinc-800">Bio</label>
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   rows={2}
                   placeholder="Tell the developer community about yourself..."
-                  className="w-full rounded-xl border border-white/[0.1] bg-[#141822] p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full rounded-xl border border-orange-200 bg-[#faf5ef] p-3 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#cc6b35]"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-zinc-300 flex items-center gap-1.5">
-                    <Building className="h-3.5 w-3.5 text-zinc-500" />
+                  <label className="text-xs font-mono text-zinc-800 flex items-center gap-1.5">
+                    <Building className="h-3.5 w-3.5 text-zinc-600" />
                     <span>Company / Organization</span>
                   </label>
                   <Input
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="e.g. Acme Corp"
-                    className="border-white/[0.1] bg-[#141822] text-xs text-white"
+                    className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-zinc-300 flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-zinc-500" />
+                  <label className="text-xs font-mono text-zinc-800 flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-zinc-600" />
                     <span>Location</span>
                   </label>
                   <Input
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g. Bengaluru, India"
-                    className="border-white/[0.1] bg-[#141822] text-xs text-white"
+                    className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-zinc-300 flex items-center gap-1.5">
-                    <Globe className="h-3.5 w-3.5 text-zinc-500" />
+                  <label className="text-xs font-mono text-zinc-800 flex items-center gap-1.5">
+                    <Globe className="h-3.5 w-3.5 text-zinc-600" />
                     <span>Website URL</span>
                   </label>
                   <Input
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
                     placeholder="https://..."
-                    className="border-white/[0.1] bg-[#141822] text-xs text-white"
+                    className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-zinc-300 flex items-center gap-1.5">
-                    <Github className="h-3.5 w-3.5 text-zinc-500" />
+                  <label className="text-xs font-mono text-zinc-800 flex items-center gap-1.5">
+                    <Github className="h-3.5 w-3.5 text-zinc-600" />
                     <span>GitHub Username</span>
                   </label>
                   <Input
                     value={githubUsername}
                     onChange={(e) => setGithubUsername(e.target.value)}
                     placeholder="github_handle"
-                    className="border-white/[0.1] bg-[#141822] text-xs text-white font-mono"
+                    className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950 font-mono"
                   />
                 </div>
               </div>
 
               {/* Skills Editor */}
-              <div className="space-y-2 pt-2 border-t border-white/[0.08]">
-                <label className="text-xs font-mono text-zinc-300">Technical Skills & Stack</label>
+              <div className="space-y-2 pt-2 border-t border-orange-200">
+                <label className="text-xs font-mono text-zinc-800">Technical Skills & Stack</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {skills.map((skill) => (
                     <span
                       key={skill}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.1] bg-[#141822] px-2.5 py-1 text-xs text-zinc-300"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200 bg-[#faf5ef] px-2.5 py-1 text-xs text-zinc-800"
                     >
                       <span>{skill}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveSkill(skill)}
-                        className="text-zinc-500 hover:text-red-400"
+                        className="text-zinc-600 hover:text-red-700"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -417,14 +421,14 @@ export default function SettingsPage() {
                       }
                     }}
                     placeholder="Add a technology (e.g. Next.js 15, PyTorch)..."
-                    className="border-white/[0.1] bg-[#141822] text-xs text-white flex-1"
+                    className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950 flex-1"
                   />
                   <Button
                     type="button"
                     onClick={handleAddSkill}
                     variant="outline"
                     size="sm"
-                    className="border-white/[0.1] text-xs text-zinc-300 hover:text-white"
+                    className="border-orange-200 text-xs text-zinc-800 hover:text-zinc-950"
                   >
                     <Plus className="h-3.5 w-3.5 mr-1" />
                     Add
@@ -433,19 +437,19 @@ export default function SettingsPage() {
               </div>
 
               {/* Profile README */}
-              <div className="space-y-1.5 pt-2 border-t border-white/[0.08]">
+              <div className="space-y-1.5 pt-2 border-t border-orange-200">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono text-zinc-300 flex items-center gap-1.5">
-                    <Code2 className="h-3.5 w-3.5 text-zinc-500" />
+                  <label className="text-xs font-mono text-zinc-800 flex items-center gap-1.5">
+                    <Code2 className="h-3.5 w-3.5 text-zinc-600" />
                     <span>Profile README.md</span>
                   </label>
-                  <span className="text-[10px] text-zinc-500 font-mono">Supports Markdown & GFM</span>
+                  <span className="text-[10px] text-zinc-600 font-mono">Supports Markdown & GFM</span>
                 </div>
                 <textarea
                   value={profileReadme}
                   onChange={(e) => setProfileReadme(e.target.value)}
                   rows={6}
-                  className="w-full rounded-xl border border-white/[0.1] bg-[#141822] p-3 text-xs font-mono text-zinc-200 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full rounded-xl border border-orange-200 bg-[#faf5ef] p-3 text-xs font-mono text-zinc-900 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#cc6b35]"
                 />
               </div>
             </div>
@@ -453,74 +457,74 @@ export default function SettingsPage() {
 
           {/* TAB 2: PAYOUTS & BANKING */}
           {activeTab === 'payouts' && (
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-6">
+            <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-6">
               <div>
-                <h2 className="text-base font-semibold text-white">Marketplace Payouts & Settlement</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <h2 className="text-base font-semibold text-zinc-950">Marketplace Payouts & Settlement</h2>
+                <p className="text-xs text-zinc-600 mt-0.5">
                   Configure where your earnings from kits, repositories, and AI prompts are automatically transferred via Razorpay Route.
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-950/20 flex items-center justify-between">
+              <div className="p-4 rounded-xl border border-[#cc6b35] bg-[#f7ece1] flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-semibold text-white">Merchant Seller Status</div>
-                  <div className="text-[11px] text-zinc-400 mt-0.5">
-                    Razorpay Connected Account: <span className="font-mono text-emerald-400">rzp_acc_devkit_live</span>
+                  <div className="text-xs font-semibold text-zinc-950">Merchant Seller Status</div>
+                  <div className="text-[11px] text-zinc-600 mt-0.5">
+                    Razorpay Connected Account: <span className="font-mono text-[#b8531e]">rzp_acc_devkit_live</span>
                   </div>
                 </div>
-                <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-[11px]">
+                <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-[11px]">
                   KYC Verified
                 </Badge>
               </div>
 
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-zinc-300">Direct UPI ID (Instant Payouts)</label>
+                  <label className="text-xs font-mono text-zinc-800">Direct UPI ID (Instant Payouts)</label>
                   <Input
                     value={payoutUpiId}
                     onChange={(e) => setPayoutUpiId(e.target.value)}
                     placeholder="username@bank"
-                    className="border-white/[0.1] bg-[#141822] text-xs text-white font-mono"
+                    className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950 font-mono"
                   />
-                  <p className="text-[10px] text-zinc-500">
+                  <p className="text-[10px] text-zinc-600">
                     Instant daily settlements directly to your UPI handle without gateway transfer delay.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-mono text-zinc-300">Account Holder Name</label>
+                    <label className="text-xs font-mono text-zinc-800">Account Holder Name</label>
                     <Input
                       value={payoutAccountName}
                       onChange={(e) => setPayoutAccountName(e.target.value)}
                       placeholder="Full Name as per Bank Account"
-                      className="border-white/[0.1] bg-[#141822] text-xs text-white"
+                      className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-mono text-zinc-300">IFSC Code</label>
+                    <label className="text-xs font-mono text-zinc-800">IFSC Code</label>
                     <Input
                       value={payoutIfsc}
                       onChange={(e) => setPayoutIfsc(e.target.value.toUpperCase())}
                       placeholder="e.g. HDFC0001234"
-                      className="border-white/[0.1] bg-[#141822] text-xs text-white font-mono uppercase"
+                      className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950 font-mono uppercase"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-zinc-300">Bank Account Number</label>
+                  <label className="text-xs font-mono text-zinc-800">Bank Account Number</label>
                   <Input
                     value={payoutAccountNumber}
                     onChange={(e) => setPayoutAccountNumber(e.target.value)}
                     placeholder="Account Number"
-                    className="border-white/[0.1] bg-[#141822] text-xs text-white font-mono"
+                    className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950 font-mono"
                   />
                 </div>
 
                 <div className="space-y-1.5 pt-2">
-                  <label className="text-xs font-mono text-zinc-300">Payout Schedule</label>
+                  <label className="text-xs font-mono text-zinc-800">Payout Schedule</label>
                   <div className="grid grid-cols-3 gap-2">
                     {['daily', 'weekly', 'monthly'].map((freq) => (
                       <button
@@ -529,8 +533,8 @@ export default function SettingsPage() {
                         onClick={() => setPayoutFrequency(freq)}
                         className={`p-2.5 rounded-xl border text-xs font-medium capitalize transition-all ${
                           payoutFrequency === freq
-                            ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-400'
-                            : 'border-white/[0.08] bg-[#141822] text-zinc-400 hover:text-white'
+                            ? 'border-[#cc6b35] bg-[#f7ece1] text-[#b8531e]'
+                            : 'border-orange-200 bg-[#faf5ef] text-zinc-600 hover:text-zinc-950'
                         }`}
                       >
                         {freq}
@@ -544,19 +548,19 @@ export default function SettingsPage() {
 
           {/* TAB 3: NOTIFICATIONS */}
           {activeTab === 'notifications' && (
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-6">
+            <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-6">
               <div>
-                <h2 className="text-base font-semibold text-white">Notification Preferences</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <h2 className="text-base font-semibold text-zinc-950">Notification Preferences</h2>
+                <p className="text-xs text-zinc-600 mt-0.5">
                   Select which notifications and alerts you receive in-app and via email.
                 </p>
               </div>
 
-              <div className="space-y-4 divide-y divide-white/[0.08]">
+              <div className="space-y-4 divide-y divide-orange-100">
                 <div className="flex items-center justify-between pt-3 first:pt-0">
                   <div>
-                    <div className="text-xs font-medium text-white">New Sales & Order Completed</div>
-                    <div className="text-[11px] text-zinc-400">
+                    <div className="text-xs font-medium text-zinc-950">New Sales & Order Completed</div>
+                    <div className="text-[11px] text-zinc-600">
                       Get notified whenever a customer buys your starter kit or prompt blueprint.
                     </div>
                   </div>
@@ -564,14 +568,14 @@ export default function SettingsPage() {
                     type="checkbox"
                     checked={notifications.saleAlerts}
                     onChange={(e) => setNotifications({ ...notifications, saleAlerts: e.target.checked })}
-                    className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500"
+                    className="h-4 w-4 rounded border-orange-200 bg-[#faf5ef] text-emerald-500 focus:ring-[#cc6b35]"
                   />
                 </div>
 
                 <div className="flex items-center justify-between pt-3">
                   <div>
-                    <div className="text-xs font-medium text-white">In-App Chat Messages</div>
-                    <div className="text-[11px] text-zinc-400">
+                    <div className="text-xs font-medium text-zinc-950">In-App Chat Messages</div>
+                    <div className="text-[11px] text-zinc-600">
                       Alerts when buyers or sellers send you inquiries or support messages.
                     </div>
                   </div>
@@ -579,14 +583,14 @@ export default function SettingsPage() {
                     type="checkbox"
                     checked={notifications.chatMessages}
                     onChange={(e) => setNotifications({ ...notifications, chatMessages: e.target.checked })}
-                    className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500"
+                    className="h-4 w-4 rounded border-orange-200 bg-[#faf5ef] text-emerald-500 focus:ring-[#cc6b35]"
                   />
                 </div>
 
                 <div className="flex items-center justify-between pt-3">
                   <div>
-                    <div className="text-xs font-medium text-white">Security & Secret Scanner Alerts</div>
-                    <div className="text-[11px] text-zinc-400">
+                    <div className="text-xs font-medium text-zinc-950">Security & Secret Scanner Alerts</div>
+                    <div className="text-[11px] text-zinc-600">
                       Instant alerts if an uploaded repository contains leaked API tokens or suspicious binaries.
                     </div>
                   </div>
@@ -594,14 +598,14 @@ export default function SettingsPage() {
                     type="checkbox"
                     checked={notifications.securityAlerts}
                     onChange={(e) => setNotifications({ ...notifications, securityAlerts: e.target.checked })}
-                    className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500"
+                    className="h-4 w-4 rounded border-orange-200 bg-[#faf5ef] text-emerald-500 focus:ring-[#cc6b35]"
                   />
                 </div>
 
                 <div className="flex items-center justify-between pt-3">
                   <div>
-                    <div className="text-xs font-medium text-white">Platform News & Feature Releases</div>
-                    <div className="text-[11px] text-zinc-400">
+                    <div className="text-xs font-medium text-zinc-950">Platform News & Feature Releases</div>
+                    <div className="text-[11px] text-zinc-600">
                       Monthly digest of DevKit AI Studio models, platform features, and trending kits.
                     </div>
                   </div>
@@ -609,7 +613,7 @@ export default function SettingsPage() {
                     type="checkbox"
                     checked={notifications.emailUpdates}
                     onChange={(e) => setNotifications({ ...notifications, emailUpdates: e.target.checked })}
-                    className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500"
+                    className="h-4 w-4 rounded border-orange-200 bg-[#faf5ef] text-emerald-500 focus:ring-[#cc6b35]"
                   />
                 </div>
               </div>
@@ -618,58 +622,58 @@ export default function SettingsPage() {
 
           {/* TAB 4: API & WEBHOOKS */}
           {activeTab === 'api' && (
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-6">
+            <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-6">
               <div>
-                <h2 className="text-base font-semibold text-white">Developer API & Webhooks</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <h2 className="text-base font-semibold text-zinc-950">Developer API & Webhooks</h2>
+                <p className="text-xs text-zinc-600 mt-0.5">
                   Use this token to interact programmatically with your DevKit repositories, prompts, and sales.
                 </p>
               </div>
 
               {/* Personal Access Token */}
               <div className="space-y-2">
-                <label className="text-xs font-mono text-zinc-300">Personal Access Token (DevKit PAT)</label>
+                <label className="text-xs font-mono text-zinc-800">Personal Access Token (DevKit PAT)</label>
                 <div className="flex gap-2">
                   <Input
                     value={apiKey}
                     readOnly
-                    className="border-white/[0.1] bg-[#141822] text-xs font-mono text-zinc-300 flex-1"
+                    className="border-orange-200 bg-[#faf5ef] text-xs font-mono text-zinc-800 flex-1"
                   />
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={copyApiKey}
-                    className="border-white/[0.1] text-xs text-zinc-300 hover:text-white"
+                    className="border-orange-200 text-xs text-zinc-800 hover:text-zinc-950"
                   >
-                    {apiKeyCopied ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
+                    {apiKeyCopied ? <CheckCircle2 className="h-3.5 w-3.5 text-[#b8531e]" /> : <Copy className="h-3.5 w-3.5" />}
                   </Button>
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={regenerateApiKey}
-                    className="border-white/[0.1] text-xs text-zinc-300 hover:text-white"
+                    className="border-orange-200 text-xs text-zinc-800 hover:text-zinc-950"
                   >
                     <RefreshCw className="h-3.5 w-3.5" />
                   </Button>
                 </div>
-                <p className="text-[10px] text-zinc-500 font-mono">
+                <p className="text-[10px] text-zinc-600 font-mono">
                   Keep this token confidential. Never expose it in client-side repositories or public commits.
                 </p>
               </div>
 
               {/* Webhook Endpoint */}
-              <div className="space-y-2 pt-4 border-t border-white/[0.08]">
-                <label className="text-xs font-mono text-zinc-300">Webhook Notification URL</label>
+              <div className="space-y-2 pt-4 border-t border-orange-200">
+                <label className="text-xs font-mono text-zinc-800">Webhook Notification URL</label>
                 <Input
                   value={webhookUrl}
                   onChange={(e) => setWebhookUrl(e.target.value)}
                   placeholder="https://..."
-                  className="border-white/[0.1] bg-[#141822] text-xs text-white font-mono"
+                  className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950 font-mono"
                 />
-                <p className="text-[10px] text-zinc-500">
-                  DevKit will send POST events for <code className="text-emerald-400">order.paid</code>, <code className="text-emerald-400">repo.starred</code>, and <code className="text-emerald-400">prompt.run</code>.
+                <p className="text-[10px] text-zinc-600">
+                  DevKit will send POST events for <code className="text-[#b8531e]">order.paid</code>, <code className="text-[#b8531e]">repo.starred</code>, and <code className="text-[#b8531e]">prompt.run</code>.
                 </p>
               </div>
             </div>
@@ -677,40 +681,40 @@ export default function SettingsPage() {
 
           {/* TAB 5: SECURITY & SESSIONS */}
           {activeTab === 'security' && (
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-6">
+            <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-6">
               <div>
-                <h2 className="text-base font-semibold text-white">Security & Active Sessions</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <h2 className="text-base font-semibold text-zinc-950">Security & Active Sessions</h2>
+                <p className="text-xs text-zinc-600 mt-0.5">
                   Manage your OAuth logins, active device sessions, and account protection.
                 </p>
               </div>
 
               {/* Connected OAuth Accounts */}
               <div className="space-y-3">
-                <div className="text-xs font-mono text-zinc-300">Connected Authentication Providers</div>
+                <div className="text-xs font-mono text-zinc-800">Connected Authentication Providers</div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex items-center justify-between p-3 rounded-xl border border-white/[0.08] bg-[#141822]">
+                  <div className="flex items-center justify-between p-3 rounded-xl border border-orange-200 bg-[#faf5ef]">
                     <div className="flex items-center gap-2.5">
-                      <Github className="h-4 w-4 text-white" />
+                      <Github className="h-4 w-4 text-zinc-950" />
                       <div>
-                        <div className="text-xs font-medium text-white">GitHub OAuth</div>
-                        <div className="text-[10px] text-zinc-400">Connected as @{githubUsername}</div>
+                        <div className="text-xs font-medium text-zinc-950">GitHub OAuth</div>
+                        <div className="text-[10px] text-zinc-600">Connected as @{githubUsername}</div>
                       </div>
                     </div>
-                    <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-[10px]">
+                    <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-[10px]">
                       Connected
                     </Badge>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 rounded-xl border border-white/[0.08] bg-[#141822]">
+                  <div className="flex items-center justify-between p-3 rounded-xl border border-orange-200 bg-[#faf5ef]">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-bold text-xs text-blue-400">G</span>
+                      <span className="font-bold text-xs text-[#b8531e]">G</span>
                       <div>
-                        <div className="text-xs font-medium text-white">Google Account</div>
-                        <div className="text-[10px] text-zinc-400">OAuth Active</div>
+                        <div className="text-xs font-medium text-zinc-950">Google Account</div>
+                        <div className="text-[10px] text-zinc-600">OAuth Active</div>
                       </div>
                     </div>
-                    <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-[10px]">
+                    <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-[10px]">
                       Connected
                     </Badge>
                   </div>
@@ -718,19 +722,19 @@ export default function SettingsPage() {
               </div>
 
               {/* Active Session */}
-              <div className="pt-4 border-t border-white/[0.08] space-y-3">
-                <div className="text-xs font-mono text-zinc-300">Current Session</div>
-                <div className="p-3.5 rounded-xl border border-white/[0.08] bg-[#141822] flex items-center justify-between">
+              <div className="pt-4 border-t border-orange-200 space-y-3">
+                <div className="text-xs font-mono text-zinc-800">Current Session</div>
+                <div className="p-3.5 rounded-xl border border-orange-200 bg-[#faf5ef] flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <div className="text-xs font-medium text-white flex items-center gap-2">
+                    <div className="text-xs font-medium text-zinc-950 flex items-center gap-2">
                       <span>Windows • Chrome Browser</span>
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#cc6b35]" />
                     </div>
-                    <div className="text-[10px] text-zinc-500 font-mono">
+                    <div className="text-[10px] text-zinc-600 font-mono">
                       IP: 103.21.x.x (Bengaluru, India) • Active now
                     </div>
                   </div>
-                  <Badge variant="outline" className="text-zinc-400 border-zinc-700 text-[10px]">
+                  <Badge variant="outline" className="text-zinc-600 border-orange-200 text-[10px]">
                     Current Device
                   </Badge>
                 </div>
@@ -738,18 +742,18 @@ export default function SettingsPage() {
 
               {/* Danger Zone */}
               <div className="pt-4 border-t border-red-500/20 space-y-3">
-                <div className="text-xs font-mono text-red-400">Danger Zone</div>
-                <div className="p-4 rounded-xl border border-red-500/20 bg-red-950/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="text-xs font-mono text-red-700">Danger Zone</div>
+                <div className="p-4 rounded-xl border border-red-500/20 bg-red-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <div className="text-xs font-semibold text-white">Deactivate Account</div>
-                    <div className="text-[11px] text-zinc-400">
+                    <div className="text-xs font-semibold text-zinc-950">Deactivate Account</div>
+                    <div className="text-[11px] text-zinc-600">
                       Permanently unpublish your repositories, kits, and prompt listings.
                     </div>
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-red-500/30 text-red-400 hover:bg-red-500/10 text-xs shrink-0"
+                    className="border-red-500/30 text-red-700 hover:bg-red-50 text-xs shrink-0"
                   >
                     Delete Account
                   </Button>

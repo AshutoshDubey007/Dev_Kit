@@ -25,13 +25,13 @@ export default function OnboardingPage() {
     <div className="max-w-2xl mx-auto py-16 px-4 space-y-8">
       {/* Welcome Banner */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3.5 py-1 text-xs text-emerald-300 font-mono">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#cc6b35] bg-[#f7ece1] px-3.5 py-1 text-xs text-[#b8531e] font-mono">
           <span>✨ Account Created Successfully</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-950">
           Welcome to DevKit, {currentUser?.name?.split(' ')[0] || 'Developer'}!
         </h1>
-        <p className="text-sm text-zinc-400 max-w-lg mx-auto leading-relaxed">
+        <p className="text-sm text-zinc-600 max-w-lg mx-auto leading-relaxed">
           How would you like to get started today? You can switch roles or do both anytime.
         </p>
       </div>
@@ -39,10 +39,10 @@ export default function OnboardingPage() {
       {/* Choice Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Buyer Path */}
-        <div className="relative group rounded-2xl border border-white/[0.1] bg-[#0c0f17]/90 p-6 shadow-xl backdrop-blur-xl flex flex-col justify-between hover:border-emerald-500/60 transition-all duration-300">
+        <div className="relative group rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl flex flex-col justify-between hover:border-[#cc6b35] transition-all duration-300">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-950/60 border border-emerald-800/60 text-2xl">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f7ece1] border border-[#cc6b35] text-2xl">
                 🛒
               </span>
               <Badge variant="secondary" size="sm" className="font-mono text-[10px]">
@@ -51,25 +51,25 @@ export default function OnboardingPage() {
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
+              <h2 className="text-lg font-bold text-zinc-950 group-hover:text-[#b8531e] transition-colors">
                 I want to Buy Code Kits
               </h2>
-              <p className="mt-2 text-xs text-zinc-400 leading-relaxed">
+              <p className="mt-2 text-xs text-zinc-600 leading-relaxed">
                 Browse production-ready Next.js 15 integration modules: Razorpay webhook idempotency, enterprise RBAC, and streaming RAG pipelines.
               </p>
             </div>
 
-            <ul className="space-y-2 pt-2 border-t border-white/[0.06] text-xs text-zinc-300">
+            <ul className="space-y-2 pt-2 border-t border-orange-200 text-xs text-zinc-800">
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span>
+                <span className="text-[#b8531e]">✓</span>
                 <span>100% Automated Test Pass Guarantee</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span>
+                <span className="text-[#b8531e]">✓</span>
                 <span>Direct Seller Support Chat</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-emerald-400">✓</span>
+                <span className="text-[#b8531e]">✓</span>
                 <span>Unrestricted Commercial License</span>
               </li>
             </ul>
@@ -81,7 +81,7 @@ export default function OnboardingPage() {
               variant="primary"
               size="md"
               onClick={handleChooseBuyer}
-              className="w-full text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 py-2.5"
+              className="w-full text-xs font-semibold bg-[#b8531e] hover:bg-[#b8531e] text-white shadow-md shadow-[#e8c3a8] py-2.5"
             >
               Explore Kits &amp; Buy →
             </Button>
@@ -89,10 +89,10 @@ export default function OnboardingPage() {
         </div>
 
         {/* Seller Path */}
-        <div className="relative group rounded-2xl border border-white/[0.1] bg-[#0c0f17]/90 p-6 shadow-xl backdrop-blur-xl flex flex-col justify-between hover:border-blue-500/60 transition-all duration-300">
+        <div className="relative group rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl flex flex-col justify-between hover:border-[#cc6b35] transition-all duration-300">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-950/60 border border-blue-800/60 text-2xl">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f7ece1] border border-[#cc6b35] text-2xl">
                 👨‍💻
               </span>
               <Badge variant="purple" size="sm" className="font-mono text-[10px]">
@@ -101,25 +101,25 @@ export default function OnboardingPage() {
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-white group-hover:text-blue-300 transition-colors">
+              <h2 className="text-lg font-bold text-zinc-950 group-hover:text-[#b8531e] transition-colors">
                 I want to Sell My Code
               </h2>
-              <p className="mt-2 text-xs text-zinc-400 leading-relaxed">
+              <p className="mt-2 text-xs text-zinc-600 leading-relaxed">
                 Turn your tested Next.js integrations into recurring revenue. Upload your code and setup guide, and earn on every purchase.
               </p>
             </div>
 
-            <ul className="space-y-2 pt-2 border-t border-white/[0.06] text-xs text-zinc-300">
+            <ul className="space-y-2 pt-2 border-t border-orange-200 text-xs text-zinc-800">
               <li className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
+                <span className="text-[#b8531e]">✓</span>
                 <span>First 3 kit listings are 100% Free</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
+                <span className="text-[#b8531e]">✓</span>
                 <span>Auto-connection to buyers on purchase</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-blue-400">✓</span>
+                <span className="text-[#b8531e]">✓</span>
                 <span>Automated README delivery in chat</span>
               </li>
             </ul>
@@ -131,7 +131,7 @@ export default function OnboardingPage() {
               variant="primary"
               size="md"
               onClick={handleChooseSeller}
-              className="w-full text-xs font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-blue-600/20 py-2.5"
+              className="w-full text-xs font-semibold bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-blue-600/20 py-2.5"
             >
               Open Seller Studio →
             </Button>
@@ -144,7 +144,7 @@ export default function OnboardingPage() {
         <button
           type="button"
           onClick={handleChooseBuyer}
-          className="text-xs text-zinc-500 hover:text-zinc-300 underline underline-offset-4 transition-colors font-mono"
+          className="text-xs text-zinc-600 hover:text-zinc-800 underline underline-offset-4 transition-colors font-mono"
         >
           Skip for now, take me to home page →
         </button>

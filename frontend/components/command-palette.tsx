@@ -133,13 +133,13 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-zinc-950/60 backdrop-blur-sm animate-in fade-in duration-150">
       <div className="fixed inset-0" onClick={onClose} />
 
-      <div className="relative w-full max-w-2xl rounded-2xl border border-white/[0.12] bg-[#0c0e14] shadow-2xl shadow-black/80 overflow-hidden z-10 flex flex-col max-h-[75vh]">
+      <div className="relative w-full max-w-2xl rounded-2xl border-2 border-[#cc6b35] bg-white shadow-[6px_6px_0px_#cc6b35] overflow-hidden z-10 flex flex-col max-h-[75vh]">
         {/* Search Input Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.08] bg-[#0e111a]">
-          <Search className="h-5 w-5 text-zinc-400 shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b-2 border-orange-100 bg-[#faf5ef]">
+          <Search className="h-5 w-5 text-[#b8531e] shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -150,14 +150,14 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
             }}
             onKeyDown={handleInputKeyDown}
             placeholder="Type a command or search repos, kits, prompts, tools..."
-            className="w-full bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none"
+            className="w-full bg-transparent text-sm text-zinc-950 placeholder-zinc-500 focus:outline-none"
           />
           {query && (
-            <button type="button" onClick={() => setQuery('')} className="text-zinc-500 hover:text-white">
+            <button type="button" onClick={() => setQuery('')} className="text-[#b8531e] hover:text-zinc-950">
               <X className="h-4 w-4" />
             </button>
           )}
-          <span className="rounded bg-white/[0.06] border border-white/[0.08] px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
+          <span className="keycap rounded px-1.5 py-0.5 text-[10px] font-pixel">
             ESC
           </span>
         </div>
@@ -166,8 +166,8 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         <div className="overflow-y-auto p-2 space-y-1">
           {allResults.length === 0 ? (
             <div className="py-12 text-center space-y-2">
-              <p className="text-sm text-zinc-400">No results found for "{query}"</p>
-              <p className="text-xs text-zinc-500">Try searching for "razorpay", "auth", "saas", "repos", or "studio"</p>
+              <p className="text-sm font-pixel text-zinc-800">No results found for "{query}"</p>
+              <p className="text-xs text-zinc-600">Try searching for "razorpay", "auth", "saas", "repos", or "studio"</p>
             </div>
           ) : (
             allResults.map((item, idx) => {
@@ -179,29 +179,33 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                   type="button"
                   onClick={() => handleSelect(item.href)}
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl text-left transition-colors ${
-                    isSelected ? 'bg-indigo-600/20 border border-indigo-500/40 text-white' : 'text-zinc-300 hover:bg-white/[0.04]'
+                  className={`w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl text-left transition-colors border-2 ${
+                    isSelected
+                      ? 'bg-[#f7ece1] border-[#cc6b35] text-zinc-950'
+                      : 'border-transparent text-zinc-800 hover:bg-orange-50'
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <div
-                      className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-indigo-500 text-white' : 'bg-white/[0.06] text-zinc-400'
+                      className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 border ${
+                        isSelected
+                          ? 'bg-[#b8531e] border-[#78330f] text-white'
+                          : 'bg-[#faf5ef] border-orange-200 text-[#b8531e]'
                       }`}
                     >
                       <Icon className="h-4 w-4" />
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-white truncate">{item.title}</span>
-                        <span className="rounded px-1.5 py-0.2 text-[9px] font-mono bg-white/[0.06] text-zinc-400">
+                        <span className="text-xs font-pixel font-bold text-zinc-950 truncate">{item.title}</span>
+                        <span className="rounded px-1.5 py-0.5 text-[10px] font-pixel bg-orange-100 text-[#964115] border border-orange-200">
                           {item.category}
                         </span>
                       </div>
-                      <p className="text-[11px] text-zinc-400 truncate">{item.subtitle}</p>
+                      <p className="text-[11px] text-zinc-600 truncate">{item.subtitle}</p>
                     </div>
                   </div>
-                  <ArrowRight className={`h-3.5 w-3.5 text-zinc-500 shrink-0 ${isSelected ? 'text-indigo-400' : 'opacity-0'}`} />
+                  <ArrowRight className={`h-3.5 w-3.5 shrink-0 ${isSelected ? 'text-[#b8531e]' : 'opacity-0'}`} />
                 </button>
               );
             })
@@ -209,13 +213,13 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         </div>
 
         {/* Footer shortcuts */}
-        <div className="flex items-center justify-between px-4 py-2 border-t border-white/[0.06] bg-[#080a0f] text-[10px] text-zinc-500 font-mono">
+        <div className="flex items-center justify-between px-4 py-2 border-t-2 border-orange-100 bg-[#faf5ef] text-[10px] text-[#964115] font-pixel">
           <div className="flex items-center gap-3">
             <span>↑↓ Navigate</span>
             <span>↵ Select</span>
             <span>ESC Close</span>
           </div>
-          <span>DevKit Command Palette</span>
+          <span>DevKit Arcade Palette</span>
         </div>
       </div>
     </div>

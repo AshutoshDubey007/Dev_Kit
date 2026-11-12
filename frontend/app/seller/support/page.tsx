@@ -169,16 +169,16 @@ export default function SellerCustomerSupportPage() {
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-orange-200 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-900/60 bg-indigo-950/40 px-3 py-1 text-xs text-indigo-400 font-mono mb-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#cc6b35] bg-[#f7ece1] px-3 py-1 text-xs text-[#b8531e] font-mono mb-2">
             <LifeBuoy className="h-3.5 w-3.5" />
             <span>DevKit Seller Desk • Customer Support & Verification</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 tracking-tight">
             Customer Support Tickets
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-zinc-600 mt-1">
             Manage buyer defect reports, reply inside secure chat threads, and propose resolutions during the 7-day guarantee window.
           </p>
         </div>
@@ -189,7 +189,7 @@ export default function SellerCustomerSupportPage() {
             size="sm"
             onClick={fetchTickets}
             disabled={isLoading}
-            className="text-xs border-zinc-800 text-zinc-300 hover:text-white"
+            className="text-xs border-orange-200 text-zinc-800 hover:text-zinc-950"
           >
             <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${isLoading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
@@ -208,13 +208,13 @@ export default function SellerCustomerSupportPage() {
         <div
           className={`p-4 rounded-xl border text-xs flex items-center justify-between animate-fade-in ${
             toastMsg.type === 'success'
-              ? 'border-emerald-500/40 bg-emerald-950/30 text-emerald-300'
+              ? 'border-[#cc6b35] bg-[#f7ece1] text-[#b8531e]'
               : 'border-rose-500/40 bg-rose-950/30 text-rose-300'
           }`}
         >
           <div className="flex items-center gap-2.5">
             {toastMsg.type === 'success' ? (
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-[#b8531e]" />
             ) : (
               <AlertCircle className="h-4 w-4 shrink-0 text-rose-400" />
             )}
@@ -228,14 +228,14 @@ export default function SellerCustomerSupportPage() {
 
       {/* Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-950">
-          <span className="text-[11px] text-zinc-500 font-mono block">TOTAL TICKETS</span>
-          <span className="text-xl font-bold text-white mt-1 block">{tickets.length}</span>
+        <div className="p-4 rounded-xl border border-orange-200 bg-white">
+          <span className="text-[11px] text-zinc-600 font-mono block">TOTAL TICKETS</span>
+          <span className="text-xl font-bold text-zinc-950 mt-1 block">{tickets.length}</span>
         </div>
 
-        <div className="p-4 rounded-xl border border-amber-900/40 bg-amber-950/20">
-          <span className="text-[11px] text-amber-400 font-mono block">AWAITING SELLER</span>
-          <span className="text-xl font-bold text-amber-300 mt-1 block">{awaitingSeller}</span>
+        <div className="p-4 rounded-xl border border-[#cc6b35] bg-[#f7ece1]">
+          <span className="text-[11px] text-[#b8531e] font-mono block">AWAITING SELLER</span>
+          <span className="text-xl font-bold text-[#b8531e] mt-1 block">{awaitingSeller}</span>
         </div>
 
         <div className="p-4 rounded-xl border border-rose-900/40 bg-rose-950/20">
@@ -243,30 +243,30 @@ export default function SellerCustomerSupportPage() {
           <span className="text-xl font-bold text-rose-300 mt-1 block">{overdueCount}</span>
         </div>
 
-        <div className="p-4 rounded-xl border border-indigo-900/40 bg-indigo-950/20">
-          <span className="text-[11px] text-indigo-400 font-mono block">AWAITING BUYER</span>
-          <span className="text-xl font-bold text-indigo-300 mt-1 block">{awaitingBuyer}</span>
+        <div className="p-4 rounded-xl border border-[#cc6b35] bg-[#f7ece1]">
+          <span className="text-[11px] text-[#b8531e] font-mono block">AWAITING BUYER</span>
+          <span className="text-xl font-bold text-[#b8531e] mt-1 block">{awaitingBuyer}</span>
         </div>
 
-        <div className="p-4 rounded-xl border border-purple-900/40 bg-purple-950/20">
-          <span className="text-[11px] text-purple-400 font-mono block">PROPOSALS SENT</span>
-          <span className="text-xl font-bold text-purple-300 mt-1 block">{proposed}</span>
+        <div className="p-4 rounded-xl border border-[#cc6b35] bg-[#f7ece1]">
+          <span className="text-[11px] text-[#b8531e] font-mono block">PROPOSALS SENT</span>
+          <span className="text-xl font-bold text-[#b8531e] mt-1 block">{proposed}</span>
         </div>
 
-        <div className="p-4 rounded-xl border border-emerald-900/40 bg-emerald-950/20">
-          <span className="text-[11px] text-emerald-400 font-mono block">RESOLVED</span>
-          <span className="text-xl font-bold text-emerald-300 mt-1 block">{resolvedCount}</span>
+        <div className="p-4 rounded-xl border border-[#cc6b35] bg-[#f7ece1]">
+          <span className="text-[11px] text-[#b8531e] font-mono block">RESOLVED</span>
+          <span className="text-xl font-bold text-[#b8531e] mt-1 block">{resolvedCount}</span>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-zinc-800 pb-3 overflow-x-auto text-xs">
+      <div className="flex items-center gap-2 border-b border-orange-200 pb-3 overflow-x-auto text-xs">
         <button
           onClick={() => setFilterStatus('all')}
           className={`px-3 py-1.5 rounded-lg transition-all ${
             filterStatus === 'all'
-              ? 'bg-zinc-800 text-white font-semibold'
-              : 'text-zinc-400 hover:text-white'
+              ? 'bg-orange-100 text-zinc-950 font-semibold'
+              : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           All Tickets ({tickets.length})
@@ -276,8 +276,8 @@ export default function SellerCustomerSupportPage() {
           onClick={() => setFilterStatus('awaiting_seller')}
           className={`px-3 py-1.5 rounded-lg transition-all ${
             filterStatus === 'awaiting_seller'
-              ? 'bg-amber-950/60 text-amber-300 border border-amber-800/60 font-semibold'
-              : 'text-zinc-400 hover:text-white'
+              ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+              : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           Needs My Response ({awaitingSeller})
@@ -287,8 +287,8 @@ export default function SellerCustomerSupportPage() {
           onClick={() => setFilterStatus('awaiting_buyer')}
           className={`px-3 py-1.5 rounded-lg transition-all ${
             filterStatus === 'awaiting_buyer'
-              ? 'bg-indigo-950/60 text-indigo-300 border border-indigo-800/60 font-semibold'
-              : 'text-zinc-400 hover:text-white'
+              ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+              : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           Awaiting Buyer ({awaitingBuyer})
@@ -298,8 +298,8 @@ export default function SellerCustomerSupportPage() {
           onClick={() => setFilterStatus('resolution_proposed')}
           className={`px-3 py-1.5 rounded-lg transition-all ${
             filterStatus === 'resolution_proposed'
-              ? 'bg-purple-950/60 text-purple-300 border border-purple-800/60 font-semibold'
-              : 'text-zinc-400 hover:text-white'
+              ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+              : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           Resolution Proposed ({proposed})
@@ -309,8 +309,8 @@ export default function SellerCustomerSupportPage() {
           onClick={() => setFilterStatus('resolved')}
           className={`px-3 py-1.5 rounded-lg transition-all ${
             filterStatus === 'resolved'
-              ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/60 font-semibold'
-              : 'text-zinc-400 hover:text-white'
+              ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-semibold'
+              : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
           Resolved ({resolvedCount})
@@ -320,14 +320,14 @@ export default function SellerCustomerSupportPage() {
       {/* Ticket List */}
       {isLoading ? (
         <div className="py-20 text-center space-y-3">
-          <div className="h-8 w-8 mx-auto border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs text-zinc-400 font-mono">Loading support tickets...</p>
+          <div className="h-8 w-8 mx-auto border-2 border-[#cc6b35] border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs text-zinc-600 font-mono">Loading support tickets...</p>
         </div>
       ) : filteredTickets.length === 0 ? (
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-12 text-center space-y-3">
+        <div className="rounded-2xl border border-orange-200 bg-white p-12 text-center space-y-3">
           <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto" />
-          <h3 className="text-base font-bold text-white">All Clear! No Tickets In This Queue</h3>
-          <p className="text-xs text-zinc-400 max-w-sm mx-auto">
+          <h3 className="text-base font-bold text-zinc-950">All Clear! No Tickets In This Queue</h3>
+          <p className="text-xs text-zinc-600 max-w-sm mx-auto">
             You have no pending support tickets under this status filter.
           </p>
         </div>
@@ -339,33 +339,33 @@ export default function SellerCustomerSupportPage() {
             return (
               <div
                 key={t.ticketId}
-                className={`rounded-2xl border bg-zinc-950 p-6 space-y-4 shadow-xl transition-all ${
-                  overdue ? 'border-rose-900/80 bg-rose-950/10' : 'border-zinc-800 hover:border-zinc-700'
+                className={`rounded-2xl border bg-white p-6 space-y-4 shadow-xl transition-all ${
+                  overdue ? 'border-rose-900/80 bg-rose-950/10' : 'border-orange-200 hover:border-orange-200'
                 }`}
               >
                 {/* Top strip */}
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-semibold text-zinc-400">
+                      <span className="font-mono text-xs font-semibold text-zinc-600">
                         {t.ticketId}
                       </span>
                       <span className="text-zinc-600">•</span>
-                      <span className="text-xs text-zinc-300 font-medium">
+                      <span className="text-xs text-zinc-800 font-medium">
                         {t.productTitle}
                       </span>
                       <span className="text-zinc-600">•</span>
-                      <span className="text-xs text-zinc-400 font-mono">
+                      <span className="text-xs text-zinc-600 font-mono">
                         {t.orderId}
                       </span>
                     </div>
 
-                    <h2 className="text-base font-bold text-white">
+                    <h2 className="text-base font-bold text-zinc-950">
                       {t.title}
                     </h2>
 
-                    <div className="text-xs text-zinc-400 flex items-center gap-2 pt-0.5">
-                      <span>Buyer: <strong className="text-zinc-200">{t.buyerName}</strong> ({t.buyerEmail})</span>
+                    <div className="text-xs text-zinc-600 flex items-center gap-2 pt-0.5">
+                      <span>Buyer: <strong className="text-zinc-900">{t.buyerName}</strong> ({t.buyerEmail})</span>
                       <span>•</span>
                       <span>Filed: {new Date(t.createdAt).toLocaleString()}</span>
                     </div>
@@ -380,19 +380,19 @@ export default function SellerCustomerSupportPage() {
                     )}
 
                     {t.status === 'open' || t.status === 'awaiting_seller' ? (
-                      <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/40 text-xs">
+                      <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-xs">
                         Action Required
                       </Badge>
                     ) : t.status === 'awaiting_buyer' ? (
-                      <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-500/40 text-xs">
+                      <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-xs">
                         Awaiting Buyer
                       </Badge>
                     ) : t.status === 'resolution_proposed' ? (
-                      <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/40 text-xs">
+                      <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-xs">
                         Proposal Sent
                       </Badge>
                     ) : (
-                      <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40 text-xs">
+                      <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-xs">
                         ✓ Resolved
                       </Badge>
                     )}
@@ -400,10 +400,10 @@ export default function SellerCustomerSupportPage() {
                 </div>
 
                 {/* Body Details */}
-                <div className="rounded-xl bg-zinc-900/60 border border-zinc-800/80 p-4 space-y-3 text-xs">
+                <div className="rounded-xl bg-[#faf5ef] border border-orange-200 p-4 space-y-3 text-xs">
                   <div>
-                    <span className="text-zinc-500 block text-[11px] font-semibold uppercase">Description</span>
-                    <p className="text-zinc-200 mt-1 whitespace-pre-wrap leading-relaxed">
+                    <span className="text-zinc-600 block text-[11px] font-semibold uppercase">Description</span>
+                    <p className="text-zinc-900 mt-1 whitespace-pre-wrap leading-relaxed">
                       {t.description}
                     </p>
                   </div>
@@ -411,46 +411,46 @@ export default function SellerCustomerSupportPage() {
                   {t.errorMessage && (
                     <div>
                       <span className="text-rose-400 block text-[11px] font-semibold uppercase">Error Output</span>
-                      <pre className="mt-1 p-2.5 rounded bg-zinc-950 border border-zinc-800 text-rose-300 text-[11px] font-mono overflow-x-auto">
+                      <pre className="mt-1 p-2.5 rounded bg-white border border-orange-200 text-rose-300 text-[11px] font-mono overflow-x-auto">
                         {t.errorMessage}
                       </pre>
                     </div>
                   )}
 
                   {/* Environment spec */}
-                  <div className="pt-2 border-t border-zinc-800/80 grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]">
+                  <div className="pt-2 border-t border-orange-200 grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]">
                     <div>
-                      <span className="text-zinc-500">OS:</span>{' '}
-                      <span className="text-zinc-300">{t.environment.os}</span>
+                      <span className="text-zinc-600">OS:</span>{' '}
+                      <span className="text-zinc-800">{t.environment.os}</span>
                     </div>
                     <div>
-                      <span className="text-zinc-500">Runtime:</span>{' '}
-                      <span className="text-zinc-300">{t.environment.runtime} ({t.environment.nodeVersion})</span>
+                      <span className="text-zinc-600">Runtime:</span>{' '}
+                      <span className="text-zinc-800">{t.environment.runtime} ({t.environment.nodeVersion})</span>
                     </div>
                     <div>
-                      <span className="text-zinc-500">Framework:</span>{' '}
-                      <span className="text-zinc-300">{t.environment.frameworkVersion}</span>
+                      <span className="text-zinc-600">Framework:</span>{' '}
+                      <span className="text-zinc-800">{t.environment.frameworkVersion}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Proposed resolution status */}
                 {t.proposedResolution && (
-                  <div className="p-3 rounded-xl bg-purple-950/20 border border-purple-500/30 text-xs space-y-1">
-                    <span className="font-semibold text-purple-300 block">
+                  <div className="p-3 rounded-xl bg-[#f7ece1] border border-[#cc6b35] text-xs space-y-1">
+                    <span className="font-semibold text-[#b8531e] block">
                       💡 Your Proposed Resolution:
                     </span>
-                    <p className="text-zinc-300 whitespace-pre-wrap">
+                    <p className="text-zinc-800 whitespace-pre-wrap">
                       {t.proposedResolution.notes}
                     </p>
-                    <span className="text-[10px] text-zinc-500 block pt-1">
+                    <span className="text-[10px] text-zinc-600 block pt-1">
                       Submitted on {new Date(t.proposedResolution.proposedAt).toLocaleString()}
                     </span>
                   </div>
                 )}
 
                 {/* Action buttons */}
-                <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-zinc-800/60">
+                <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-orange-200">
                   <div className="flex items-center gap-2">
                     {t.chatConversationId && (
                       <Link href={`/chat/${t.chatConversationId}`}>
@@ -459,7 +459,7 @@ export default function SellerCustomerSupportPage() {
                           size="sm"
                           className="text-xs gap-1.5"
                         >
-                          <MessageSquare className="h-3.5 w-3.5 text-indigo-400" />
+                          <MessageSquare className="h-3.5 w-3.5 text-[#b8531e]" />
                           <span>Reply in Buyer Chat Thread</span>
                         </Button>
                       </Link>
@@ -475,7 +475,7 @@ export default function SellerCustomerSupportPage() {
                           setSelectedTicket(t);
                           setResolutionNotes('');
                         }}
-                        className="text-xs bg-indigo-600 hover:bg-indigo-500 gap-1.5 shadow-md shadow-indigo-600/20"
+                        className="text-xs bg-[#b8531e] hover:bg-[#b8531e] gap-1.5 shadow-md shadow-[#e8c3a8]"
                       >
                         <Lightbulb className="h-3.5 w-3.5" />
                         <span>Propose Resolution</span>
@@ -491,21 +491,21 @@ export default function SellerCustomerSupportPage() {
 
       {/* Propose Resolution Modal */}
       {selectedTicket && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-xl rounded-2xl border border-zinc-800 bg-[#0c0d12] p-6 shadow-2xl space-y-5">
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-xl rounded-2xl border border-orange-200 bg-white p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-orange-200 pb-3">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Lightbulb className="h-4 w-4 text-indigo-400" />
+                <h3 className="text-base font-bold text-zinc-950 flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4 text-[#b8531e]" />
                   <span>Propose Resolution for {selectedTicket.ticketId}</span>
                 </h3>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-600 mt-0.5">
                   Explain the fix, provide configuration instructions, or code adjustments to solve the issue.
                 </p>
               </div>
               <button
                 onClick={() => setSelectedTicket(null)}
-                className="text-zinc-400 hover:text-white"
+                className="text-zinc-600 hover:text-zinc-950"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -513,7 +513,7 @@ export default function SellerCustomerSupportPage() {
 
             <form onSubmit={handleProposeResolution} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                <label className="text-xs font-semibold text-zinc-800 block mb-1">
                   Resolution Instructions / Code Patch *
                 </label>
                 <textarea
@@ -522,15 +522,15 @@ export default function SellerCustomerSupportPage() {
                   value={resolutionNotes}
                   onChange={(e) => setResolutionNotes(e.target.value)}
                   placeholder="e.g. In Next.js 15, update your route handler to await params before accessing params.id. I have verified this solves the issue. Please verify on your side."
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none font-mono text-[11px]"
+                  className="w-full rounded-xl border border-orange-200 bg-white p-3 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#cc6b35] resize-y font-mono text-[11px]"
                 />
               </div>
 
-              <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-400 leading-relaxed">
+              <div className="p-3 rounded-lg bg-[#faf5ef] border border-orange-200 text-[11px] text-zinc-600 leading-relaxed">
                 When you propose this resolution, the ticket status will change to <strong>Resolution Proposed</strong>, the buyer will be alerted by in-app notification, and a summary will be posted to the chat.
               </div>
 
-              <div className="pt-3 border-t border-zinc-800 flex items-center justify-end gap-3">
+              <div className="pt-3 border-t border-orange-200 flex items-center justify-end gap-3">
                 <Button
                   type="button"
                   variant="outline"
@@ -546,7 +546,7 @@ export default function SellerCustomerSupportPage() {
                   variant="primary"
                   size="md"
                   disabled={isSubmittingProposal}
-                  className="text-xs bg-indigo-600 hover:bg-indigo-500 shadow-md shadow-indigo-600/20"
+                  className="text-xs bg-[#b8531e] hover:bg-[#b8531e] shadow-md shadow-[#e8c3a8]"
                 >
                   {isSubmittingProposal ? 'Submitting...' : '💡 Submit Resolution to Buyer'}
                 </Button>

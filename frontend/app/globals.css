@@ -3,75 +3,126 @@
 @tailwind utilities;
 
 :root {
-  --background: #070709;
-  --foreground: #f4f4f7;
+  color-scheme: light;
+  --font-arcade: 'Press Start 2P';
+  --font-pixel: 'Silkscreen';
+  --font-sans: 'Chakra Petch';
+  --font-mono: 'JetBrains Mono';
+  --background: #fcfaf7;
+  --surface: #ffffff;
+  --surface-tint: #f7ece1;
+  --foreground: #18181b;
+  --accent: #cc6b35;
+  --accent-deep: #b8531e;
+  --accent-bright: #d97a41;
+  accent-color: #b8531e;
+  scrollbar-color: #cc6b35 #f7ece1;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-size-adjust: from-font;
+  line-height: 1.5;
+  text-align: start;
   overflow-x: hidden;
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 100% 30%, rgba(168, 85, 247, 0.04) 0%, transparent 50%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(204, 107, 53, 0.06) 0%, transparent 55%),
+    radial-gradient(circle at 100% 30%, rgba(184, 83, 30, 0.04) 0%, transparent 50%),
+    linear-gradient(to right, rgba(184, 83, 30, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(184, 83, 30, 0.045) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
 }
 
-/* Subtle dot grid pattern utility */
+/* Arcade Typography Rules */
+h1,
+h2 {
+  font-family: var(--font-arcade), var(--font-pixel), monospace;
+  font-size-adjust: from-font;
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+
+h3,
+h4 {
+  font-family: var(--font-pixel), var(--font-sans), monospace;
+  font-size-adjust: from-font;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+.font-arcade {
+  font-family: var(--font-arcade), var(--font-pixel), monospace;
+  font-size-adjust: from-font;
+}
+
+.font-pixel {
+  font-family: var(--font-pixel), monospace;
+  font-size-adjust: from-font;
+}
+
+/* Crisp arcade pixel grid pattern utility */
 .bg-grid-dots {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(184, 83, 30, 0.14) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
 }
 
-/* Linear-style ambient glass card */
-.glass-panel {
-  background: rgba(13, 14, 18, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Orange & White Arcade Card Panel */
+.glass-panel,
+.arcade-panel {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid #cc6b35;
+  box-shadow: 4px 4px 0px #e8c3a8;
 }
 
-.glass-panel:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+.glass-panel:hover,
+.arcade-panel:hover {
+  border-color: #b8531e;
+  box-shadow: 5px 5px 0px #d9a786;
 }
 
-/* Glow highlight sheen */
+/* Arcade highlight glow */
 .glow-highlight {
-  box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.18);
+  box-shadow: 0 0 0 2px #cc6b35, 5px 5px 0px #e8c3a8;
 }
 
-/* Tactile developer keycap */
+/* Tactile arcade keycap */
 .keycap {
-  background: linear-gradient(180deg, #1c1d22 0%, #121316 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, #ffffff 0%, #f7ece1 100%);
+  border: 2px solid #cc6b35;
+  color: #964115;
+  box-shadow: 0 2px 0 #b8531e;
 }
 
-/* Custom developer scrollbars */
+/* Custom arcade scrollbars (respecting auto width for target accessibility) */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #070709;
+  background: #f7ece1;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #23242a;
-  border-radius: 9999px;
+  background: #cc6b35;
+  border: 2px solid #f7ece1;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #363842;
+  background: #b8531e;
 }
 
 /* Text selections */
 ::selection {
-  background-color: #6366f1;
+  background-color: #b8531e;
   color: #ffffff;
 }
 
@@ -82,5 +133,17 @@ body {
   height: 100vh;
   min-height: 100vh;
   overflow: hidden;
+}
+
+/* Forced Colors Mode accessibility fallbacks */
+@media (forced-colors: active) {
+  .glass-panel,
+  .arcade-panel,
+  .keycap {
+    background: Canvas;
+    color: CanvasText;
+    border: 2px solid ButtonText;
+    box-shadow: none;
+  }
 }
 

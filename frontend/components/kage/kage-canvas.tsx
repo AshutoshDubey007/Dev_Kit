@@ -5,9 +5,10 @@ import * as THREE from 'three';
 
 interface KageCanvasProps {
   scrollProgress: number; // 0.0 to 1.0
+  theme?: 'arcade' | 'night';
 }
 
-export function KageCanvas({ scrollProgress }: KageCanvasProps) {
+export function KageCanvas({ scrollProgress, theme = 'arcade' }: KageCanvasProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef(scrollProgress);
   scrollRef.current = scrollProgress;
@@ -18,10 +19,13 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     const container = mountRef.current;
     if (!container) return;
 
+    const isArcade = theme === 'arcade';
+
     // 1. Scene & Fog Setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x06080d);
-    scene.fog = new THREE.FogExp2(0x06080d, 0.010);
+    const bgHex = isArcade ? 0xfcfaf7 : 0x06080d;
+    scene.background = new THREE.Color(bgHex);
+    scene.fog = new THREE.FogExp2(bgHex, isArcade ? 0.011 : 0.010);
 
     // 2. Camera Setup
     const camera = new THREE.PerspectiveCamera(
@@ -37,50 +41,50 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = isArcade ? 1.02 : 1.25;
     container.appendChild(renderer.domElement);
 
     // 4. Lighting System
-    const ambientLight = new THREE.AmbientLight(0x1a2234, 1.1);
+    const ambientLight = new THREE.AmbientLight(isArcade ? 0xfaf5ef : 0x1a2234, isArcade ? 1.7 : 1.1);
     scene.add(ambientLight);
 
-    // Moonlight (cool blue)
-    const moonLight = new THREE.DirectionalLight(0x93c5fd, 1.6);
+    // Sun / Moonlight
+    const moonLight = new THREE.DirectionalLight(isArcade ? 0xffffff : 0x93c5fd, isArcade ? 1.3 : 1.6);
     moonLight.position.set(20, 45, -20);
     scene.add(moonLight);
 
-    // Vermilion moon back-glow
-    const vermilionGlow = new THREE.PointLight(0xef4444, 4.0, 110);
+    // Orange / Vermilion back-glow
+    const vermilionGlow = new THREE.PointLight(isArcade ? 0xd97a41 : 0xef4444, isArcade ? 2.2 : 4.0, 110);
     vermilionGlow.position.set(2, 32, -75);
     scene.add(vermilionGlow);
 
     // 5. Materials
     const darkWoodMat = new THREE.MeshStandardMaterial({
-      color: 0x181a20,
-      roughness: 0.85,
-      metalness: 0.1,
+      color: isArcade ? 0xb8531e : 0x181a20,
+      roughness: isArcade ? 0.65 : 0.85,
+      metalness: 0.08,
     });
 
     const vermilionMat = new THREE.MeshStandardMaterial({
-      color: 0xb91c1c,
-      roughness: 0.45,
-      metalness: 0.15,
+      color: isArcade ? 0xcc6b35 : 0xb91c1c,
+      roughness: 0.55,
+      metalness: 0.1,
     });
 
     const stoneMat = new THREE.MeshStandardMaterial({
-      color: 0x222630,
-      roughness: 0.95,
-      metalness: 0.05,
+      color: isArcade ? 0xfaf5ef : 0x222630,
+      roughness: isArcade ? 0.85 : 0.95,
+      metalness: 0.04,
     });
 
     // Translucent glowing shoji material (see-through paper with inner light)
     const glowingShojiMat = new THREE.MeshStandardMaterial({
-      color: 0xfef08a,
-      emissive: 0xf59e0b,
-      emissiveIntensity: 0.9,
-      roughness: 0.25,
+      color: isArcade ? 0xf7ece1 : 0xfef08a,
+      emissive: isArcade ? 0xd97a41 : 0xf59e0b,
+      emissiveIntensity: isArcade ? 0.35 : 0.9,
+      roughness: 0.3,
       transparent: true,
-      opacity: 0.72,
+      opacity: isArcade ? 0.86 : 0.72,
     });
 
     // 6. Terrain & Ground
@@ -100,30 +104,60 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     const ground = new THREE.Mesh(
       groundGeo,
       new THREE.MeshStandardMaterial({
-        color: 0x0a0c12,
+        color: isArcade ? 0xffffff : 0x0a0c12,
         roughness: 0.95,
-        wireframe: false,
+        wireframe: isArcade,
       })
     );
+    if (isArcade) {
+      (ground.material as THREE.MeshStandardMaterial).color.setHex(0xe5c4aa);
+    }
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -0.5;
     scene.add(ground);
 
-    // Central Stone Pathway Stairs
+    // Central Grand Stone Staircase (Ishidan) — continuous, gap-free Kyoto mountain stairway
     const pathGroup = new THREE.Group();
-    for (let i = 0; i < 40; i++) {
-      const z = 22 - i * 1.8;
-      const y = i * 0.22;
-      const step = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.22, 1.4), stoneMat);
+    const stepCount = 34;
+    const startZ = 22;
+    const endZ = -18.8; // Connects seamlessly and flush into the temple entrance terrace
+    const startY = 0.1;
+    const endY = 7.05;
+
+    // Solid stone foundation ramp under the entire staircase (prevents empty air/void beneath steps)
+    const rampLength = Math.hypot(startZ - endZ, endY - startY);
+    const rampAngle = Math.atan2(endY - startY, startZ - endZ);
+    const rampGeo = new THREE.BoxGeometry(5.4, 1.6, rampLength + 1.5);
+    const ramp = new THREE.Mesh(rampGeo, stoneMat);
+    ramp.position.set(0, (startY + endY) / 2 - 0.7, (startZ + endZ) / 2);
+    ramp.rotation.x = rampAngle;
+    pathGroup.add(ramp);
+
+    // Seamless overlapping stone steps with zero horizontal or vertical gaps
+    for (let i = 0; i <= stepCount; i++) {
+      const t = i / stepCount;
+      const z = startZ + t * (endZ - startZ);
+      const y = startY + t * (endY - startY);
+
+      // Overlapping step slabs (depth 1.8 ensures generous overlap with adjacent steps)
+      const step = new THREE.Mesh(new THREE.BoxGeometry(5.0, 0.28, 1.8), stoneMat);
       step.position.set(0, y, z);
       pathGroup.add(step);
+
+      // Side balustrade curb stones flanking the stairs
+      const leftCurb = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.45, 1.8), stoneMat);
+      leftCurb.position.set(-2.65, y + 0.1, z);
+      const rightCurb = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.45, 1.8), stoneMat);
+      rightCurb.position.set(2.65, y + 0.1, z);
+      pathGroup.add(leftCurb, rightCurb);
     }
+
     scene.add(pathGroup);
 
-    // 7. Large Vermilion Moon
+    // 7. Large Muted Orange Arcade Sun / Vermilion Moon
     const moonGeo = new THREE.SphereGeometry(14, 32, 32);
     const moonMat = new THREE.MeshBasicMaterial({
-      color: 0xef4444,
+      color: isArcade ? 0xd97a41 : 0xef4444,
     });
     const moon = new THREE.Mesh(moonGeo, moonMat);
     moon.position.set(2, 32, -80);
@@ -132,9 +166,9 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     // Moon halo ring
     const haloGeo = new THREE.RingGeometry(14.5, 20, 32);
     const haloMat = new THREE.MeshBasicMaterial({
-      color: 0xd97706,
+      color: isArcade ? 0xe5a982 : 0xd97706,
       transparent: true,
-      opacity: 0.25,
+      opacity: isArcade ? 0.24 : 0.25,
       side: THREE.DoubleSide,
     });
     const halo = new THREE.Mesh(haloGeo, haloMat);
@@ -210,9 +244,21 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     const templeGroup = new THREE.Group();
     templeGroup.position.set(0, 6.5, -28);
 
-    // Foundation
+    // Foundation Platform (tBase)
     const tBase = new THREE.Mesh(new THREE.BoxGeometry(16, 1.5, 12), stoneMat);
     templeGroup.add(tBase);
+
+    // Deep grounded bedrock stone plinth (fills the entire void beneath the temple into terrain)
+    const plinthGeo = new THREE.BoxGeometry(16.8, 7.5, 12.6);
+    const plinth = new THREE.Mesh(plinthGeo, stoneMat);
+    plinth.position.set(0, -3.75, 0); // Extends downward to world y = -1.0
+    templeGroup.add(plinth);
+
+    // Monolithic Stone Entrance Terrace (Extends forward from tBase to seamlessly meet the stairs with zero gap)
+    const verandaGeo = new THREE.BoxGeometry(8.6, 1.5, 4.4);
+    const veranda = new THREE.Mesh(verandaGeo, stoneMat);
+    veranda.position.set(0, 0, 7.2); // World z: -28 + 7.2 = -20.8 (depth 4.4 extends to z = -18.6), top flush with tBase at world y = 7.25
+    templeGroup.add(veranda);
 
     // Glowing shoji walls (translucent see-through paper)
     const shojiWalls = new THREE.Mesh(new THREE.BoxGeometry(13.5, 4.5, 9.5), glowingShojiMat);
@@ -228,9 +274,9 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     const innerSanctuary = new THREE.Mesh(
       new THREE.BoxGeometry(4.5, 3.2, 3.5),
       new THREE.MeshStandardMaterial({
-        color: 0x991b1b,
-        roughness: 0.35,
-        metalness: 0.2,
+        color: isArcade ? 0xb8531e : 0x991b1b,
+        roughness: 0.45,
+        metalness: 0.15,
       })
     );
     innerSanctuary.position.set(0, 2.5, 0);
@@ -274,11 +320,11 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     emberGeo.setAttribute('position', new THREE.BufferAttribute(emberPositions, 3));
 
     const emberMat = new THREE.PointsMaterial({
-      color: 0xf59e0b,
-      size: 0.18,
+      color: isArcade ? 0xcc6b35 : 0xf59e0b,
+      size: isArcade ? 0.22 : 0.18,
       transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending,
+      opacity: isArcade ? 0.55 : 0.85,
+      blending: isArcade ? THREE.NormalBlending : THREE.AdditiveBlending,
     });
     const embers = new THREE.Points(emberGeo, emberMat);
     scene.add(embers);
@@ -296,10 +342,10 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
     rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3));
 
     const rainMat = new THREE.PointsMaterial({
-      color: 0x93c5fd,
-      size: 0.08,
+      color: isArcade ? 0xe5a982 : 0x93c5fd,
+      size: isArcade ? 0.09 : 0.08,
       transparent: true,
-      opacity: 0.35,
+      opacity: isArcade ? 0.2 : 0.35,
     });
     const rain = new THREE.Points(rainGeo, rainMat);
     scene.add(rain);
@@ -424,7 +470,7 @@ export function KageCanvas({ scrollProgress }: KageCanvasProps) {
       emberGeo.dispose();
       rainGeo.dispose();
     };
-  }, []);
+  }, [theme]);
 
   return (
     <div

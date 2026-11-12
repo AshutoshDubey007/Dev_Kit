@@ -43,8 +43,8 @@ export function TechStackPills({
           >
             <Badge
               size="sm"
-              variant={isSelected ? 'purple' : 'secondary'}
-              className="font-mono text-[11px]"
+              variant={isSelected ? 'success' : 'secondary'}
+              className="text-[11px]"
             >
               {tech}
             </Badge>
@@ -53,7 +53,7 @@ export function TechStackPills({
       })}
 
       {remaining > 0 && (
-        <Badge size="sm" variant="outline" className="text-[10px] text-zinc-500">
+        <Badge size="sm" variant="outline" className="text-[10px]">
           +{remaining} more
         </Badge>
       )}

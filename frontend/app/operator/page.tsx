@@ -72,12 +72,12 @@ export default function OperatorDashboardPage() {
   if (!isOperatorOrAdmin) {
     return (
       <div className="max-w-xl mx-auto py-20 px-4 text-center space-y-5">
-        <div className="h-16 w-16 mx-auto flex items-center justify-center rounded-2xl bg-amber-950/40 border border-amber-800 text-3xl">
+        <div className="h-16 w-16 mx-auto flex items-center justify-center rounded-2xl bg-[#f7ece1] border border-[#cc6b35] text-3xl">
           🛡️
         </div>
-        <h1 className="text-2xl font-bold text-white">Operator Clearance Required</h1>
-        <p className="text-xs text-zinc-400">
-          You are currently signed in as <strong className="text-white capitalize">{currentUser?.name} ({currentUser?.role})</strong>. The moderation desk is restricted to Operators and Administrators.
+        <h1 className="text-2xl font-bold text-zinc-950">Operator Clearance Required</h1>
+        <p className="text-xs text-zinc-600">
+          You are currently signed in as <strong className="text-zinc-950 capitalize">{currentUser?.name} ({currentUser?.role})</strong>. The moderation desk is restricted to Operators and Administrators.
         </p>
         <div className="pt-2 flex justify-center gap-3">
           <Button
@@ -101,26 +101,26 @@ export default function OperatorDashboardPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-200 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-950/40 px-3 py-1 text-xs text-purple-300 font-mono mb-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#cc6b35] bg-[#f7ece1] px-3 py-1 text-xs text-[#b8531e] font-mono mb-2">
             <span>🛡️ Operator & Moderation Desk</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white">
+          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-950">
             Buyer-Seller Chat Oversight
           </h1>
-          <p className="mt-1 text-xs text-zinc-400">
+          <p className="mt-1 text-xs text-zinc-600">
             Monitor in-platform buyer-seller communications, inspect flagged contact-leak attempts, and enforce safety policies.
           </p>
         </div>
 
         {/* View toggle */}
-        <div className="flex items-center gap-2 bg-zinc-900/80 p-1 rounded-xl border border-white/[0.08]">
+        <div className="flex items-center gap-2 bg-[#faf5ef] p-1 rounded-xl border border-orange-200">
           <button
             type="button"
             onClick={() => setFlaggedOnly(false)}
             className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-              !flaggedOnly ? 'bg-indigo-600 text-white shadow-sm' : 'text-zinc-400 hover:text-white'
+              !flaggedOnly ? 'bg-[#b8531e] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-950'
             }`}
           >
             All Conversations
@@ -129,12 +129,12 @@ export default function OperatorDashboardPage() {
             type="button"
             onClick={() => setFlaggedOnly(true)}
             className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all flex items-center gap-1.5 ${
-              flaggedOnly ? 'bg-red-600 text-white shadow-sm' : 'text-zinc-400 hover:text-white'
+              flaggedOnly ? 'bg-red-600 text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-950'
             }`}
           >
             <span>⚠️ Flagged Leaks</span>
             {flaggedCount > 0 && (
-              <span className="bg-red-950 border border-red-800 text-[10px] px-1.5 rounded-full">
+              <span className="bg-red-50 border border-red-800 text-[10px] px-1.5 rounded-full">
                 {flaggedCount}
               </span>
             )}
@@ -143,10 +143,10 @@ export default function OperatorDashboardPage() {
       </div>
 
       {/* Conversations Table */}
-      <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/80 backdrop-blur-xl overflow-hidden shadow-2xl">
+      <div className="rounded-2xl border border-orange-200 bg-white backdrop-blur-xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#121319] text-zinc-400 font-mono uppercase text-[11px] border-b border-white/[0.08]">
+            <thead className="bg-[#faf5ef] text-zinc-600 font-mono uppercase text-[11px] border-b border-orange-200">
               <tr>
                 <th className="px-5 py-3.5">Kit & Order</th>
                 <th className="px-5 py-3.5">Buyer</th>
@@ -156,37 +156,37 @@ export default function OperatorDashboardPage() {
                 <th className="px-5 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.06] text-zinc-300">
+            <tbody className="divide-y divide-orange-100 text-zinc-800">
               {isLoading ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-12 text-center text-zinc-500 font-mono">
+                  <td colSpan={6} className="px-5 py-12 text-center text-zinc-600 font-mono">
                     Loading conversations...
                   </td>
                 </tr>
               ) : conversations.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-12 text-center text-zinc-500">
+                  <td colSpan={6} className="px-5 py-12 text-center text-zinc-600">
                     No conversations found matching criteria.
                   </td>
                 </tr>
               ) : (
                 conversations.map((conv) => (
-                  <tr key={conv.conversationId} className="hover:bg-zinc-900/40 transition-colors">
+                  <tr key={conv.conversationId} className="hover:bg-[#faf5ef] transition-colors">
                     <td className="px-5 py-4">
-                      <span className="font-semibold text-white block text-sm">
+                      <span className="font-semibold text-zinc-950 block text-sm">
                         {conv.kitTitle}
                       </span>
-                      <span className="text-[11px] text-zinc-500 font-mono">
+                      <span className="text-[11px] text-zinc-600 font-mono">
                         {conv.orderId}
                       </span>
                     </td>
                     <td className="px-5 py-4">
-                      <span className="text-zinc-200 block font-medium">{conv.buyerName}</span>
-                      <span className="text-zinc-500 text-[11px]">{conv.buyerEmail}</span>
+                      <span className="text-zinc-900 block font-medium">{conv.buyerName}</span>
+                      <span className="text-zinc-600 text-[11px]">{conv.buyerEmail}</span>
                     </td>
                     <td className="px-5 py-4">
-                      <span className="text-zinc-200 block font-medium">{conv.sellerName}</span>
-                      <span className="text-zinc-500 text-[11px]">{conv.sellerId}</span>
+                      <span className="text-zinc-900 block font-medium">{conv.sellerName}</span>
+                      <span className="text-zinc-600 text-[11px]">{conv.sellerId}</span>
                     </td>
                     <td className="px-5 py-4">
                       {conv.status === 'flagged' ? (
@@ -199,7 +199,7 @@ export default function OperatorDashboardPage() {
                         </Badge>
                       )}
                     </td>
-                    <td className="px-5 py-4 max-w-xs truncate text-zinc-400">
+                    <td className="px-5 py-4 max-w-xs truncate text-zinc-600">
                       {conv.lastMessageSnippet}
                     </td>
                     <td className="px-5 py-4 text-right space-x-2">
@@ -212,7 +212,7 @@ export default function OperatorDashboardPage() {
                         variant="secondary"
                         size="sm"
                         onClick={() => setInterveneConvId(conv.conversationId)}
-                        className="text-[11px] h-7 px-2.5 bg-purple-950/60 border-purple-800/80 text-purple-300 hover:bg-purple-900"
+                        className="text-[11px] h-7 px-2.5 bg-[#f7ece1] border-[#cc6b35] text-[#b8531e] hover:bg-purple-900"
                       >
                         Intervene 🛡️
                       </Button>
@@ -227,24 +227,24 @@ export default function OperatorDashboardPage() {
 
       {/* Operator Intervention Modal */}
       {interveneConvId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-lg rounded-2xl border border-purple-500/40 bg-zinc-950 p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-lg rounded-2xl border border-[#cc6b35] bg-white p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-orange-200 pb-3">
+              <h3 className="text-sm font-bold text-zinc-950 flex items-center gap-2">
                 <span>🛡️</span>
                 <span>Post Operator Moderation Notice</span>
               </h3>
               <button
                 type="button"
                 onClick={() => setInterveneConvId(null)}
-                className="text-zinc-500 hover:text-white"
+                className="text-zinc-600 hover:text-zinc-950"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-xs text-zinc-400">
-              This message will be injected into conversation <code className="text-purple-300 font-mono">{interveneConvId}</code> with official platform authority.
+            <p className="text-xs text-zinc-600">
+              This message will be injected into conversation <code className="text-[#b8531e] font-mono">{interveneConvId}</code> with official platform authority.
             </p>
 
             <form onSubmit={handlePostIntervention} className="space-y-4">
@@ -254,7 +254,7 @@ export default function OperatorDashboardPage() {
                 value={noticeText}
                 onChange={(e) => setNoticeText(e.target.value)}
                 placeholder="e.g. Official DevKit Security Notice: Off-platform contact sharing is restricted. Please keep technical questions inside this chat to retain buyer dispute guarantees."
-                className="w-full rounded-xl border border-white/[0.1] bg-zinc-900/90 p-3 text-xs text-zinc-200 focus:outline-none focus:border-purple-500 resize-none"
+                className="w-full rounded-xl border border-orange-200 bg-[#faf5ef] p-3 text-xs text-zinc-900 focus:outline-none focus:border-[#cc6b35] resize-y"
               />
 
               <div className="flex justify-end gap-2">
@@ -272,7 +272,7 @@ export default function OperatorDashboardPage() {
                   variant="primary"
                   size="sm"
                   isLoading={isPostingNotice}
-                  className="text-xs bg-purple-600 hover:bg-purple-700"
+                  className="text-xs bg-[#b8531e] hover:bg-[#964115]"
                 >
                   Post Notice to Thread →
                 </Button>

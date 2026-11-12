@@ -47,24 +47,24 @@ export default function ChatConversationPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-12">
       {/* Breadcrumb & Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
-        <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
-          <Link href="/" className="hover:text-zinc-300">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-200 pb-4">
+        <div className="flex items-center gap-2 text-xs text-zinc-600 font-mono">
+          <Link href="/" className="hover:text-zinc-800">
             Home
           </Link>
           <span>/</span>
-          <Link href="/kits" className="hover:text-zinc-300">
+          <Link href="/kits" className="hover:text-zinc-800">
             Kits
           </Link>
           <span>/</span>
-          <span className="text-zinc-300">Support Chat</span>
+          <span className="text-zinc-800">Support Chat</span>
         </div>
 
         {/* Authenticated Participant Identity Badge */}
-        <div className="flex items-center gap-2 text-xs bg-zinc-900/80 px-3 py-1.5 rounded-xl border border-white/[0.08]">
-          <UserCheck className="h-3.5 w-3.5 text-zinc-400" />
-          <span className="text-[11px] text-zinc-400 font-mono">Chatting as:</span>
-          <span className="text-xs font-semibold text-white">{userName}</span>
+        <div className="flex items-center gap-2 text-xs bg-[#faf5ef] px-3 py-1.5 rounded-xl border border-orange-200">
+          <UserCheck className="h-3.5 w-3.5 text-zinc-600" />
+          <span className="text-[11px] text-zinc-600 font-mono">Chatting as:</span>
+          <span className="text-xs font-semibold text-zinc-950">{userName}</span>
           <Badge
             variant={userRole === 'seller' ? 'secondary' : userRole === 'operator' ? 'purple' : 'default'}
             size="sm"

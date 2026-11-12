@@ -230,8 +230,8 @@ function CheckoutContent() {
   if (isLoadingKit) {
     return (
       <div className="max-w-4xl mx-auto py-24 text-center space-y-4">
-        <div className="animate-spin h-8 w-8 border-2 border-emerald-400 border-t-transparent rounded-full mx-auto" />
-        <p className="text-xs font-mono text-zinc-400">Loading checkout order details...</p>
+        <div className="animate-spin h-8 w-8 border-2 border-[#cc6b35] border-t-transparent rounded-full mx-auto" />
+        <p className="text-xs font-mono text-zinc-600">Loading checkout order details...</p>
       </div>
     );
   }
@@ -239,12 +239,12 @@ function CheckoutContent() {
   if (!kit) {
     return (
       <div className="max-w-lg mx-auto py-20 text-center space-y-6">
-        <div className="h-16 w-16 rounded-2xl bg-zinc-900 border border-white/[0.08] flex items-center justify-center mx-auto text-2xl">
+        <div className="h-16 w-16 rounded-2xl bg-[#faf5ef] border border-orange-200 flex items-center justify-center mx-auto text-2xl">
           📦
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white">No Product Selected</h2>
-          <p className="text-xs text-zinc-400 mt-1">
+          <h2 className="text-xl font-bold text-zinc-950">No Product Selected</h2>
+          <p className="text-xs text-zinc-600 mt-1">
             Please browse the marketplace catalog and select an architecture kit or repository to purchase.
           </p>
         </div>
@@ -260,23 +260,23 @@ function CheckoutContent() {
   return (
     <div className="max-w-5xl mx-auto pb-20 pt-6 space-y-8">
       {/* Top Breadcrumb & Trust Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-200 pb-4">
         <Link
           href={`/kits/${kit.slug}`}
-          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-600 hover:text-zinc-950 transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to Product Specification</span>
         </Link>
 
-        <div className="flex items-center gap-3 text-xs text-zinc-400 font-mono">
-          <span className="flex items-center gap-1.5 text-emerald-400">
+        <div className="flex items-center gap-3 text-xs text-zinc-600 font-mono">
+          <span className="flex items-center gap-1.5 text-[#b8531e]">
             <ShieldCheck className="h-4 w-4" />
             <span>7-Day Verification Guarantee</span>
           </span>
           <span>•</span>
-          <span className="flex items-center gap-1.5 text-zinc-400">
-            <Lock className="h-3.5 w-3.5 text-zinc-500" />
+          <span className="flex items-center gap-1.5 text-zinc-600">
+            <Lock className="h-3.5 w-3.5 text-zinc-600" />
             <span>256-Bit SSL Checkout</span>
           </span>
         </div>
@@ -285,7 +285,7 @@ function CheckoutContent() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Product Summary & Deliverables */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="rounded-2xl border border-white/[0.1] bg-[#0c0d14]/80 p-6 space-y-4 backdrop-blur-xl">
+          <div className="rounded-2xl border border-orange-200 bg-white p-6 space-y-4 backdrop-blur-xl">
             <div className="flex items-center gap-2">
               <Badge variant="purple" size="sm" className="capitalize">
                 {kit.category}
@@ -295,55 +295,55 @@ function CheckoutContent() {
               </Badge>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 tracking-tight">
               {kit.title}
             </h1>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
               {kit.tagline || kit.shortDescription}
             </p>
 
-            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs font-mono text-zinc-400">
-              <span className="rounded-lg bg-zinc-900 px-2.5 py-1 border border-white/[0.06]">
+            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs font-mono text-zinc-600">
+              <span className="rounded-lg bg-[#faf5ef] px-2.5 py-1 border border-orange-200">
                 {kit.framework}
               </span>
-              <span className="rounded-lg bg-zinc-900 px-2.5 py-1 border border-white/[0.06]">
+              <span className="rounded-lg bg-[#faf5ef] px-2.5 py-1 border border-orange-200">
                 ★ {kit.rating?.toFixed(1) || '5.0'} ({kit.reviewCount || 1} verified)
               </span>
-              <span className="rounded-lg bg-zinc-900 px-2.5 py-1 border border-white/[0.06]">
+              <span className="rounded-lg bg-[#faf5ef] px-2.5 py-1 border border-orange-200">
                 Commercial License
               </span>
             </div>
           </div>
 
           {/* Included Deliverables */}
-          <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d14]/50 p-6 space-y-4">
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+          <div className="rounded-2xl border border-orange-200 bg-white p-6 space-y-4">
+            <h3 className="text-xs font-bold text-zinc-950 uppercase tracking-wider font-mono">
               Deliverables Included with Order:
             </h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-zinc-300">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-zinc-800">
               <div className="flex items-start gap-2.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-[#b8531e] shrink-0 mt-0.5" />
                 <span>Instant .ZIP Source Code Package download</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-[#b8531e] shrink-0 mt-0.5" />
                 <span>100% Passing Automated Test Suite</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-[#b8531e] shrink-0 mt-0.5" />
                 <span>Step-by-step Setup README injected into Chat</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-[#b8531e] shrink-0 mt-0.5" />
                 <span>Direct Author In-App Support Channel</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-[#b8531e] shrink-0 mt-0.5" />
                 <span>7-Day Product Verification Window</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-[#b8531e] shrink-0 mt-0.5" />
                 <span>Unlimited personal &amp; client commercial projects</span>
               </div>
             </div>
@@ -352,33 +352,33 @@ function CheckoutContent() {
 
         {/* Right Column: Checkout & Payment Form */}
         <div className="lg:col-span-5 space-y-5">
-          <div className="rounded-2xl border border-white/[0.1] bg-[#0c0d14] p-6 shadow-2xl space-y-6 backdrop-blur-2xl">
+          <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-2xl space-y-6 backdrop-blur-2xl">
             <div>
-              <span className="text-xs font-mono text-zinc-400 block mb-1">
+              <span className="text-xs font-mono text-zinc-600 block mb-1">
                 Order Total (One-Time)
               </span>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl sm:text-4xl font-extrabold text-white">
+                <span className="text-3xl sm:text-4xl font-extrabold text-zinc-950">
                   {formatPriceINR(kit.priceINR)}
                 </span>
-                <span className="text-xs sm:text-sm text-zinc-400 font-mono">
+                <span className="text-xs sm:text-sm text-zinc-600 font-mono">
                   ({formatPriceUSD(kit.priceUSD)})
                 </span>
               </div>
-              <span className="text-[11px] text-emerald-400 font-medium block mt-1">
+              <span className="text-[11px] text-[#b8531e] font-medium block mt-1">
                 ✓ No monthly recurring fees • Lifetime usage license
               </span>
             </div>
 
             {errorMessage && (
-              <div className="rounded-xl border border-red-500/40 bg-red-950/20 p-3 text-xs text-red-300">
+              <div className="rounded-xl border border-red-500/40 bg-red-50 p-3 text-xs text-red-700">
                 {errorMessage}
               </div>
             )}
 
             <form onSubmit={handlePay} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-zinc-300">
+                <label className="block text-xs font-medium text-zinc-800">
                   Full Name / Agency Name *
                 </label>
                 <Input
@@ -387,12 +387,12 @@ function CheckoutContent() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ashutosh Dubey"
-                  className="bg-black/50 border-white/[0.1] text-xs h-10"
+                  className="bg-white border-orange-200 text-xs h-10"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-zinc-300">
+                <label className="block text-xs font-medium text-zinc-800">
                   Email Address for Delivery *
                 </label>
                 <Input
@@ -401,9 +401,9 @@ function CheckoutContent() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ashutosh@agency.dev"
-                  className="bg-black/50 border-white/[0.1] text-xs h-10"
+                  className="bg-white border-orange-200 text-xs h-10"
                 />
-                <span className="text-[10px] text-zinc-400 block">
+                <span className="text-[10px] text-zinc-600 block">
                   Your secure download token and verification guarantee link will be assigned to this email.
                 </span>
               </div>
@@ -414,7 +414,7 @@ function CheckoutContent() {
                   variant="primary"
                   size="lg"
                   disabled={isProcessing}
-                  className="w-full text-sm font-semibold shadow-xl shadow-emerald-500/10 py-6"
+                  className="w-full text-sm font-semibold shadow-xl shadow-[#e8c3a8] py-6"
                 >
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
@@ -431,18 +431,18 @@ function CheckoutContent() {
               </div>
             </form>
 
-            <div className="border-t border-white/[0.08] pt-4 space-y-2 text-[11px] text-zinc-400 font-mono">
+            <div className="border-t border-orange-200 pt-4 space-y-2 text-[11px] text-zinc-600 font-mono">
               <div className="flex items-center justify-between">
                 <span>Payment Gateway:</span>
-                <span className="text-zinc-200">Razorpay Encrypted</span>
+                <span className="text-zinc-900">Razorpay Encrypted</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Support Channel:</span>
-                <span className="text-zinc-200">DevKit In-App Chat</span>
+                <span className="text-zinc-900">DevKit In-App Chat</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Verification Window:</span>
-                <span className="text-emerald-400">7-Day Guarantee</span>
+                <span className="text-[#b8531e]">7-Day Guarantee</span>
               </div>
             </div>
           </div>
@@ -457,8 +457,8 @@ export default function CheckoutPage() {
     <Suspense
       fallback={
         <div className="max-w-4xl mx-auto py-24 text-center space-y-4">
-          <div className="animate-spin h-8 w-8 border-2 border-emerald-400 border-t-transparent rounded-full mx-auto" />
-          <p className="text-xs font-mono text-zinc-400">Preparing secure checkout...</p>
+          <div className="animate-spin h-8 w-8 border-2 border-[#cc6b35] border-t-transparent rounded-full mx-auto" />
+          <p className="text-xs font-mono text-zinc-600">Preparing secure checkout...</p>
         </div>
       }
     >

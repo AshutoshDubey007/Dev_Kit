@@ -61,23 +61,23 @@ export default function PromptsMarketplacePage() {
   return (
     <div className="max-w-7xl mx-auto pb-20 space-y-8">
       {/* ─── Header ─── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-200 pb-6">
         <div>
-          <div className="flex items-center gap-2 mb-2 text-xs text-purple-400 font-mono">
+          <div className="flex items-center gap-2 mb-2 text-xs text-[#b8531e] font-mono">
             <span>●</span>
             <span>AI Code Generation Blueprints</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl font-extrabold text-zinc-950 tracking-tight">
             AI Prompt Marketplace
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
+          <p className="mt-1 text-xs sm:text-sm text-zinc-600">
             Buy, test, and run prompt blueprints that generate complete, production-grade Next.js, Python, and cloud architectures.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link href="/studio">
-            <Button variant="outline" size="sm" className="text-xs gap-1.5 border-purple-500/40 text-purple-300">
+            <Button variant="outline" size="sm" className="text-xs gap-1.5 border-[#cc6b35] text-[#b8531e]">
               <Bot className="h-4 w-4" />
               <span>Open AI Studio</span>
             </Button>
@@ -86,7 +86,7 @@ export default function PromptsMarketplacePage() {
             <Button
               variant="primary"
               size="sm"
-              className="text-xs bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold gap-1.5 shadow-lg shadow-purple-500/20"
+              className="text-xs bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white font-semibold gap-1.5 shadow-lg shadow-[#e8c3a8]"
             >
               <Plus className="h-4 w-4" />
               <span>Publish Prompt</span>
@@ -99,17 +99,17 @@ export default function PromptsMarketplacePage() {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <div className="relative flex-1 w-full">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-600" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search software generation prompts (e.g. SaaS, Razorpay, RAG, Dashboard)..."
-              className="w-full rounded-xl border border-white/[0.08] bg-[#0c0e14] pl-10 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500"
+              className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-2.5 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:border-[#cc6b35]"
             />
           </div>
 
-          <label className="flex items-center gap-2 text-xs text-zinc-400 font-mono cursor-pointer shrink-0">
+          <label className="flex items-center gap-2 text-xs text-zinc-600 font-mono cursor-pointer shrink-0">
             <input
               type="checkbox"
               checked={freeOnly}
@@ -129,8 +129,8 @@ export default function PromptsMarketplacePage() {
               onClick={() => setSelectedCategory(cat.slug)}
               className={`rounded-xl px-3 py-1.5 text-xs font-mono transition-colors ${
                 selectedCategory === cat.slug
-                  ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold'
-                  : 'bg-zinc-950 text-zinc-400 border border-white/[0.06] hover:text-white'
+                  ? 'bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] font-bold'
+                  : 'bg-white text-zinc-600 border border-orange-200 hover:text-zinc-950'
               }`}
             >
               {cat.label}
@@ -144,50 +144,50 @@ export default function PromptsMarketplacePage() {
         {filteredPrompts.length === 0 ? (
           <div className="col-span-3 py-16 text-center space-y-3">
             <Sparkles className="h-8 w-8 text-zinc-600 mx-auto" />
-            <p className="text-sm font-semibold text-white">No AI prompts match your search</p>
-            <p className="text-xs text-zinc-500">Try modifying your query or selecting another category.</p>
+            <p className="text-sm font-semibold text-zinc-950">No AI prompts match your search</p>
+            <p className="text-xs text-zinc-600">Try modifying your query or selecting another category.</p>
           </div>
         ) : (
           filteredPrompts.map((prompt) => (
             <div
               key={prompt.id}
-              className="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/90 p-5 space-y-4 backdrop-blur-xl hover:border-purple-500/40 transition-all flex flex-col justify-between shadow-xl"
+              className="rounded-2xl border border-orange-200 bg-white p-5 space-y-4 backdrop-blur-xl hover:border-[#cc6b35] transition-all flex flex-col justify-between shadow-xl"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <Badge variant="purple" size="sm" className="font-mono text-[9px] uppercase">
                     {prompt.category}
                   </Badge>
-                  <span className="text-sm font-bold font-mono text-emerald-400">
+                  <span className="text-sm font-bold font-mono text-[#b8531e]">
                     {prompt.priceINR === 0 ? 'FREE' : `₹${prompt.priceINR}`}
                   </span>
                 </div>
 
                 <Link
                   href={`/prompts/${prompt.slug}`}
-                  className="text-base font-bold text-white hover:text-purple-300 transition-colors block line-clamp-1"
+                  className="text-base font-bold text-zinc-950 hover:text-[#b8531e] transition-colors block line-clamp-1"
                 >
                   {prompt.title}
                 </Link>
 
-                <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-zinc-600 line-clamp-2 leading-relaxed">
                   {prompt.description}
                 </p>
 
                 {/* Problem Solved Callout */}
-                <div className="rounded-xl bg-purple-950/20 border border-purple-900/40 p-2.5 text-[11px] text-purple-300 leading-relaxed">
-                  <span className="font-bold text-purple-200">Solves: </span>
+                <div className="rounded-xl bg-[#f7ece1] border border-[#cc6b35] p-2.5 text-[11px] text-[#b8531e] leading-relaxed">
+                  <span className="font-bold text-[#964115]">Solves: </span>
                   {prompt.problemSolves}
                 </div>
 
                 {/* Supported AI Models */}
                 <div className="space-y-1.5">
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase">Tested Models</span>
+                  <span className="text-[10px] font-mono text-zinc-600 uppercase">Tested Models</span>
                   <div className="flex flex-wrap gap-1">
                     {prompt.supportedModels.slice(0, 3).map((model) => (
                       <span
                         key={model}
-                        className="rounded-md border border-white/[0.06] bg-zinc-950 px-2 py-0.5 text-[9px] font-mono text-zinc-300"
+                        className="rounded-md border border-orange-200 bg-white px-2 py-0.5 text-[9px] font-mono text-zinc-800"
                       >
                         {model}
                       </span>
@@ -197,9 +197,9 @@ export default function PromptsMarketplacePage() {
               </div>
 
               {/* Bottom Actions */}
-              <div className="pt-3 border-t border-white/[0.04] flex items-center justify-between text-xs font-mono">
-                <div className="flex items-center gap-2 text-zinc-400">
-                  <span className="flex items-center gap-1 text-amber-400">
+              <div className="pt-3 border-t border-orange-200 flex items-center justify-between text-xs font-mono">
+                <div className="flex items-center gap-2 text-zinc-600">
+                  <span className="flex items-center gap-1 text-[#b8531e]">
                     <Star className="h-3 w-3 fill-amber-400" />
                     <span>{prompt.rating.toFixed(1)}</span>
                   </span>
@@ -208,7 +208,7 @@ export default function PromptsMarketplacePage() {
 
                 <Link
                   href={`/prompts/${prompt.slug}`}
-                  className="inline-flex items-center gap-1 font-semibold text-purple-400 hover:text-purple-300 transition-colors"
+                  className="inline-flex items-center gap-1 font-semibold text-[#b8531e] hover:text-[#b8531e] transition-colors"
                 >
                   <span>Inspect Blueprint</span>
                   <ArrowRight className="h-3 w-3" />

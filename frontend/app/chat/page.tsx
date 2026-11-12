@@ -229,17 +229,17 @@ export default function ChatHubPage() {
   return (
     <div className="max-w-[1500px] mx-auto space-y-3 sm:space-y-4 pb-12">
       {/* Mobile View Switcher (Visible only on < lg screens to eliminate clutter) */}
-      <div className="lg:hidden flex items-center p-1 rounded-xl bg-[#0c0d12]/90 border border-white/[0.08] text-xs font-medium backdrop-blur-xl shadow-lg">
+      <div className="lg:hidden flex items-center p-1 rounded-xl bg-white border border-orange-200 text-xs font-medium backdrop-blur-xl shadow-lg">
         <button
           type="button"
           onClick={() => setMobileTab('conversations')}
           className={`flex-1 py-2 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
             mobileTab === 'conversations'
-              ? 'bg-white/[0.1] text-white shadow-sm font-semibold'
-              : 'text-zinc-400 hover:text-white'
+              ? 'bg-[#faf5ef] text-zinc-950 shadow-sm font-semibold'
+              : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
-          <MessageSquare className="h-3.5 w-3.5 text-emerald-400" />
+          <MessageSquare className="h-3.5 w-3.5 text-[#b8531e]" />
           <span>Chats ({conversations.length})</span>
         </button>
         <button
@@ -247,11 +247,11 @@ export default function ChatHubPage() {
           onClick={() => setMobileTab('chat')}
           className={`flex-1 py-2 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
             mobileTab === 'chat'
-              ? 'bg-indigo-600/30 border border-indigo-500/40 text-indigo-200 shadow-sm font-semibold'
-              : 'text-zinc-400 hover:text-white'
+              ? 'bg-[#f7ece1] border border-[#cc6b35] text-[#964115] shadow-sm font-semibold'
+              : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
-          <Send className="h-3.5 w-3.5 text-indigo-400" />
+          <Send className="h-3.5 w-3.5 text-[#b8531e]" />
           <span className="truncate max-w-[90px]">{activeConversation?.kitTitle ? 'Thread' : 'Chat'}</span>
         </button>
         <button
@@ -259,11 +259,11 @@ export default function ChatHubPage() {
           onClick={() => setMobileTab('details')}
           className={`flex-1 py-2 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
             mobileTab === 'details'
-              ? 'bg-white/[0.1] text-white shadow-sm font-semibold'
-              : 'text-zinc-400 hover:text-white'
+              ? 'bg-[#faf5ef] text-zinc-950 shadow-sm font-semibold'
+              : 'text-zinc-600 hover:text-zinc-950'
           }`}
         >
-          <Info className="h-3.5 w-3.5 text-blue-400" />
+          <Info className="h-3.5 w-3.5 text-[#b8531e]" />
           <span>Order Info</span>
         </button>
       </div>
@@ -272,35 +272,35 @@ export default function ChatHubPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:h-[750px] lg:max-h-[82vh]">
         {/* PANEL 1: CONVERSATIONS LIST (3 COLS) */}
         <div
-          className={`rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-hidden lg:col-span-3 lg:h-full ${
+          className={`rounded-2xl border border-orange-200 bg-white shadow-xl backdrop-blur-xl flex flex-col overflow-hidden lg:col-span-3 lg:h-full ${
             mobileTab === 'conversations' ? 'flex h-[calc(100vh-210px)] min-h-[500px]' : 'hidden lg:flex'
           }`}
         >
           {/* Search Header */}
-          <div className="p-3.5 border-b border-white/[0.08] space-y-2.5 bg-[#101116]">
+          <div className="p-3.5 border-b border-orange-200 space-y-2.5 bg-[#faf5ef]">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+              <span className="text-xs font-bold text-zinc-950 uppercase tracking-wider font-mono">
                 Conversations
               </span>
-              <Badge variant="outline" className="text-[10px] font-mono border-zinc-700 text-zinc-400">
+              <Badge variant="outline" className="text-[10px] font-mono border-orange-200 text-zinc-600">
                 {conversations.length} Active
               </Badge>
             </div>
             <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-zinc-500" />
+              <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-zinc-600" />
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search orders, kits, buyers..."
-                className="pl-8 text-xs bg-[#141822] border-white/[0.1] text-white h-8"
+                className="pl-8 text-xs bg-[#faf5ef] border-orange-200 text-zinc-950 h-8"
               />
             </div>
           </div>
 
           {/* List of Threads */}
-          <div className="flex-1 overflow-y-auto divide-y divide-white/[0.05] p-2 space-y-1">
+          <div className="flex-1 overflow-y-auto divide-y divide-orange-100 p-2 space-y-1">
             {filteredConversations.length === 0 ? (
-              <div className="p-4 text-center text-xs text-zinc-500">
+              <div className="p-4 text-center text-xs text-zinc-600">
                 No matching conversations found.
               </div>
             ) : (
@@ -316,21 +316,21 @@ export default function ChatHubPage() {
                     }}
                     className={`w-full text-left p-3 rounded-xl transition-all flex flex-col gap-1.5 ${
                       isSelected
-                        ? 'bg-white/[0.06] border border-white/[0.12] shadow-sm'
-                        : 'hover:bg-white/[0.03] text-zinc-400'
+                        ? 'bg-[#faf5ef] border border-orange-200 shadow-sm'
+                        : 'hover:bg-[#faf5ef] text-zinc-600'
                     }`}
                   >
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-xs font-semibold text-white truncate max-w-[170px]">
+                      <span className="text-xs font-semibold text-zinc-950 truncate max-w-[170px]">
                         {c.kitTitle}
                       </span>
                       {c.status === 'flagged' ? (
-                        <span className="inline-flex items-center gap-1 text-[10px] text-red-400 bg-red-950/40 px-1.5 py-0.5 rounded border border-red-500/30">
+                        <span className="inline-flex items-center gap-1 text-[10px] text-red-700 bg-red-50 px-1.5 py-0.5 rounded border border-red-500/30">
                           <AlertTriangle className="h-2.5 w-2.5" />
                           <span>Flagged</span>
                         </span>
                       ) : (
-                        <span className="text-[10px] text-zinc-500 font-mono">
+                        <span className="text-[10px] text-zinc-600 font-mono">
                           {new Date(c.lastMessageAt).toLocaleDateString([], {
                             month: 'short',
                             day: 'numeric',
@@ -339,13 +339,13 @@ export default function ChatHubPage() {
                       )}
                     </div>
 
-                    <div className="text-[11px] text-zinc-400 line-clamp-1">
+                    <div className="text-[11px] text-zinc-600 line-clamp-1">
                       {c.lastMessageSnippet}
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-zinc-500 font-mono pt-1">
+                    <div className="flex items-center justify-between text-[10px] text-zinc-600 font-mono pt-1">
                       <span>{c.orderId}</span>
-                      <span className="text-zinc-400">
+                      <span className="text-zinc-600">
                         {effectiveRole === 'seller' ? c.buyerName : c.sellerName}
                       </span>
                     </div>
@@ -358,20 +358,20 @@ export default function ChatHubPage() {
 
         {/* PANEL 2: ACTIVE CHAT & COMPOSER (6 COLS) */}
         <div
-          className={`rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-hidden ${
+          className={`rounded-2xl border border-orange-200 bg-white shadow-xl backdrop-blur-xl flex flex-col overflow-hidden ${
             isDetailsOpen ? 'lg:col-span-6' : 'lg:col-span-9'
           } lg:h-full ${
             mobileTab === 'chat' ? 'flex h-[calc(100vh-210px)] min-h-[550px]' : 'hidden lg:flex'
           }`}
         >
           {/* Chat Header */}
-          <div className="px-3 sm:px-5 py-3 border-b border-white/[0.08] bg-[#101116] flex items-center justify-between gap-2">
+          <div className="px-3 sm:px-5 py-3 border-b border-orange-200 bg-[#faf5ef] flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0">
               {/* Mobile Back Button to Conversations List */}
               <button
                 type="button"
                 onClick={() => setMobileTab('conversations')}
-                className="lg:hidden p-1.5 -ml-1 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg shrink-0"
+                className="lg:hidden p-1.5 -ml-1 text-zinc-600 hover:text-zinc-950 hover:bg-[#faf5ef] rounded-lg shrink-0"
                 title="View all conversations"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -379,11 +379,11 @@ export default function ChatHubPage() {
 
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <h2 className="text-xs font-bold text-white tracking-tight truncate max-w-[130px] sm:max-w-[220px] lg:max-w-none">
+                  <h2 className="text-xs font-bold text-zinc-950 tracking-tight truncate max-w-[130px] sm:max-w-[220px] lg:max-w-none">
                     {activeConversation?.kitTitle || 'Direct Support'}
                   </h2>
                   {activeConversation?.orderId && (
-                    <Badge variant="outline" className="font-mono text-[9px] sm:text-[10px] border-zinc-700 text-zinc-400 shrink-0">
+                    <Badge variant="outline" className="font-mono text-[9px] sm:text-[10px] border-orange-200 text-zinc-600 shrink-0">
                       {activeConversation.orderId}
                     </Badge>
                   )}
@@ -394,11 +394,11 @@ export default function ChatHubPage() {
                     {effectiveRole} mode
                   </Badge>
                 </div>
-                <p className="text-[10px] sm:text-[11px] text-zinc-400 mt-0.5 truncate hidden sm:block">
+                <p className="text-[10px] sm:text-[11px] text-zinc-600 mt-0.5 truncate hidden sm:block">
                   {activeConversation ? (
                     <>
-                      Buyer: <span className="text-zinc-200">{activeConversation.buyerName}</span> • Seller:{' '}
-                      <span className="text-zinc-200">{activeConversation.sellerName}</span>
+                      Buyer: <span className="text-zinc-900">{activeConversation.buyerName}</span> • Seller:{' '}
+                      <span className="text-zinc-900">{activeConversation.sellerName}</span>
                     </>
                   ) : (
                     'No conversation active. Orders automatically initialize support channels.'
@@ -408,8 +408,8 @@ export default function ChatHubPage() {
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-950/40 px-2 py-1 text-[10px] font-mono text-emerald-400" title="DevKit DLP Active">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="inline-flex items-center gap-1 rounded-full border border-[#cc6b35] bg-[#f7ece1] px-2 py-1 text-[10px] font-mono text-[#b8531e]" title="DevKit DLP Active">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#cc6b35] animate-pulse" />
                 <span className="hidden sm:inline">DLP Protected</span>
               </span>
               <button
@@ -421,19 +421,19 @@ export default function ChatHubPage() {
                     setIsDetailsOpen(!isDetailsOpen);
                   }
                 }}
-                className="text-zinc-400 hover:text-white p-1.5 rounded-lg border border-white/[0.08] bg-[#141822] flex items-center gap-1 text-xs"
+                className="text-zinc-600 hover:text-zinc-950 p-1.5 rounded-lg border border-orange-200 bg-[#faf5ef] flex items-center gap-1 text-xs"
                 title="Toggle details panel"
               >
-                <Info className="h-3.5 w-3.5 text-zinc-300" />
-                <span className="lg:hidden text-[10px] font-medium text-zinc-300">Details</span>
+                <Info className="h-3.5 w-3.5 text-zinc-800" />
+                <span className="lg:hidden text-[10px] font-medium text-zinc-800">Details</span>
               </button>
             </div>
           </div>
 
           {/* Anti-Leak Safety Banner */}
-          <div className="bg-amber-950/20 border-b border-amber-900/30 px-3 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-[11px] text-amber-300/90 flex items-center justify-between gap-2">
+          <div className="bg-[#f7ece1] border-b border-[#cc6b35] px-3 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-[11px] text-[#b8531e] flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-              <Shield className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+              <Shield className="h-3.5 w-3.5 text-[#b8531e] shrink-0" />
               <span className="hidden sm:inline">
                 Phone numbers, WhatsApp, emails, and UPI handles are automatically masked.
               </span>
@@ -444,7 +444,7 @@ export default function ChatHubPage() {
             {effectiveRole === 'operator' && (
               <Link
                 href="/operator"
-                className="text-purple-400 hover:text-purple-300 font-mono text-[10px] underline shrink-0"
+                className="text-[#b8531e] hover:text-[#b8531e] font-mono text-[10px] underline shrink-0"
               >
                 Operator Desk →
               </Link>
@@ -454,7 +454,7 @@ export default function ChatHubPage() {
           {/* Messages Thread */}
           <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-5 space-y-4">
             {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-zinc-500 text-xs">
+              <div className="flex flex-col items-center justify-center h-full text-zinc-600 text-xs">
                 No messages yet. Send a message below to start chatting.
               </div>
             ) : (
@@ -470,9 +470,9 @@ export default function ChatHubPage() {
                   return (
                     <div
                       key={msg.messageId}
-                      className="mx-auto max-w-lg rounded-xl border border-purple-500/30 bg-purple-950/20 p-3.5 text-center text-xs text-purple-200 shadow-md"
+                      className="mx-auto max-w-lg rounded-xl border border-[#cc6b35] bg-[#f7ece1] p-3.5 text-center text-xs text-[#964115] shadow-md"
                     >
-                      <span className="block font-semibold text-purple-300 font-mono text-[10px] uppercase tracking-wider mb-1">
+                      <span className="block font-semibold text-[#b8531e] font-mono text-[10px] uppercase tracking-wider mb-1">
                         🛡️ Moderator Notice
                       </span>
                       <p className="leading-relaxed">{msg.filteredContent}</p>
@@ -485,12 +485,12 @@ export default function ChatHubPage() {
                     key={msg.messageId}
                     className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} space-y-1`}
                   >
-                    <div className="flex items-center gap-2 text-[10px] text-zinc-400 font-mono">
-                      <span className="font-semibold text-zinc-300">{msg.senderName}</span>
-                      <span className="capitalize text-[9px] bg-zinc-800 px-1.5 py-0.2 rounded text-zinc-400">
+                    <div className="flex items-center gap-2 text-[10px] text-zinc-600 font-mono">
+                      <span className="font-semibold text-zinc-800">{msg.senderName}</span>
+                      <span className="capitalize text-[9px] bg-orange-100 px-1.5 py-0.2 rounded text-zinc-600">
                         {msg.senderRole}
                       </span>
-                      <span className="text-zinc-500">
+                      <span className="text-zinc-600">
                         {new Date(msg.createdAt).toLocaleTimeString([], {
                           hour: '2-digit',
                           minute: '2-digit',
@@ -503,12 +503,12 @@ export default function ChatHubPage() {
                         isMe
                           ? 'bg-indigo-600 text-white rounded-br-sm shadow-md'
                           : isReadme
-                          ? 'bg-zinc-900 border border-indigo-500/30 text-zinc-200 rounded-bl-sm shadow-xl'
-                          : 'bg-zinc-900 border border-white/[0.08] text-zinc-200 rounded-bl-sm shadow-md'
+                          ? 'bg-[#faf5ef] border border-[#cc6b35] text-zinc-900 rounded-bl-sm shadow-xl'
+                          : 'bg-[#faf5ef] border border-orange-200 text-zinc-900 rounded-bl-sm shadow-md'
                       }`}
                     >
                       {isReadme && (
-                        <div className="flex items-center gap-1.5 text-indigo-400 font-mono font-semibold text-[10px] uppercase mb-2 pb-1.5 border-b border-indigo-500/20">
+                        <div className="flex items-center gap-1.5 text-[#b8531e] font-mono font-semibold text-[10px] uppercase mb-2 pb-1.5 border-b border-[#cc6b35]">
                           <Code2 className="h-3.5 w-3.5" />
                           <span>Included Author Setup Guide</span>
                         </div>
@@ -517,8 +517,8 @@ export default function ChatHubPage() {
                       <div className="whitespace-pre-line font-sans">{msg.filteredContent}</div>
 
                       {msg.isFlagged && (
-                        <div className="mt-2 pt-2 border-t border-red-500/20 text-[10px] text-red-300 font-mono flex items-center gap-1">
-                          <AlertTriangle className="h-3 w-3 text-red-400 shrink-0" />
+                        <div className="mt-2 pt-2 border-t border-red-500/20 text-[10px] text-red-700 font-mono flex items-center gap-1">
+                          <AlertTriangle className="h-3 w-3 text-red-700 shrink-0" />
                           <span>Contact information automatically redacted by DevKit DLP</span>
                         </div>
                       )}
@@ -530,10 +530,10 @@ export default function ChatHubPage() {
           </div>
 
           {/* Composer */}
-          <div className="border-t border-white/[0.08] bg-[#101116] p-4 space-y-2">
+          <div className="border-t border-orange-200 bg-[#faf5ef] p-4 space-y-2">
             {hasLeakWarning && (
-              <div className="p-2 rounded-lg bg-amber-950/40 border border-amber-800/60 text-amber-300 text-[11px] flex items-center gap-2">
-                <AlertTriangle className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+              <div className="p-2 rounded-lg bg-[#f7ece1] border border-[#cc6b35] text-[#b8531e] text-[11px] flex items-center gap-2">
+                <AlertTriangle className="h-3.5 w-3.5 text-[#b8531e] shrink-0" />
                 <span>
                   DevKit DLP Warning: Phone numbers, emails, WhatsApp handles, and payment links will be masked upon sending.
                 </span>
@@ -541,15 +541,15 @@ export default function ChatHubPage() {
             )}
 
             {activeConversation?.status === 'closed' ? (
-              <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 text-center space-y-1.5">
-                <span className="text-xs font-semibold text-zinc-300 block">
+              <div className="p-4 rounded-xl bg-white border border-orange-200 text-center space-y-1.5">
+                <span className="text-xs font-semibold text-zinc-800 block">
                   🔒 This verification chat thread is closed.
                 </span>
-                <p className="text-[11px] text-zinc-500 max-w-md mx-auto">
+                <p className="text-[11px] text-zinc-600 max-w-md mx-auto">
                   {activeConversation?.closureReason || 'The 7-day verification period or resolution process has concluded.'}
                 </p>
                 <div className="pt-1">
-                  <Link href="/buyer/verifications" className="text-xs text-indigo-400 hover:text-indigo-300 underline font-mono">
+                  <Link href="/buyer/verifications" className="text-xs text-[#b8531e] hover:text-[#b8531e] underline font-mono">
                     View Product Verification Dashboard →
                   </Link>
                 </div>
@@ -561,7 +561,7 @@ export default function ChatHubPage() {
                   value={inputMessage}
                   onChange={handleInputChange}
                   placeholder="Type a message or code question..."
-                  className="flex-1 rounded-xl border border-white/[0.1] bg-[#141822] p-2.5 sm:p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none font-sans"
+                  className="flex-1 rounded-xl border border-orange-200 bg-[#faf5ef] p-2.5 sm:p-3 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#cc6b35] resize-y font-sans"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
@@ -573,7 +573,7 @@ export default function ChatHubPage() {
                 <Button
                   type="submit"
                   disabled={!inputMessage.trim() || isSending || !selectedConvId}
-                  className="h-10 px-3 sm:px-4 bg-indigo-600 hover:bg-indigo-500 text-white text-xs gap-1.5 shadow-md shadow-indigo-600/20 shrink-0"
+                  className="h-10 px-3 sm:px-4 bg-[#b8531e] hover:bg-[#b8531e] text-white text-xs gap-1.5 shadow-md shadow-[#e8c3a8] shrink-0"
                 >
                   <Send className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">Send</span>
@@ -585,25 +585,25 @@ export default function ChatHubPage() {
 
         {/* PANEL 3: ORDER & KIT DETAILS (3 COLS) */}
         <div
-          className={`rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 shadow-xl backdrop-blur-xl flex flex-col overflow-y-auto p-4 space-y-4 sm:space-y-5 lg:col-span-3 lg:h-full ${
+          className={`rounded-2xl border border-orange-200 bg-white shadow-xl backdrop-blur-xl flex flex-col overflow-y-auto p-4 space-y-4 sm:space-y-5 lg:col-span-3 lg:h-full ${
             mobileTab === 'details' ? 'flex h-[calc(100vh-210px)] min-h-[500px]' : 'hidden'
           } ${isDetailsOpen ? 'lg:flex' : 'lg:hidden'}`}
         >
-          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
+          <div className="flex items-center justify-between pb-2 border-b border-orange-200">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setMobileTab('chat')}
-                className="lg:hidden p-1 -ml-1 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg flex items-center gap-1 text-xs"
+                className="lg:hidden p-1 -ml-1 text-zinc-600 hover:text-zinc-950 hover:bg-[#faf5ef] rounded-lg flex items-center gap-1 text-xs"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
                 <span className="text-[11px] font-medium">Chat</span>
               </button>
               <div>
-                <span className="text-xs font-bold text-white uppercase tracking-wider font-mono block">
+                <span className="text-xs font-bold text-zinc-950 uppercase tracking-wider font-mono block">
                   Order &amp; Asset Context
                 </span>
-                <p className="text-[10px] text-zinc-400 mt-0.5">
+                <p className="text-[10px] text-zinc-600 mt-0.5">
                   Verified details for this chat thread.
                 </p>
               </div>
@@ -618,7 +618,7 @@ export default function ChatHubPage() {
                   setIsDetailsOpen(false);
                 }
               }}
-              className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-white/[0.04]"
+              className="text-zinc-600 hover:text-zinc-950 p-1 rounded-lg hover:bg-[#faf5ef]"
               title="Close details"
             >
               <X className="h-3.5 w-3.5" />
@@ -627,42 +627,42 @@ export default function ChatHubPage() {
 
           {/* 7-Day Verification & Support Status Card */}
             {orderVerification && (
-              <div className="p-3.5 rounded-xl border border-indigo-500/30 bg-indigo-950/20 space-y-2.5">
+              <div className="p-3.5 rounded-xl border border-[#cc6b35] bg-[#f7ece1] space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-indigo-300 flex items-center gap-1.5">
-                    <Shield className="h-3.5 w-3.5 text-indigo-400" />
+                  <span className="text-xs font-semibold text-[#b8531e] flex items-center gap-1.5">
+                    <Shield className="h-3.5 w-3.5 text-[#b8531e]" />
                     <span>7-Day Product Verification</span>
                   </span>
                   {orderVerification.verificationStatus === 'verified_success' ? (
-                    <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40 text-[10px]">
+                    <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-[10px]">
                       ✓ Verified
                     </Badge>
                   ) : orderVerification.verificationStatus === 'issue_reported' ? (
-                    <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/40 text-[10px]">
+                    <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-[10px]">
                       ⚠️ Issue Active
                     </Badge>
                   ) : orderVerification.verificationStatus === 'expired' ? (
-                    <Badge className="bg-zinc-800 text-zinc-400 border-zinc-700 text-[10px]">
+                    <Badge className="bg-orange-100 text-zinc-600 border-orange-200 text-[10px]">
                       Concluded
                     </Badge>
                   ) : (
-                    <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-500/40 text-[10px]">
+                    <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-[10px]">
                       Active Window
                     </Badge>
                   )}
                 </div>
 
-                <div className="text-[11px] text-zinc-400 space-y-1">
+                <div className="text-[11px] text-zinc-600 space-y-1">
                   <div className="flex justify-between">
                     <span>Deadline:</span>
-                    <span className="text-zinc-200 font-mono text-[10px]">
+                    <span className="text-zinc-900 font-mono text-[10px]">
                       {new Date(orderVerification.verificationDeadline).toLocaleDateString()}
                     </span>
                   </div>
                   {linkedTicket && (
-                    <div className="flex justify-between items-center pt-1 border-t border-indigo-500/20">
+                    <div className="flex justify-between items-center pt-1 border-t border-[#cc6b35]">
                       <span>Support Ticket:</span>
-                      <span className="text-amber-400 font-mono text-[10px]">
+                      <span className="text-[#b8531e] font-mono text-[10px]">
                         {linkedTicket.ticketId} ({linkedTicket.status})
                       </span>
                     </div>
@@ -671,7 +671,7 @@ export default function ChatHubPage() {
 
                 <div className="pt-1">
                   <Link href="/buyer/verifications" className="block w-full">
-                    <Button variant="outline" size="sm" className="w-full text-[11px] h-7 border-indigo-500/40 text-indigo-300 hover:bg-indigo-950/40">
+                    <Button variant="outline" size="sm" className="w-full text-[11px] h-7 border-[#cc6b35] text-[#b8531e] hover:bg-[#f7ece1]">
                       Manage Verification & Issues →
                     </Button>
                   </Link>
@@ -680,38 +680,38 @@ export default function ChatHubPage() {
             )}
 
             {/* Asset Card */}
-            <div className="p-3.5 rounded-xl border border-white/[0.08] bg-[#141822] space-y-3">
+            <div className="p-3.5 rounded-xl border border-orange-200 bg-[#faf5ef] space-y-3">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="text-xs font-bold text-white">
+                  <h3 className="text-xs font-bold text-zinc-950">
                     {activeConversation?.kitTitle || 'Developer Asset'}
                   </h3>
-                  <div className="text-[10px] text-zinc-400 font-mono mt-0.5">
+                  <div className="text-[10px] text-zinc-600 font-mono mt-0.5">
                     ID: {activeConversation?.kitId}
                   </div>
                 </div>
-                <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-[10px]">
+                <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-[10px]">
                   Verified
                 </Badge>
               </div>
 
-              <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-xs">
-                <span className="text-zinc-400 text-[11px]">Payment Gateway:</span>
-                <span className="font-mono text-emerald-400 font-semibold text-[11px]">
+              <div className="pt-2 border-t border-orange-200 flex items-center justify-between text-xs">
+                <span className="text-zinc-600 text-[11px]">Payment Gateway:</span>
+                <span className="font-mono text-[#b8531e] font-semibold text-[11px]">
                   Razorpay Route
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-xs">
-                <span className="text-zinc-400 text-[11px]">Order Reference:</span>
-                <span className="font-mono text-zinc-300 text-[11px]">
+                <span className="text-zinc-600 text-[11px]">Order Reference:</span>
+                <span className="font-mono text-zinc-800 text-[11px]">
                   {activeConversation?.orderId}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-xs">
-                <span className="text-zinc-400 text-[11px]">License Type:</span>
-                <span className="text-zinc-300 text-[11px]">Commercial Dev</span>
+                <span className="text-zinc-600 text-[11px]">License Type:</span>
+                <span className="text-zinc-800 text-[11px]">Commercial Dev</span>
               </div>
             </div>
 
@@ -719,68 +719,68 @@ export default function ChatHubPage() {
             <div className="space-y-2">
               <Link
                 href={`/kits/${activeConversation?.kitSlug || orderVerification?.productSlug || 'nextjs-razorpay-pro'}`}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-white/[0.08] bg-[#141822] text-xs text-zinc-200 hover:text-white hover:border-emerald-500/30 transition-all"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-orange-200 bg-[#faf5ef] text-xs text-zinc-900 hover:text-zinc-950 hover:border-[#cc6b35] transition-all"
               >
                 <div className="flex items-center gap-2">
-                  <ExternalLink className="h-3.5 w-3.5 text-emerald-400" />
+                  <ExternalLink className="h-3.5 w-3.5 text-[#b8531e]" />
                   <span>View Marketplace Listing</span>
                 </div>
-                <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
+                <ChevronRight className="h-3.5 w-3.5 text-zinc-600" />
               </Link>
 
               <Link
                 href={`/kits/${activeConversation?.kitSlug || orderVerification?.productSlug || 'nextjs-razorpay-pro'}#code-preview`}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-white/[0.08] bg-[#141822] text-xs text-zinc-200 hover:text-white hover:border-blue-500/30 transition-all"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-orange-200 bg-[#faf5ef] text-xs text-zinc-900 hover:text-zinc-950 hover:border-[#cc6b35] transition-all"
               >
                 <div className="flex items-center gap-2">
-                  <Code2 className="h-3.5 w-3.5 text-blue-400" />
+                  <Code2 className="h-3.5 w-3.5 text-[#b8531e]" />
                   <span>Explore Architecture &amp; Code</span>
                 </div>
-                <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
+                <ChevronRight className="h-3.5 w-3.5 text-zinc-600" />
               </Link>
 
               {orderVerification?.downloadToken ? (
                 <a
                   href={`/api/download/${orderVerification.downloadToken}`}
                   download
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-purple-500/30 bg-purple-950/20 text-xs text-purple-200 hover:text-white hover:border-purple-400 transition-all"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#cc6b35] bg-[#f7ece1] text-xs text-[#964115] hover:text-zinc-950 hover:border-[#cc6b35] transition-all"
                 >
                   <div className="flex items-center gap-2">
-                    <Download className="h-3.5 w-3.5 text-purple-400" />
+                    <Download className="h-3.5 w-3.5 text-[#b8531e]" />
                     <span>Download Package (.ZIP)</span>
                   </div>
-                  <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
+                  <ChevronRight className="h-3.5 w-3.5 text-zinc-600" />
                 </a>
               ) : (
                 <Link
                   href="/buyer/verifications"
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-white/[0.08] bg-[#141822] text-xs text-zinc-200 hover:text-white hover:border-purple-500/30 transition-all"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-orange-200 bg-[#faf5ef] text-xs text-zinc-900 hover:text-zinc-950 hover:border-[#cc6b35] transition-all"
                 >
                   <div className="flex items-center gap-2">
-                    <Download className="h-3.5 w-3.5 text-purple-400" />
+                    <Download className="h-3.5 w-3.5 text-[#b8531e]" />
                     <span>Secure Download Token</span>
                   </div>
-                  <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
+                  <ChevronRight className="h-3.5 w-3.5 text-zinc-600" />
                 </Link>
               )}
             </div>
 
             {/* Quickstart Terminal Command */}
-            <div className="space-y-1.5 pt-2 border-t border-white/[0.08]">
-              <div className="text-[11px] font-mono text-zinc-400 flex items-center gap-1.5">
-                <Terminal className="h-3 w-3 text-zinc-500" />
+            <div className="space-y-1.5 pt-2 border-t border-orange-200">
+              <div className="text-[11px] font-mono text-zinc-600 flex items-center gap-1.5">
+                <Terminal className="h-3 w-3 text-zinc-600" />
                 <span>Quick Setup Command</span>
               </div>
-              <div className="p-2.5 rounded-xl bg-zinc-950 border border-white/[0.06] font-mono text-[10px] text-zinc-300 space-y-1">
-                <div><span className="text-emerald-400">$</span> npm install</div>
-                <div><span className="text-emerald-400">$</span> cp .env.example .env.local</div>
-                <div><span className="text-emerald-400">$</span> npm run dev</div>
+              <div className="p-2.5 rounded-xl bg-white border border-orange-200 font-mono text-[10px] text-zinc-800 space-y-1">
+                <div><span className="text-[#b8531e]">$</span> npm install</div>
+                <div><span className="text-[#b8531e]">$</span> cp .env.example .env.local</div>
+                <div><span className="text-[#b8531e]">$</span> npm run dev</div>
               </div>
             </div>
 
             {/* Safety Reminder */}
-            <div className="p-3 rounded-xl border border-white/[0.06] bg-zinc-950/60 text-[10px] text-zinc-400 leading-relaxed">
-              <strong className="text-white block mb-0.5">🛡️ DevKit Buyer Protection:</strong>
+            <div className="p-3 rounded-xl border border-orange-200 bg-white text-[10px] text-zinc-600 leading-relaxed">
+              <strong className="text-zinc-950 block mb-0.5">🛡️ DevKit Buyer Protection:</strong>
               Transactions are covered by 14-day defect resolution guarantee when kept inside the platform.
             </div>
           </div>

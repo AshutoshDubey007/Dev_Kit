@@ -69,7 +69,7 @@ export default function FeedbackPage() {
       <div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors mb-4"
+          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-600 hover:text-zinc-950 transition-colors mb-4"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to DevKit Marketplace</span>
@@ -78,23 +78,23 @@ export default function FeedbackPage() {
           <Badge variant="purple" size="sm">
             Beta Feedback
           </Badge>
-          <span className="text-xs text-zinc-500 font-mono">Customer Validation</span>
+          <span className="text-xs text-zinc-600 font-mono">Customer Validation</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
           Help Us Build What You Actually Need
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-400 mt-2 leading-relaxed">
+        <p className="text-xs sm:text-sm text-zinc-600 mt-2 leading-relaxed">
           Tell us about your experience discovering, installing, or purchasing code on DevKit. Every note is reviewed by our engineering team within 24 hours.
         </p>
       </div>
 
       {isSubmitted ? (
-        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-8 text-center space-y-4">
-          <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-xl font-bold">
+        <div className="rounded-2xl border border-[#cc6b35] bg-[#f7ece1] p-8 text-center space-y-4">
+          <div className="h-12 w-12 rounded-full bg-[#f7ece1] text-[#b8531e] flex items-center justify-center mx-auto text-xl font-bold">
             ✓
           </div>
-          <h2 className="text-lg font-bold text-white">Thank You for Your Feedback!</h2>
-          <p className="text-xs text-zinc-300 max-w-md mx-auto leading-relaxed">
+          <h2 className="text-lg font-bold text-zinc-950">Thank You for Your Feedback!</h2>
+          <p className="text-xs text-zinc-800 max-w-md mx-auto leading-relaxed">
             Your insight directly influences our 30-day beta validation priorities. We appreciate your partnership in making software development faster and cleaner.
           </p>
           <div className="pt-2">
@@ -106,16 +106,16 @@ export default function FeedbackPage() {
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="rounded-2xl border border-white/[0.08] bg-[#0c0d14] p-6 sm:p-8 space-y-6 shadow-xl">
+        <form onSubmit={handleSubmit} className="rounded-2xl border border-orange-200 bg-white p-6 sm:p-8 space-y-6 shadow-xl">
           {errorMessage && (
-            <div className="rounded-xl border border-red-500/30 bg-red-950/20 p-3 text-xs text-red-300">
+            <div className="rounded-xl border border-red-500/30 bg-red-50 p-3 text-xs text-red-700">
               {errorMessage}
             </div>
           )}
 
           {/* Rating */}
           <div className="space-y-2">
-            <label className="block text-xs font-semibold text-zinc-300">
+            <label className="block text-xs font-semibold text-zinc-800">
               Overall Platform Experience
             </label>
             <div className="flex items-center gap-2">
@@ -126,14 +126,14 @@ export default function FeedbackPage() {
                   onClick={() => setRating(star)}
                   className={`h-9 w-9 rounded-xl border flex items-center justify-center text-sm font-bold transition-all ${
                     rating >= star
-                      ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-sm'
-                      : 'bg-zinc-900 border-white/[0.08] text-zinc-500 hover:text-zinc-300'
+                      ? 'bg-[#f7ece1] border-[#cc6b35] text-[#b8531e] shadow-sm'
+                      : 'bg-[#faf5ef] border-orange-200 text-zinc-600 hover:text-zinc-800'
                   }`}
                 >
                   ★
                 </button>
               ))}
-              <span className="text-xs font-mono text-zinc-400 ml-2">
+              <span className="text-xs font-mono text-zinc-600 ml-2">
                 {rating === 5 ? 'Exceptional' : rating === 4 ? 'Good' : rating === 3 ? 'Average' : 'Needs Improvement'}
               </span>
             </div>
@@ -141,7 +141,7 @@ export default function FeedbackPage() {
 
           {/* Category */}
           <div className="space-y-2">
-            <label className="block text-xs font-semibold text-zinc-300">
+            <label className="block text-xs font-semibold text-zinc-800">
               What is your feedback about?
             </label>
             <div className="grid grid-cols-2 gap-2 text-xs">
@@ -157,8 +157,8 @@ export default function FeedbackPage() {
                   onClick={() => setCategory(cat.id as any)}
                   className={`p-2.5 rounded-xl border text-left font-mono text-[11px] transition-all ${
                     category === cat.id
-                      ? 'bg-indigo-600/20 border-indigo-500 text-indigo-300'
-                      : 'bg-zinc-900 border-white/[0.08] text-zinc-400 hover:text-zinc-200'
+                      ? 'bg-[#f7ece1] border-[#cc6b35] text-[#b8531e]'
+                      : 'bg-[#faf5ef] border-orange-200 text-zinc-600 hover:text-zinc-900'
                   }`}
                 >
                   {cat.label}
@@ -169,7 +169,7 @@ export default function FeedbackPage() {
 
           {/* Message */}
           <div className="space-y-2">
-            <label className="block text-xs font-semibold text-zinc-300">
+            <label className="block text-xs font-semibold text-zinc-800">
               Your Feedback or Suggestion *
             </label>
             <textarea
@@ -178,30 +178,30 @@ export default function FeedbackPage() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="What worked well? What failed or felt confusing? Which template or integration would save you 20 hours of work?"
-              className="w-full rounded-xl border border-white/[0.1] bg-black/50 p-3 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors leading-relaxed"
+              className="w-full rounded-xl border border-orange-200 bg-white p-3 text-xs text-zinc-900 placeholder:text-zinc-500 focus:outline-none focus:border-[#cc6b35] transition-colors leading-relaxed"
             />
           </div>
 
           {/* User Details */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-zinc-300">Your Name (Optional)</label>
+              <label className="block text-xs font-medium text-zinc-800">Your Name (Optional)</label>
               <Input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ashutosh Dubey"
-                className="bg-black/50 border-white/[0.1] text-xs h-9"
+                className="bg-white border-orange-200 text-xs h-9"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-zinc-300">Email Address (Optional)</label>
+              <label className="block text-xs font-medium text-zinc-800">Email Address (Optional)</label>
               <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ashutosh@agency.dev"
-                className="bg-black/50 border-white/[0.1] text-xs h-9"
+                className="bg-white border-orange-200 text-xs h-9"
               />
             </div>
           </div>

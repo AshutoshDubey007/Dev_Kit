@@ -35,7 +35,7 @@ const KageCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="fixed inset-0 bg-[#06080d] z-0 pointer-events-none" aria-hidden="true" />
+      <div className="fixed inset-0 bg-[#fcfaf7] z-0 pointer-events-none" aria-hidden="true" />
     ),
   }
 );
@@ -147,106 +147,113 @@ export default function SingleKageMarketplacePage() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-transparent text-white selection:bg-red-500 selection:text-white font-sans antialiased">
-      {/* ─── 1. 3D WebGL CANVASES (Temple, Torii, Lanterns, Embers, Moon, Rain) ─── */}
-      <KageCanvas scrollProgress={scrollProgress} />
+    <div className="relative min-h-screen bg-transparent text-zinc-950 selection:bg-[#cc6b35] selection:text-white font-sans antialiased">
+      {/* ─── 1. 3D WebGL CANVASES (Orange & White Arcade Grid Sanctuary) ─── */}
+      <KageCanvas scrollProgress={scrollProgress} theme="arcade" />
 
-      {/* Subtle Cinematic Vignette (Preserves maximum 3D view-through) */}
+      {/* Subtle Warm White Edge Wash (Preserves 3D view-through while keeping text crisp) */}
       <div
-        className="fixed inset-0 pointer-events-none z-10 bg-[radial-gradient(ellipse_at_center,_transparent_65%,_rgba(6,8,13,0.5)_100%)]"
+        className="fixed inset-0 pointer-events-none z-10 bg-[radial-gradient(ellipse_at_center,_rgba(255,250,245,0.18)_0%,_rgba(255,247,237,0.68)_100%)]"
         aria-hidden="true"
       />
 
-      {/* SVG Grain Film Overlay */}
+      {/* Arcade Pixel Scanline Overlay (Ultra-subtle) */}
       <div
-        className="fixed inset-0 pointer-events-none z-10 opacity-[0.035] mix-blend-screen"
+        className="fixed inset-0 pointer-events-none z-10 opacity-[0.03]"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundImage:
+            'repeating-linear-gradient(0deg, #cc6b35 0px, #cc6b35 1px, transparent 1px, transparent 4px)',
         }}
         aria-hidden="true"
       />
 
-      {/* ─── 2. FIXED CINEMATIC BOTTOM HUD (Ambient Audio & Kyoto Telemetry) ─── */}
-      <aside className="fixed bottom-4 left-4 right-4 md:left-10 md:right-10 z-30 flex items-center justify-between px-5 py-2.5 rounded-2xl border border-white/[0.1] backdrop-blur-xl bg-black/60 shadow-2xl text-[10px] font-mono text-zinc-300">
-        <div className="flex items-center gap-3">
-          <span className="text-red-500 font-serif font-bold text-sm">影</span>
-          <span className="hidden sm:inline">35.0116° N, 135.7681° E</span>
-          <span className="hidden sm:inline text-zinc-600">•</span>
-          <span className="text-zinc-200 uppercase font-semibold">
+      {/* ─── 2. FIXED ARCADE BOTTOM HUD (Ambient Audio & Stage Telemetry) ─── */}
+      <aside className="fixed bottom-4 left-4 right-4 md:left-10 md:right-10 z-30 flex items-center justify-between px-5 py-2.5 rounded-xl border-2 border-[#cc6b35] backdrop-blur-md bg-white/95 shadow-[4px_4px_0px_#cc6b35] text-[11px] font-pixel text-zinc-800">
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded bg-[#b8531e] text-white font-arcade text-[10px] shrink-0">
+            DK
+          </span>
+          <span className="hidden sm:inline text-[#b8531e] font-bold">STAGE 0{currentChapter}</span>
+          <span className="hidden sm:inline text-orange-300">•</span>
+          <span className="text-zinc-950 uppercase font-bold truncate">
             {chapterNames[currentChapter - 1]}
           </span>
         </div>
 
         {/* Scroll Progress Bar */}
-        <div className="w-24 sm:w-56 h-1 bg-white/[0.1] rounded-full overflow-hidden">
+        <div className="w-24 sm:w-56 h-2.5 bg-orange-100 border border-[#cc6b35] rounded-sm overflow-hidden shrink-0">
           <div
-            className="h-full bg-gradient-to-r from-red-500 via-amber-500 to-red-500 transition-all duration-100"
+            className="h-full bg-gradient-to-r from-[#b8531e] via-[#cc6b35] to-[#e5a982] transition-all duration-100"
             style={{ width: `${Math.round(scrollProgress * 100)}%` }}
           />
         </div>
 
         {/* Ambient Soundscape Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={toggleSound}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/[0.12] bg-white/[0.04] hover:bg-white/[0.08] hover:border-amber-400/40 text-[10px] font-mono text-zinc-200 transition-all"
-            title="Toggle procedural mountain night wind soundscape"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-lg border-2 border-[#cc6b35] bg-[#faf5ef] hover:bg-orange-100 text-[11px] font-pixel text-[#964115] transition-all"
+            title="Toggle procedural soundscape"
           >
             {isAudioActive ? (
               <>
-                <Volume2 className="h-3 w-3 text-amber-400 animate-pulse" />
-                <span className="text-amber-300 font-semibold">Wind Audio On</span>
+                <Volume2 className="h-3.5 w-3.5 text-[#b8531e] animate-pulse" />
+                <span className="font-bold">SFX ON</span>
               </>
             ) : (
               <>
-                <VolumeX className="h-3 w-3 text-zinc-400" />
-                <span>Ambient Off</span>
+                <VolumeX className="h-3.5 w-3.5 text-[#cc6b35]" />
+                <span>SFX OFF</span>
               </>
             )}
           </button>
         </div>
       </aside>
 
-      {/* ─── 4. INTERACTIVE CHAPTERS OVERLAYING THE 3D TEMPLE ─── */}
-      <main className="relative z-20 space-y-14 sm:space-y-16 pt-8 sm:pt-12 pb-28">
+      {/* ─── 4. INTERACTIVE CHAPTERS OVERLAYING THE 3D STAGE ─── */}
+      <main className="relative z-20 space-y-14 sm:space-y-16 pt-8 sm:pt-12 pb-20 sm:pb-24">
         {/* ══════════════════════════════════════════════════════════════
-            CHAPTER I // 閾 // THE THRESHOLD (Hero & Instant Filter)
+            CHAPTER I // THE THRESHOLD (Hero & Instant Filter)
            ══════════════════════════════════════════════════════════════ */}
         <section id="hero" className="flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Column: Hero Editorial & Live Search */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-ping" />
-                <span>01 // 閾 // The Threshold</span>
+              <div className="inline-flex items-center gap-2.5 rounded-md border-2 border-[#cc6b35] bg-white px-3 py-1 text-xs font-pixel uppercase tracking-[0.18em] text-[#b8531e] shadow-[3px_3px_0px_#e8c3a8]">
+                <span className="h-2 w-2 bg-[#cc6b35] animate-ping" />
+                <span>01 // 閾 // Arcade Threshold</span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl font-serif tracking-tight font-extrabold leading-[1.08] text-white">
-                The Developer Sanctuary of Precision Code.
+              <h1 className="text-2xl sm:text-4xl lg:text-[2.5rem] font-arcade tracking-tight leading-[1.35] text-zinc-950 drop-shadow-[3px_3px_0px_#e8c3a8]">
+                The Developer Arcade of{' '}
+                <span className="text-[#b8531e] underline decoration-[#e5a982] decoration-4 underline-offset-8">
+                  Precision Code.
+                </span>
               </h1>
 
-              <p className="text-sm sm:text-base text-zinc-200 max-w-xl leading-relaxed font-light">
-                Battle-tested Next.js 15 starter kits, automated test verification, and 
-                instant Razorpay payments—rendered in a see-through glass interface against 
-                a living 3D Kyoto mountain temple.
+              <p className="text-sm sm:text-base text-zinc-800 max-w-xl leading-relaxed font-medium bg-white/80 backdrop-blur-sm rounded-xl p-4 border-2 border-orange-200">
+                Battle-tested Next.js 15 starter kits, automated test verification, and
+                instant Razorpay payments—rendered in a crisp orange &amp; white arcade
+                interface over an interactive 3D stage.
               </p>
 
-              {/* Glassmorphic Search Bar */}
-              <div className="p-2 rounded-2xl border border-white/[0.12] bg-black/40 backdrop-blur-xl shadow-2xl space-y-2">
-                <div className="relative flex items-center">
-                  <Search className="absolute left-4 h-4 w-4 text-zinc-400" />
+              {/* Arcade Search Bar */}
+              <div className="p-3 rounded-2xl border-2 border-[#cc6b35] bg-white shadow-[5px_5px_0px_#cc6b35] space-y-2.5">
+                <div className="relative flex items-center bg-[#fcfaf7] rounded-xl border-2 border-orange-200 focus-within:border-[#b8531e]">
+                  <Search className="absolute left-4 h-4 w-4 text-[#b8531e]" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search templates, integrations, webhooks, or RAG..."
-                    className="w-full pl-11 pr-4 py-3 bg-transparent text-sm text-white placeholder-zinc-400 outline-none font-mono"
+                    className="w-full pl-11 pr-4 py-3 bg-transparent text-sm text-zinc-950 placeholder-zinc-500 outline-none font-mono"
                   />
                   {searchQuery && (
                     <button
+                      type="button"
                       onClick={() => setSearchQuery('')}
-                      className="px-2 text-xs font-mono text-zinc-400 hover:text-white"
+                      className="px-3 text-xs font-pixel text-[#b8531e] hover:text-zinc-950 font-bold"
                     >
                       Clear
                     </button>
@@ -254,14 +261,14 @@ export default function SingleKageMarketplacePage() {
                 </div>
 
                 {/* Popular Search Tags */}
-                <div className="flex flex-wrap items-center gap-2 px-2 pb-1 text-xs font-mono">
-                  <span className="text-zinc-400 text-[11px]">Popular:</span>
+                <div className="flex flex-wrap items-center gap-2 px-1 pb-0.5 text-xs font-pixel">
+                  <span className="text-zinc-600 text-[11px] font-bold">Popular:</span>
                   {POPULAR_TAGS.map((tag) => (
                     <button
                       key={tag}
                       type="button"
                       onClick={() => setSearchQuery(tag)}
-                      className="px-2.5 py-0.5 rounded-full border border-white/[0.08] bg-white/[0.03] text-zinc-300 hover:border-amber-400/60 hover:text-amber-200 transition-all text-[11px]"
+                      className="px-2.5 py-0.5 rounded-md border-2 border-orange-200 bg-[#faf5ef] text-[#964115] hover:border-[#cc6b35] hover:bg-orange-100 transition-all text-[11px] font-bold"
                     >
                       #{tag}
                     </button>
@@ -270,72 +277,72 @@ export default function SingleKageMarketplacePage() {
               </div>
 
               {/* Call-to-Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-4 pt-2">
                 <a
                   href="#templates"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 via-amber-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-semibold uppercase tracking-wider transition-all shadow-lg shadow-red-950/50"
+                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#b8531e] hover:bg-[#964115] border-2 border-[#78330f] text-white text-xs font-arcade uppercase tracking-wider transition-all shadow-[4px_4px_0px_#e5a982] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                 >
-                  <span>Explore Verified Templates</span>
+                  <span>Explore Templates</span>
                   <ArrowDown className="h-4 w-4 animate-bounce" />
                 </a>
 
                 <Link
                   href="/seller/new-kit"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-white/[0.12] bg-black/40 hover:bg-white/[0.08] text-zinc-200 hover:text-white text-xs font-mono transition-all backdrop-blur-md"
+                  className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl border-2 border-[#cc6b35] bg-white hover:bg-[#faf5ef] text-[#964115] text-xs font-pixel font-bold uppercase transition-all shadow-[4px_4px_0px_#e8c3a8]"
                 >
-                  <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+                  <Sparkles className="h-4 w-4 text-[#cc6b35]" />
                   <span>Publish Your Kit</span>
                 </Link>
               </div>
             </div>
 
-            {/* Right Column: See-Through Glass "Inside a Verified Template" Card */}
+            {/* Right Column: Arcade White "Inside a Verified Template" Card */}
             <div className="lg:col-span-5">
-              <div className="rounded-3xl border border-white/[0.1] bg-black/30 backdrop-blur-2xl p-6 shadow-2xl shadow-black/80 space-y-4 hover:border-white/[0.2] transition-all">
+              <div className="rounded-2xl border-2 border-[#cc6b35] bg-white p-6 shadow-[6px_6px_0px_#cc6b35] space-y-4 transition-all">
                 {/* Header */}
-                <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+                <div className="flex items-center justify-between border-b-2 border-orange-100 pb-3">
                   <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-5 w-5 text-emerald-400" />
-                    <span className="text-xs font-mono font-bold tracking-wider text-white uppercase">
+                    <ShieldCheck className="h-5 w-5 text-[#b8531e]" />
+                    <span className="text-xs font-pixel font-bold tracking-wider text-zinc-950 uppercase">
                       Inside a Verified Template
                     </span>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-[10px] font-mono text-emerald-300">
-                    100% Pass
+                  <span className="px-2.5 py-0.5 rounded bg-[#b8531e] border border-[#78330f] text-[10px] font-pixel font-bold text-white">
+                    100% PASS
                   </span>
                 </div>
 
-                {/* File Tree with See-Through Row Highlight */}
+                {/* File Tree */}
                 <div className="space-y-1.5 font-mono text-xs">
                   {KIT_FILES.map((f) => (
                     <div
                       key={f.path}
-                      className="flex items-center justify-between gap-3 p-2 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.05] transition-colors"
+                      className="flex items-center justify-between gap-3 p-2.5 rounded-xl bg-[#faf5ef] border border-orange-200 hover:border-[#cc6b35] transition-colors"
                     >
-                      <code className="text-zinc-200 truncate">{f.path}</code>
-                      <span className="text-[10px] text-zinc-400 shrink-0">{f.note}</span>
+                      <code className="text-zinc-950 font-semibold truncate">{f.path}</code>
+                      <span className="text-[11px] text-[#964115] shrink-0 font-medium">{f.note}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Test Verification Checks */}
-                <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block">
+                <div className="p-3.5 rounded-xl bg-[#fcfaf7] border-2 border-orange-200 space-y-2">
+                  <span className="text-[11px] font-pixel font-bold text-[#b8531e] uppercase tracking-wider block">
                     Automated Verification Pipeline
                   </span>
                   <div className="space-y-1.5">
                     {KIT_CHECKS.map((check) => (
-                      <div key={check} className="flex items-start gap-2 text-xs text-zinc-300">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <div key={check} className="flex items-start gap-2 text-xs text-zinc-800">
+                        <CheckCircle2 className="h-4 w-4 text-[#b8531e] shrink-0 mt-0.5" />
                         <span className="leading-snug">{check}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="pt-1 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                <div className="pt-1 flex items-center justify-between text-[11px] font-pixel text-zinc-700">
                   <span>RUNTIME: Next.js 15 &amp; Node 20+</span>
-                  <span className="text-amber-400 font-semibold">Zero-Dependency Debt</span>
+                  <span className="text-[#b8531e] font-bold">Zero-Debt Build</span>
                 </div>
               </div>
             </div>
@@ -344,40 +351,40 @@ export default function SingleKageMarketplacePage() {
 
         {/* Architecture & Verification Pillars */}
         <div className="max-w-7xl mx-auto px-6 md:px-16 w-full">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-            <div className="rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-4 space-y-1.5 hover:border-white/[0.16] transition-all">
-              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="rounded-xl border-2 border-[#cc6b35] bg-white p-4 space-y-1.5 shadow-[4px_4px_0px_#e8c3a8] hover:shadow-[4px_4px_0px_#cc6b35] transition-all">
+              <div className="flex items-center gap-2 text-xs font-pixel font-bold text-zinc-950">
+                <span className="h-2.5 w-2.5 bg-[#cc6b35]" />
                 <span>Zero Setup Debt</span>
               </div>
-              <p className="text-[11px] text-zinc-400 leading-relaxed font-light">
+              <p className="text-xs text-zinc-700 leading-relaxed">
                 Next.js 15 App Router &amp; Node 20+ tested clean installs with zero peer conflicts.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-4 space-y-1.5 hover:border-white/[0.16] transition-all">
-              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white">
-                <span className="h-2 w-2 rounded-full bg-amber-400" />
+            <div className="rounded-xl border-2 border-[#cc6b35] bg-white p-4 space-y-1.5 shadow-[4px_4px_0px_#e8c3a8] hover:shadow-[4px_4px_0px_#cc6b35] transition-all">
+              <div className="flex items-center gap-2 text-xs font-pixel font-bold text-zinc-950">
+                <span className="h-2.5 w-2.5 bg-[#cc6b35]" />
                 <span>Razorpay Route</span>
               </div>
-              <p className="text-[11px] text-zinc-400 leading-relaxed font-light">
+              <p className="text-xs text-zinc-700 leading-relaxed">
                 Cryptographic HMAC-SHA256 signature verification &amp; idempotent settlements.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-4 space-y-1.5 hover:border-white/[0.16] transition-all">
-              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white">
-                <span className="h-2 w-2 rounded-full bg-purple-400" />
+            <div className="rounded-xl border-2 border-[#cc6b35] bg-white p-4 space-y-1.5 shadow-[4px_4px_0px_#e8c3a8] hover:shadow-[4px_4px_0px_#cc6b35] transition-all">
+              <div className="flex items-center gap-2 text-xs font-pixel font-bold text-zinc-950">
+                <span className="h-2.5 w-2.5 bg-[#b8531e]" />
                 <span>Security Gate</span>
               </div>
-              <p className="text-[11px] text-zinc-400 leading-relaxed font-light">
+              <p className="text-xs text-zinc-700 leading-relaxed">
                 Zip Slip traversal defenses &amp; automated credential leakage inspection on all uploads.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-4 space-y-1.5 hover:border-white/[0.16] transition-all">
-              <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white">
-                <span className="h-2 w-2 rounded-full bg-blue-400" />
+            <div className="rounded-xl border-2 border-[#cc6b35] bg-white p-4 space-y-1.5 shadow-[4px_4px_0px_#e8c3a8] hover:shadow-[4px_4px_0px_#cc6b35] transition-all">
+              <div className="flex items-center gap-2 text-xs font-pixel font-bold text-zinc-950">
+                <span className="h-2.5 w-2.5 bg-[#964115]" />
                 <span>DLP Safe Chat</span>
               </div>
-              <p className="text-[11px] text-zinc-400 leading-relaxed font-light">
+              <p className="text-xs text-zinc-700 leading-relaxed">
                 Encrypted author support channels with automatic phone &amp; off-platform link masking.
               </p>
             </div>
@@ -385,20 +392,20 @@ export default function SingleKageMarketplacePage() {
         </div>
 
         {/* ══════════════════════════════════════════════════════════════
-            CHAPTER II // 燈籠 // VERIFIED CODE TEMPLATES (Marketplace)
+            CHAPTER II // VERIFIED CODE TEMPLATES (Marketplace)
            ══════════════════════════════════════════════════════════════ */}
         <section id="templates" className="flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-6">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-2 border-[#cc6b35] pb-6 bg-white/85 backdrop-blur-sm p-6 rounded-2xl border-2 shadow-[4px_4px_0px_#e8c3a8]">
             <div className="space-y-2 max-w-xl">
-              <div className="inline-flex items-center gap-2 border-b border-amber-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-amber-400">
-                <span>02 // 燈籠 // The Lantern Path</span>
+              <div className="inline-flex items-center gap-2 border-b-2 border-[#cc6b35] pb-1 text-xs font-pixel font-bold uppercase tracking-[0.2em] text-[#b8531e]">
+                <span>02 // 燈籠 // The Arcade Path</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-white">
+              <h2 className="text-xl sm:text-3xl font-arcade tracking-tight text-zinc-950 leading-[1.35]">
                 Battle-Tested Code Templates.
               </h2>
-              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed">
-                Every stone lantern along the path corresponds to a production-ready module. 
+              <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed">
+                Every arcade block corresponds to a production-ready module.
                 Full source code, zero ongoing subscription fees, and 100% test pass guarantee.
               </p>
             </div>
@@ -406,11 +413,12 @@ export default function SingleKageMarketplacePage() {
             {/* Category Filter Pills */}
             <div className="flex flex-wrap items-center gap-2">
               <button
+                type="button"
                 onClick={() => setSelectedCategory('all')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all border ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-pixel font-bold transition-all border-2 ${
                   selectedCategory === 'all'
-                    ? 'border-amber-400 bg-amber-400/20 text-white font-bold'
-                    : 'border-white/[0.08] bg-black/40 text-zinc-400 hover:text-white'
+                    ? 'border-[#78330f] bg-[#b8531e] text-white shadow-[2px_2px_0px_#e5a982]'
+                    : 'border-orange-200 bg-white text-zinc-800 hover:border-[#cc6b35] hover:text-[#b8531e]'
                 }`}
               >
                 All Modules ({allKits.length})
@@ -418,11 +426,12 @@ export default function SingleKageMarketplacePage() {
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
+                  type="button"
                   onClick={() => setSelectedCategory(cat.slug)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all border ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-pixel font-bold transition-all border-2 ${
                     selectedCategory === cat.slug
-                      ? 'border-amber-400 bg-amber-400/20 text-white font-bold'
-                      : 'border-white/[0.08] bg-black/40 text-zinc-400 hover:text-white'
+                      ? 'border-[#78330f] bg-[#b8531e] text-white shadow-[2px_2px_0px_#e5a982]'
+                      : 'border-orange-200 bg-white text-zinc-800 hover:border-[#cc6b35] hover:text-[#b8531e]'
                   }`}
                 >
                   {cat.name.split(' ')[0]}
@@ -431,27 +440,24 @@ export default function SingleKageMarketplacePage() {
             </div>
           </div>
 
-          {/* See-Through Glass Templates Grid */}
+          {/* Arcade Templates Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            {filteredKits.map((kit, index) => (
+            {filteredKits.map((kit) => (
               <div
                 key={kit.id}
-                className="group relative rounded-3xl border border-white/[0.1] bg-black/30 backdrop-blur-xl p-6 sm:p-7 shadow-2xl hover:border-amber-400/40 hover:bg-black/45 transition-all duration-300 flex flex-col justify-between"
+                className="group relative rounded-2xl border-2 border-[#cc6b35] bg-white p-6 sm:p-7 shadow-[5px_5px_0px_#cc6b35] hover:shadow-[7px_7px_0px_#b8531e] hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
               >
-                {/* Glow backdrop on hover */}
-                <div className="absolute inset-0 rounded-3xl bg-amber-500/[0.03] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-
                 <div className="space-y-4">
                   {/* Top Bar: Category & Price */}
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-1 rounded-full border border-white/[0.1] bg-white/[0.04] text-[10px] font-mono uppercase tracking-wider text-amber-300">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2.5 py-1 rounded-md border-2 border-[#cc6b35] bg-[#f7ece1] text-[11px] font-pixel font-bold uppercase tracking-wider text-[#964115]">
                       {kit.category}
                     </span>
                     <div className="text-right">
-                      <span className="text-xl font-bold font-mono text-white">
+                      <span className="text-lg font-arcade text-[#b8531e]">
                         ₹{kit.priceINR.toLocaleString('en-IN')}
                       </span>
-                      <span className="text-xs text-zinc-400 font-mono ml-1.5">
+                      <span className="text-xs text-zinc-600 font-pixel ml-1.5">
                         (${kit.priceUSD})
                       </span>
                     </div>
@@ -459,10 +465,10 @@ export default function SingleKageMarketplacePage() {
 
                   {/* Title & Tagline */}
                   <div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-amber-200 transition-colors">
+                    <h3 className="text-lg font-pixel font-bold text-zinc-950 group-hover:text-[#b8531e] transition-colors">
                       {kit.title}
                     </h3>
-                    <p className="mt-1.5 text-xs text-zinc-300 leading-relaxed font-light line-clamp-2">
+                    <p className="mt-1.5 text-xs sm:text-sm text-zinc-700 leading-relaxed line-clamp-2">
                       {kit.tagline}
                     </p>
                   </div>
@@ -472,7 +478,7 @@ export default function SingleKageMarketplacePage() {
                     {kit.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-0.5 rounded-md border border-white/[0.06] bg-white/[0.02] text-[10px] font-mono text-zinc-300"
+                        className="px-2 py-0.5 rounded border border-orange-300 bg-[#faf5ef] text-[11px] font-pixel text-[#964115]"
                       >
                         {tech}
                       </span>
@@ -480,36 +486,36 @@ export default function SingleKageMarketplacePage() {
                   </div>
 
                   {/* Automated Tests & Verification Badge */}
-                  <div className="flex items-center justify-between text-xs font-mono pt-2 border-t border-white/[0.06] text-zinc-300">
-                    <div className="flex items-center gap-1.5 text-emerald-400">
+                  <div className="flex items-center justify-between text-xs font-pixel pt-3 border-t-2 border-orange-100 text-zinc-700">
+                    <div className="flex items-center gap-1.5 text-[#b8531e] font-bold">
                       <CheckCircle className="h-3.5 w-3.5" />
-                      <span>{kit.verification.automatedTestsCount} automated tests passing</span>
+                      <span>{kit.verification.automatedTestsCount} tests passing</span>
                     </div>
-                    <span className="text-zinc-400 text-[11px]">
+                    <span className="text-zinc-600 text-[11px]">
                       {kit.verification.nodeVersion}
                     </span>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="pt-6 flex items-center gap-3">
-                  <Link href={`/kits/${kit.slug}`} className="flex-1">
+                <div className="pt-6 flex flex-wrap items-center gap-3">
+                  <Link href={`/kits/${kit.slug}`} className="flex-1 min-w-[180px]">
                     <button
                       type="button"
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/[0.15] hover:border-white/30 backdrop-blur-md transition-all shadow-sm group/btn"
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-pixel font-bold text-[#964115] bg-[#faf5ef] hover:bg-orange-100 border-2 border-[#cc6b35] transition-all shadow-[2px_2px_0px_#e8c3a8] group/btn"
                     >
-                      <Code2 className="h-3.5 w-3.5 text-amber-400 group-hover/btn:scale-110 transition-transform" />
-                      <span>View Full Spec &amp; Files</span>
-                      <ArrowRight className="h-3.5 w-3.5 text-zinc-400 group-hover/btn:translate-x-0.5 transition-transform" />
+                      <Code2 className="h-3.5 w-3.5 text-[#b8531e]" />
+                      <span>View Spec &amp; Files</span>
+                      <ArrowRight className="h-3.5 w-3.5 text-[#b8531e] group-hover/btn:translate-x-0.5 transition-transform" />
                     </button>
                   </Link>
 
                   <Link href={`/checkout?kitId=${kit.id}`}>
                     <button
                       type="button"
-                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-amber-300 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 hover:border-amber-400 transition-all shadow-sm"
+                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-pixel font-bold text-white bg-[#b8531e] hover:bg-[#964115] border-2 border-[#78330f] transition-all shadow-[3px_3px_0px_#e5a982]"
                     >
-                      <Zap className="h-3.5 w-3.5 text-amber-400" />
+                      <Zap className="h-3.5 w-3.5" />
                       <span>Instant Buy</span>
                     </button>
                   </Link>
@@ -519,8 +525,8 @@ export default function SingleKageMarketplacePage() {
           </div>
 
           {filteredKits.length === 0 && (
-            <div className="p-12 text-center rounded-3xl border border-white/[0.08] bg-black/30 backdrop-blur-xl">
-              <p className="text-zinc-400 font-mono text-sm">
+            <div className="p-12 text-center rounded-2xl border-2 border-[#cc6b35] bg-white shadow-[4px_4px_0px_#cc6b35]">
+              <p className="text-zinc-700 font-pixel text-sm">
                 No templates matched &quot;{searchQuery}&quot;. Try searching for &quot;razorpay&quot;, &quot;rbac&quot;, or &quot;rag&quot;.
               </p>
             </div>
@@ -529,36 +535,36 @@ export default function SingleKageMarketplacePage() {
 
         {/* 3-Step Lifecycle Bridge */}
         <div className="max-w-7xl mx-auto px-6 md:px-16 w-full">
-          <div className="rounded-2xl border border-white/[0.08] bg-black/30 backdrop-blur-xl p-5 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="rounded-2xl border-2 border-[#cc6b35] bg-white p-5 sm:p-6 shadow-[4px_4px_0px_#cc6b35] grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-start gap-3">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs font-bold font-mono text-amber-400 shrink-0">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#b8531e] border-2 border-[#78330f] text-xs font-arcade text-white shrink-0">
                 01
               </span>
               <div>
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">1. Choose or Prompt</h4>
-                <p className="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
+                <h4 className="text-xs font-pixel font-bold text-zinc-950 uppercase tracking-wider">1. Choose or Prompt</h4>
+                <p className="text-xs text-zinc-700 mt-0.5 leading-relaxed">
                   Pick a battle-tested template or generate custom architectures in the AI Studio.
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-500/10 border border-purple-500/20 text-xs font-bold font-mono text-purple-400 shrink-0">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#cc6b35] border-2 border-[#964115] text-xs font-arcade text-white shrink-0">
                 02
               </span>
               <div>
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">2. Audit Spec &amp; Tests</h4>
-                <p className="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
+                <h4 className="text-xs font-pixel font-bold text-zinc-950 uppercase tracking-wider">2. Audit Spec &amp; Tests</h4>
+                <p className="text-xs text-zinc-700 mt-0.5 leading-relaxed">
                   Review automated test suites, clean install guarantees, and runtime dependency specs.
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold font-mono text-emerald-400 shrink-0">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f7ece1] border-2 border-[#cc6b35] text-xs font-arcade text-[#b8531e] shrink-0">
                 03
               </span>
               <div>
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">3. Deploy &amp; Support</h4>
-                <p className="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
+                <h4 className="text-xs font-pixel font-bold text-zinc-950 uppercase tracking-wider">3. Deploy &amp; Support</h4>
+                <p className="text-xs text-zinc-700 mt-0.5 leading-relaxed">
                   Download full source code and auto-connect with verified authors in secure DLP chat.
                 </p>
               </div>
@@ -567,19 +573,19 @@ export default function SingleKageMarketplacePage() {
         </div>
 
         {/* ══════════════════════════════════════════════════════════════
-            CHAPTER III // 本堂 // THE SACRED CRAFT & AI PROMPT STUDIO
+            CHAPTER III // THE SACRED CRAFT & AI PROMPT STUDIO
            ══════════════════════════════════════════════════════════════ */}
         <section id="studio" className="flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-6">
-          <div className="p-8 sm:p-12 rounded-3xl border border-white/[0.1] bg-black/30 backdrop-blur-2xl relative overflow-hidden shadow-2xl space-y-8">
+          <div className="p-8 sm:p-12 rounded-2xl border-2 border-[#cc6b35] bg-white relative overflow-hidden shadow-[6px_6px_0px_#cc6b35] space-y-8">
             <div className="space-y-3 max-w-2xl">
-              <div className="inline-flex items-center gap-2 border-b border-purple-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-purple-400">
-                <span>03 // 本堂 // The Sacred Craft</span>
+              <div className="inline-flex items-center gap-2 border-b-2 border-[#cc6b35] pb-1 text-xs font-pixel font-bold uppercase tracking-[0.2em] text-[#b8531e]">
+                <span>03 // 本堂 // Arcade AI Craft</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-white">
-                AI Generation Studio &amp; Prompt Blueprints.
+              <h2 className="text-xl sm:text-3xl font-arcade tracking-tight text-zinc-950 leading-[1.35]">
+                AI Generation Studio &amp; Blueprints.
               </h2>
-              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
-                Turn system requirements into multi-file production repositories. 
+              <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed">
+                Turn system requirements into multi-file production repositories.
                 Execute tested prompts through Claude 3.5 Sonnet, GPT-4o, and Gemini 1.5 Pro.
               </p>
             </div>
@@ -589,28 +595,28 @@ export default function SingleKageMarketplacePage() {
               {SEED_PROMPTS.slice(0, 2).map((prompt) => (
                 <div
                   key={prompt.id}
-                  className="p-6 rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl hover:border-purple-500/40 transition-all space-y-4"
+                  className="p-6 rounded-xl border-2 border-orange-300 bg-[#fcfaf7] hover:border-[#cc6b35] transition-all space-y-4 shadow-[3px_3px_0px_#e8c3a8]"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded-full border border-purple-500/30 bg-purple-950/30 text-[10px] font-mono text-purple-300 uppercase">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2.5 py-0.5 rounded border-2 border-[#cc6b35] bg-white text-[11px] font-pixel font-bold text-[#b8531e] uppercase">
                       Prompt Blueprint
                     </span>
-                    <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-400">
-                      <Sparkles className="h-3.5 w-3.5 text-purple-400" />
+                    <div className="flex items-center gap-1.5 text-xs font-pixel text-zinc-700">
+                      <Sparkles className="h-3.5 w-3.5 text-[#cc6b35]" />
                       <span>{prompt.supportedModels[0]}</span>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className="text-base font-bold text-white">{prompt.title}</h4>
-                    <p className="mt-1 text-xs text-zinc-300 leading-relaxed font-light">
+                    <h4 className="text-base font-pixel font-bold text-zinc-950">{prompt.title}</h4>
+                    <p className="mt-1 text-xs sm:text-sm text-zinc-700 leading-relaxed">
                       {prompt.description}
                     </p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] font-mono text-[11px] text-zinc-400 space-y-1">
-                    <div className="text-zinc-300 font-semibold">Variables accepted:</div>
-                    <div className="flex flex-wrap gap-2 text-purple-300">
+                  <div className="p-3 rounded-lg bg-white border border-orange-200 font-mono text-[11px] text-zinc-700 space-y-1">
+                    <div className="text-zinc-950 font-semibold font-pixel">Variables accepted:</div>
+                    <div className="flex flex-wrap gap-2 text-[#b8531e] font-bold">
                       {prompt.requiredVariables.map((v) => (
                         <span key={v.name}>&#123;&#123;{v.name}&#125;&#125;</span>
                       ))}
@@ -620,7 +626,8 @@ export default function SingleKageMarketplacePage() {
                   <Link href={`/prompts/${prompt.slug}`}>
                     <Button
                       size="sm"
-                      className="w-full text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white"
+                      variant="primary"
+                      className="w-full text-xs"
                     >
                       <span>Execute in AI Studio</span>
                       <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
@@ -631,15 +638,15 @@ export default function SingleKageMarketplacePage() {
             </div>
 
             {/* Direct Studio Launcher */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl border border-white/[0.08] bg-purple-950/20 backdrop-blur-md">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-xl border-2 border-[#cc6b35] bg-[#f7ece1]">
               <div className="space-y-1 text-center sm:text-left">
-                <div className="text-sm font-bold text-white">Have a unique specification?</div>
-                <div className="text-xs text-zinc-400">Launch the AI studio to generate complete schemas, route handlers, and ZIP packages.</div>
+                <div className="text-sm font-pixel font-bold text-zinc-950">Have a unique specification?</div>
+                <div className="text-xs text-zinc-700">Launch the AI studio to generate complete schemas, route handlers, and ZIP packages.</div>
               </div>
               <Link href="/studio">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-purple-600 hover:bg-purple-500 shadow-lg shadow-purple-900/40 transition-all"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-pixel font-bold text-white bg-[#b8531e] hover:bg-[#964115] border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] transition-all"
                 >
                   <span>Open AI Studio Generator</span>
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -650,27 +657,27 @@ export default function SingleKageMarketplacePage() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════════
-            CHAPTER IV // 枯山水 // OPEN SOURCE REPOSITORIES
+            CHAPTER IV // OPEN SOURCE REPOSITORIES
            ══════════════════════════════════════════════════════════════ */}
         <section id="repos" className="flex flex-col justify-center px-6 md:px-16 max-w-7xl mx-auto space-y-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-2 border-[#cc6b35] bg-white/90 p-6 rounded-2xl shadow-[4px_4px_0px_#e8c3a8]">
             <div className="space-y-2 max-w-xl">
-              <div className="inline-flex items-center gap-2 border-b border-blue-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-blue-400">
-                <span>04 // 枯山水 // Stillness &amp; Depth</span>
+              <div className="inline-flex items-center gap-2 border-b-2 border-[#cc6b35] pb-1 text-xs font-pixel font-bold uppercase tracking-[0.2em] text-[#b8531e]">
+                <span>04 // 枯山水 // Code Vaults</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-white">
+              <h2 className="text-xl sm:text-3xl font-arcade tracking-tight text-zinc-950 leading-[1.35]">
                 Open Source Repositories.
               </h2>
-              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed">
-                Like the raked gravel of a zen garden, high-performance code demands 
-                uncompromising restraint. Browse repositories with live syntax viewing and branch navigation.
+              <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed">
+                High-performance code demands uncompromising restraint.
+                Browse repositories with live syntax viewing and branch navigation.
               </p>
             </div>
 
             <Link href="/repos/new">
               <Button
                 variant="outline"
-                className="text-xs border-white/[0.15] bg-black/40 text-white hover:bg-white/[0.08] gap-1.5 font-mono"
+                className="text-xs gap-1.5"
               >
                 <BookMarked className="h-3.5 w-3.5" />
                 <span>Create Repository</span>
@@ -678,45 +685,45 @@ export default function SingleKageMarketplacePage() {
             </Link>
           </div>
 
-          {/* See-Through Repositories Grid */}
+          {/* Repositories Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {SEED_REPOSITORIES.map((repo) => (
               <div
                 key={repo.id}
-                className="rounded-3xl border border-white/[0.1] bg-black/30 backdrop-blur-xl p-6 shadow-2xl hover:border-blue-400/40 hover:bg-black/45 transition-all flex flex-col justify-between space-y-4"
+                className="rounded-2xl border-2 border-[#cc6b35] bg-white p-6 shadow-[4px_4px_0px_#cc6b35] hover:shadow-[6px_6px_0px_#b8531e] transition-all flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono text-blue-400 font-semibold">
+                    <span className="text-xs font-pixel text-[#b8531e] font-bold">
                       {repo.ownerUsername}
                     </span>
-                    <span className="px-2 py-0.5 rounded-full border border-white/[0.1] bg-white/[0.04] text-[10px] font-mono text-zinc-300">
+                    <span className="px-2 py-0.5 rounded border border-orange-300 bg-[#faf5ef] text-[10px] font-pixel font-bold text-[#964115] uppercase">
                       {repo.visibility}
                     </span>
                   </div>
 
                   <Link
                     href={`/${repo.ownerUsername}/${repo.name}`}
-                    className="text-lg font-bold text-white hover:text-blue-300 transition-colors block"
+                    className="text-base font-pixel font-bold text-zinc-950 hover:text-[#b8531e] transition-colors block"
                   >
                     {repo.name}
                   </Link>
 
-                  <p className="text-xs text-zinc-300 leading-relaxed font-light line-clamp-2">
+                  <p className="text-xs text-zinc-700 leading-relaxed line-clamp-2">
                     {repo.description}
                   </p>
 
-                  <div className="flex items-center gap-4 text-xs font-mono text-zinc-400 pt-2">
+                  <div className="flex items-center gap-4 text-xs font-pixel text-zinc-600 pt-2">
                     <div className="flex items-center gap-1">
-                      <Star className="h-3.5 w-3.5 text-amber-400" />
-                      <span>{repo.starsCount}</span>
+                      <Star className="h-3.5 w-3.5 text-[#cc6b35]" />
+                      <span className="text-zinc-950 font-bold">{repo.starsCount}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <GitFork className="h-3.5 w-3.5 text-zinc-400" />
+                      <GitFork className="h-3.5 w-3.5 text-zinc-600" />
                       <span>{repo.forksCount}</span>
                     </div>
-                    <div className="text-zinc-500">•</div>
-                    <span className="text-zinc-300">{repo.primaryLanguage}</span>
+                    <div className="text-orange-300">•</div>
+                    <span className="text-[#964115] font-bold">{repo.primaryLanguage}</span>
                   </div>
                 </div>
 
@@ -724,7 +731,7 @@ export default function SingleKageMarketplacePage() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="w-full text-xs border-white/[0.1] text-zinc-200 hover:text-white hover:border-blue-400/40"
+                    className="w-full text-xs"
                   >
                     Browse Code Tree →
                   </Button>
@@ -735,69 +742,69 @@ export default function SingleKageMarketplacePage() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════════
-            CHAPTER V // 余光 // THE SUMMIT & COLLABORATION
+            CHAPTER V // THE SUMMIT & COLLABORATION
            ══════════════════════════════════════════════════════════════ */}
         <section id="summit" className="flex flex-col justify-center px-6 md:px-16 max-w-6xl mx-auto text-center space-y-6 pt-4">
-          <div className="space-y-4 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-400">
-              <span>05 // 余光 // Afterlight</span>
+          <div className="space-y-4 max-w-2xl mx-auto bg-white/90 border-2 border-[#cc6b35] rounded-2xl p-6 sm:p-8 shadow-[5px_5px_0px_#cc6b35]">
+            <div className="inline-flex items-center gap-2 border-b-2 border-[#cc6b35] pb-1 text-xs font-pixel font-bold uppercase tracking-[0.2em] text-[#b8531e]">
+              <span>05 // 余光 // Final Stage</span>
             </div>
 
-            <h2 className="text-4xl sm:text-6xl font-serif tracking-tight font-bold text-white">
+            <h2 className="text-xl sm:text-3xl font-arcade tracking-tight text-zinc-950 leading-[1.35]">
               The Summit of DevKit.
             </h2>
 
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
-              You have journeyed through the mountain temple. Every system—repositories, 
-              verified starter kits, AI prompt workflows, and DLP-protected chat—lives here in one unified ecosystem.
+            <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed">
+              Every system—repositories, verified starter kits, AI prompt workflows,
+              and DLP-protected chat—lives here in one unified orange &amp; white ecosystem.
             </p>
           </div>
 
           {/* Quick Hub Navigation Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto pt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto pt-2 w-full">
             <Link
               href="/repos"
-              className="p-5 rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl hover:border-blue-500/40 hover:bg-[#0c0e14] transition-all text-left space-y-1"
+              className="p-5 rounded-xl border-2 border-[#cc6b35] bg-white hover:bg-[#faf5ef] shadow-[3px_3px_0px_#cc6b35] hover:shadow-[5px_5px_0px_#b8531e] transition-all text-left space-y-1.5"
             >
-              <BookMarked className="h-4 w-4 text-blue-400" />
-              <div className="text-xs font-bold text-white">Repositories</div>
-              <p className="text-[10px] text-zinc-400">Explore open source code</p>
+              <BookMarked className="h-4 w-4 text-[#b8531e]" />
+              <div className="text-xs font-pixel font-bold text-zinc-950">Repositories</div>
+              <p className="text-[11px] text-zinc-600">Explore open source code</p>
             </Link>
 
             <Link
               href="/kits"
-              className="p-5 rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl hover:border-emerald-500/40 hover:bg-[#0c0e14] transition-all text-left space-y-1"
+              className="p-5 rounded-xl border-2 border-[#cc6b35] bg-white hover:bg-[#faf5ef] shadow-[3px_3px_0px_#cc6b35] hover:shadow-[5px_5px_0px_#b8531e] transition-all text-left space-y-1.5"
             >
-              <ShoppingBag className="h-4 w-4 text-emerald-400" />
-              <div className="text-xs font-bold text-white">Marketplace</div>
-              <p className="text-[10px] text-zinc-400">Verified starter kits</p>
+              <ShoppingBag className="h-4 w-4 text-[#b8531e]" />
+              <div className="text-xs font-pixel font-bold text-zinc-950">Marketplace</div>
+              <p className="text-[11px] text-zinc-600">Verified starter kits</p>
             </Link>
 
             <Link
               href="/prompts"
-              className="p-5 rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl hover:border-purple-500/40 hover:bg-[#0c0e14] transition-all text-left space-y-1"
+              className="p-5 rounded-xl border-2 border-[#cc6b35] bg-white hover:bg-[#faf5ef] shadow-[3px_3px_0px_#cc6b35] hover:shadow-[5px_5px_0px_#b8531e] transition-all text-left space-y-1.5"
             >
-              <Sparkles className="h-4 w-4 text-purple-400" />
-              <div className="text-xs font-bold text-white">AI Prompts</div>
-              <p className="text-[10px] text-zinc-400">Code generation blueprints</p>
+              <Sparkles className="h-4 w-4 text-[#b8531e]" />
+              <div className="text-xs font-pixel font-bold text-zinc-950">AI Prompts</div>
+              <p className="text-[11px] text-zinc-600">Code generation blueprints</p>
             </Link>
 
             <Link
               href="/chat"
-              className="p-5 rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl hover:border-amber-500/40 hover:bg-[#0c0e14] transition-all text-left space-y-1"
+              className="p-5 rounded-xl border-2 border-[#cc6b35] bg-white hover:bg-[#faf5ef] shadow-[3px_3px_0px_#cc6b35] hover:shadow-[5px_5px_0px_#b8531e] transition-all text-left space-y-1.5"
             >
-              <Compass className="h-4 w-4 text-amber-400" />
-              <div className="text-xs font-bold text-white">Support Chat</div>
-              <p className="text-[10px] text-zinc-400">3-Panel DLP collaboration</p>
+              <Compass className="h-4 w-4 text-[#b8531e]" />
+              <div className="text-xs font-pixel font-bold text-zinc-950">Support Chat</div>
+              <p className="text-[11px] text-zinc-600">3-Panel DLP collaboration</p>
             </Link>
           </div>
 
-          <div className="pt-8">
+          <div className="pt-4 pb-2">
             <a
               href="#hero"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/[0.1] bg-black/40 text-xs font-mono text-zinc-300 hover:text-white hover:border-white/30 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border-2 border-[#cc6b35] bg-white text-xs font-pixel font-bold text-[#b8531e] hover:bg-[#faf5ef] shadow-[3px_3px_0px_#cc6b35] transition-all"
             >
-              <span>↑ Return to Sanmon Entrance</span>
+              <span>↑ Return to Arcade Start</span>
             </a>
           </div>
         </section>

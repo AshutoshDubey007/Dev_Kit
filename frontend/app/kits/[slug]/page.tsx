@@ -63,8 +63,8 @@ export default function KitDetailPage() {
   if (isLoading) {
     return (
       <div className="max-w-4xl mx-auto py-24 text-center space-y-4">
-        <div className="animate-spin h-8 w-8 border-2 border-amber-400 border-t-transparent rounded-full mx-auto" />
-        <p className="text-xs font-mono text-zinc-400">Loading verified code package...</p>
+        <div className="animate-spin h-8 w-8 border-2 border-[#cc6b35] border-t-transparent rounded-full mx-auto" />
+        <p className="text-xs font-mono text-zinc-600">Loading verified code package...</p>
       </div>
     );
   }
@@ -81,32 +81,32 @@ export default function KitDetailPage() {
   return (
     <div className="space-y-10 pb-16">
       {/* 1. Breadcrumbs */}
-      <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
-        <Link href="/" className="hover:text-zinc-300">
+      <div className="flex items-center gap-2 text-xs text-zinc-600 font-mono">
+        <Link href="/" className="hover:text-zinc-800">
           Home
         </Link>
         <span>/</span>
-        <Link href="/kits" className="hover:text-zinc-300">
+        <Link href="/kits" className="hover:text-zinc-800">
           Kits
         </Link>
         <span>/</span>
-        <Link href={`/categories/${kit.category}`} className="hover:text-zinc-300 capitalize">
+        <Link href={`/categories/${kit.category}`} className="hover:text-zinc-800 capitalize">
           {kit.category}
         </Link>
         <span>/</span>
-        <span className="text-zinc-300 truncate">{kit.slug}</span>
+        <span className="text-zinc-800 truncate">{kit.slug}</span>
       </div>
 
       {/* Author Indicator Bar */}
       {isAuthor && (
-        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+        <div className="rounded-2xl border border-[#cc6b35] bg-[#f7ece1] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2.5">
             <span className="text-lg">👑</span>
             <div>
-              <span className="font-bold text-emerald-400 block">
+              <span className="font-bold text-[#b8531e] block">
                 You are the author of this repository listing.
               </span>
-              <span className="text-zinc-400">
+              <span className="text-zinc-600">
                 Buyers who purchase will receive your README and can connect with you via in-app chat.
               </span>
             </div>
@@ -114,13 +114,13 @@ export default function KitDetailPage() {
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/seller/my-kits"
-              className="rounded-lg border border-white/[0.1] bg-zinc-900 px-3 py-1.5 text-xs text-white hover:bg-zinc-800 transition-colors font-mono"
+              className="rounded-lg border border-orange-200 bg-[#faf5ef] px-3 py-1.5 text-xs text-zinc-950 hover:bg-orange-100 transition-colors font-mono"
             >
               📦 My Repos
             </Link>
             <Link
               href="/seller/new-kit"
-              className="rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1.5 text-xs hover:bg-emerald-500/30 transition-colors font-mono"
+              className="rounded-lg bg-[#f7ece1] text-[#b8531e] border border-[#cc6b35] px-3 py-1.5 text-xs hover:bg-[#f7ece1] transition-colors font-mono"
             >
               + List Another
             </Link>
@@ -129,7 +129,7 @@ export default function KitDetailPage() {
       )}
 
       {/* 2. Top Banner Header */}
-      <div className="border-b border-zinc-800/80 pb-8">
+      <div className="border-b border-orange-200 pb-8">
         <div className="flex flex-wrap items-center gap-2.5 mb-3">
           {kit.badge && (
             <Badge variant="purple" size="sm">
@@ -139,20 +139,20 @@ export default function KitDetailPage() {
           <Badge variant="secondary" size="sm" className="capitalize">
             {kit.category}
           </Badge>
-          <span className="text-xs text-zinc-500 font-mono">
+          <span className="text-xs text-zinc-600 font-mono">
             Updated: {formatDate(kit.lastUpdated)}
           </span>
-          <div className="flex items-center gap-1 text-xs text-amber-400 font-medium ml-auto">
+          <div className="flex items-center gap-1 text-xs text-[#b8531e] font-medium ml-auto">
             <span>★</span>
             <span>{kit.rating.toFixed(1)}</span>
-            <span className="text-zinc-500 font-normal">({kit.reviewCount} verified reviews)</span>
+            <span className="text-zinc-600 font-normal">({kit.reviewCount} verified reviews)</span>
           </div>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white max-w-4xl">
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-950 max-w-4xl">
           {kit.title}
         </h1>
-        <p className="mt-3 text-base sm:text-lg text-zinc-400 max-w-3xl leading-relaxed">
+        <p className="mt-3 text-base sm:text-lg text-zinc-600 max-w-3xl leading-relaxed">
           {kit.tagline}
         </p>
 
@@ -167,7 +167,7 @@ export default function KitDetailPage() {
         <div className="lg:col-span-2 space-y-10">
           {/* Detailed Verification Audit Report */}
           <section className="space-y-3">
-            <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-zinc-900 flex items-center gap-2">
               <span>🧪</span>
               <span>Verification & Audit Report</span>
             </h2>
@@ -177,11 +177,11 @@ export default function KitDetailPage() {
           {/* Interactive Code Preview */}
           <section id="code-preview" className="space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
+              <h2 className="text-lg font-bold text-zinc-900 flex items-center gap-2">
                 <span>💻</span>
                 <span>Code Architecture Preview</span>
               </h2>
-              <span className="text-xs text-zinc-500 font-mono">
+              <span className="text-xs text-zinc-600 font-mono">
                 {kit.codePreviews.length} files previewed
               </span>
             </div>
@@ -189,20 +189,20 @@ export default function KitDetailPage() {
           </section>
 
           {/* Detailed Description */}
-          <section className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-950/40 p-6">
-            <h2 className="text-lg font-bold text-zinc-100">About this Integration</h2>
-            <div className="text-sm text-zinc-300 leading-relaxed whitespace-pre-line space-y-3">
+          <section className="space-y-4 rounded-2xl border border-orange-200 bg-white p-6">
+            <h2 className="text-lg font-bold text-zinc-900">About this Integration</h2>
+            <div className="text-sm text-zinc-800 leading-relaxed whitespace-pre-line space-y-3">
               {kit.description}
             </div>
           </section>
 
           {/* Features Included Checklist */}
-          <section className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-950/40 p-6">
-            <h2 className="text-lg font-bold text-zinc-100">Production Features Included</h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-zinc-300">
+          <section className="space-y-4 rounded-2xl border border-orange-200 bg-white p-6">
+            <h2 className="text-lg font-bold text-zinc-900">Production Features Included</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-zinc-800">
               {kit.features.map((feature, idx) => (
                 <li key={idx} className="flex items-start gap-2.5">
-                  <span className="text-emerald-400 font-bold shrink-0">✓</span>
+                  <span className="text-[#b8531e] font-bold shrink-0">✓</span>
                   <span>{feature}</span>
                 </li>
               ))}
@@ -210,15 +210,15 @@ export default function KitDetailPage() {
           </section>
 
           {/* Licensing and Support Policy */}
-          <section className="rounded-2xl border border-zinc-800 bg-zinc-950/40 p-6 space-y-3 text-xs text-zinc-400">
-            <h3 className="font-semibold text-zinc-200 text-sm">Commercial License & Support Policy</h3>
+          <section className="rounded-2xl border border-orange-200 bg-white p-6 space-y-3 text-xs text-zinc-600">
+            <h3 className="font-semibold text-zinc-900 text-sm">Commercial License & Support Policy</h3>
             <p>
-              <strong className="text-zinc-300">License:</strong> {kit.license}
+              <strong className="text-zinc-800">License:</strong> {kit.license}
             </p>
             <p>
-              <strong className="text-zinc-300">Support Boundary:</strong> {kit.supportScope}
+              <strong className="text-zinc-800">Support Boundary:</strong> {kit.supportScope}
             </p>
-            <p className="text-[11px] text-zinc-500 pt-2 border-t border-zinc-800/80">
+            <p className="text-[11px] text-zinc-600 pt-2 border-t border-orange-200">
               Note: Support covers code bugs in clean environments via private GitHub issues. It does not include building custom features or telephone/live screen-sharing sessions.
             </p>
           </section>
@@ -226,21 +226,21 @@ export default function KitDetailPage() {
 
         {/* Right 1 Column: Sticky Buy Box */}
         <div className="lg:col-span-1 lg:sticky lg:top-24 space-y-5">
-          <div className="relative rounded-2xl border border-white/[0.1] bg-[#0c0d12]/95 p-6 shadow-2xl backdrop-blur-2xl space-y-6 overflow-hidden">
+          <div className="relative rounded-2xl border border-orange-200 bg-white p-6 shadow-2xl backdrop-blur-2xl space-y-6 overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
             <div>
-              <span className="text-xs font-mono text-zinc-500 block mb-1">
+              <span className="text-xs font-mono text-zinc-600 block mb-1">
                 Commercial License
               </span>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-extrabold text-white">
+                <span className="text-3xl font-extrabold text-zinc-950">
                   {formatPriceINR(kit.priceINR)}
                 </span>
-                <span className="text-sm text-zinc-500">
+                <span className="text-sm text-zinc-600">
                   ({formatPriceUSD(kit.priceUSD)})
                 </span>
               </div>
-              <span className="text-[11px] text-emerald-400 font-medium block mt-1">
+              <span className="text-[11px] text-[#b8531e] font-medium block mt-1">
                 ✓ One-time purchase • Unlimited personal & client projects
               </span>
             </div>
@@ -251,7 +251,7 @@ export default function KitDetailPage() {
                 variant="primary"
                 size="lg"
                 onClick={() => setIsCheckoutOpen(true)}
-                className="w-full text-sm font-semibold shadow-lg shadow-indigo-600/20"
+                className="w-full text-sm font-semibold shadow-lg shadow-[#e8c3a8]"
               >
                 <span>Buy & Instant Download</span>
                 <span>→</span>
@@ -273,33 +273,33 @@ export default function KitDetailPage() {
             </div>
 
             {/* Deliverables summary */}
-            <div className="border-t border-zinc-800/80 pt-4 space-y-2.5 text-xs text-zinc-300">
+            <div className="border-t border-orange-200 pt-4 space-y-2.5 text-xs text-zinc-800">
               <div className="flex items-center gap-2">
-                <span className="text-indigo-400">📦</span>
+                <span className="text-[#b8531e]">📦</span>
                 <span>Instant .ZIP download + GitHub invite</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-indigo-400">🧪</span>
+                <span className="text-[#b8531e]">🧪</span>
                 <span>100% automated test suite included</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-indigo-400">📄</span>
+                <span className="text-[#b8531e]">📄</span>
                 <span>Step-by-step 5-minute setup README</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-indigo-400">🔄</span>
+                <span className="text-[#b8531e]">🔄</span>
                 <span>6 months core repo version updates</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-indigo-400">🛡️</span>
+                <span className="text-[#b8531e]">🛡️</span>
                 <span>Zero vendor lock-in or telemetry</span>
               </div>
             </div>
 
             {/* Social Proof */}
-            <div className="border-t border-zinc-800/80 pt-4 flex items-center justify-between text-[11px] text-zinc-500">
+            <div className="border-t border-orange-200 pt-4 flex items-center justify-between text-[11px] text-zinc-600">
               <span>{kit.salesCount} agencies shipped</span>
-              <span className="text-amber-400">★ {kit.rating} / 5.0</span>
+              <span className="text-[#b8531e]">★ {kit.rating} / 5.0</span>
             </div>
           </div>
         </div>

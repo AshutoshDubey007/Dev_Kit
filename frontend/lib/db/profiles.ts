@@ -137,13 +137,36 @@ export async function updateDeveloperProfile(
   updates: Partial<DeveloperProfile>
 ): Promise<DeveloperProfile | null> {
   const cleanUsername = username.toLowerCase().trim();
-  const db = await getDatabase();
 
-  await db.collection<DeveloperProfile>(PROFILES_COLLECTION).updateOne(
-    { username: cleanUsername },
-    { $set: { ...updates, updatedAt: new Date() } },
-    { upsert: true }
-  );
+  try {
+    const db = await getDatabase();
+    await db.collection<DeveloperProfile>(PROFILES_COLLECTION).updateOne(
+      { username: cleanUsername },
+      { $set: { ...updates, updatedAt: new Date() } },
+      { upsert: true }
+    );
+  } catch (err) {
+    console.warn('[Profiles DB] MongoDB update fallback to in-memory store:', err);
+  }
+
+  // Update in-memory seed profiles as well so updates reflect immediately
+  if (!SEED_PROFILES[cleanUsername]) {
+    SEED_PROFILES[cleanUsername] = {
+      username: cleanUsername,
+      name: cleanUsername,
+      avatar: `https://api.dicebear.com/7.x/identicon/svg?seed=${cleanUsername}`,
+      bio: '',
+      skills: [],
+      profileReadme: '',
+      role: 'developer',
+      followersCount: 0,
+      followingCount: 0,
+      starsCount: 0,
+      contributionsCount: 0,
+      joinedAt: new Date(),
+    };
+  }
+  Object.assign(SEED_PROFILES[cleanUsername], updates);
 
   return getDeveloperProfile(cleanUsername);
 }

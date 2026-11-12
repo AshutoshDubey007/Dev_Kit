@@ -13,15 +13,15 @@ export function Badge({
   children,
   ...props
 }: BadgeProps) {
-  const baseStyles = 'inline-flex items-center font-medium rounded-full select-none';
+  const baseStyles = 'inline-flex items-center font-pixel font-bold uppercase tracking-wide rounded-md select-none';
 
   const variants = {
-    default: 'bg-zinc-800 text-zinc-200 border border-zinc-700',
-    secondary: 'bg-zinc-900 text-zinc-400 border border-zinc-800',
-    success: 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/80',
-    warning: 'bg-amber-950/80 text-amber-300 border border-amber-800/80',
-    purple: 'bg-purple-950/80 text-purple-300 border border-purple-800/80',
-    outline: 'border border-zinc-700 text-zinc-300 bg-transparent',
+    default: 'bg-[#f7ece1] text-[#964115] border-2 border-[#cc6b35]',
+    secondary: 'bg-white text-zinc-800 border-2 border-orange-300',
+    success: 'bg-[#b8531e] text-white border-2 border-[#78330f]',
+    warning: 'bg-amber-100 text-amber-950 border-2 border-amber-600',
+    purple: 'bg-[#f5e3d3] text-[#964115] border-2 border-[#b8531e]',
+    outline: 'border-2 border-[#cc6b35] text-[#b8531e] bg-white',
   };
 
   const sizes = {

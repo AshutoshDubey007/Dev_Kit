@@ -43,7 +43,7 @@ export function SearchBar({
         onChange={handleInputChange}
         placeholder={placeholder}
         leftIcon={
-          <svg className="h-4 w-4 text-zinc-400" viewBox="0 0 20 20" fill="currentColor">
+          <svg className="h-4 w-4 text-[#b8531e]" viewBox="0 0 20 20" fill="currentColor">
             <path
               fillRule="evenodd"
               d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
@@ -57,7 +57,7 @@ export function SearchBar({
               <button
                 type="button"
                 onClick={handleClear}
-                className="rounded p-1 text-zinc-400 hover:text-zinc-200 transition-colors"
+                className="rounded p-1 text-[#b8531e] hover:text-zinc-950 transition-colors font-bold"
                 title="Clear search"
               >
                 ✕
@@ -66,7 +66,7 @@ export function SearchBar({
               <button
                 type="button"
                 onClick={onOpenModal}
-                className="hidden sm:inline-flex items-center gap-0.5 keycap rounded px-1.5 py-0.5 text-[10px] font-mono text-zinc-300 shadow-sm"
+                className="hidden sm:inline-flex items-center gap-0.5 keycap rounded px-1.5 py-0.5 text-[10px] font-pixel shadow-sm"
               >
                 <span>⌘</span>
                 <span>K</span>
@@ -74,7 +74,7 @@ export function SearchBar({
             ) : null}
           </div>
         }
-        className="h-11 bg-[#090a0f]/90 border-white/[0.08] text-sm focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/30 rounded-xl shadow-inner text-zinc-100 placeholder:text-zinc-500"
+        className="min-h-[2.75rem] bg-white border-2 border-[#cc6b35] text-sm focus:border-[#b8531e] focus:ring-2 focus:ring-[#cc6b35]/30 rounded-xl shadow-[3px_3px_0px_#e8c3a8] text-zinc-950 placeholder:text-zinc-500"
       />
     </div>
   );

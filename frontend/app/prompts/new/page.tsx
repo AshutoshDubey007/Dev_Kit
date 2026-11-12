@@ -191,19 +191,19 @@ Technical Requirements:
       <div className="space-y-3">
         <Link
           href="/prompts"
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-zinc-600 hover:text-zinc-950 transition-colors"
         >
           <ChevronLeft className="h-4 w-4" />
           <span>Back to AI Prompt Marketplace</span>
         </Link>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-200 pb-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-purple-400" />
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-950 flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-[#b8531e]" />
               <span>Publish AI Prompt Blueprint</span>
             </h1>
-            <p className="text-xs text-zinc-400 mt-1">
+            <p className="text-xs text-zinc-600 mt-1">
               Create a reusable software generation prompt with configurable variables, model guidance, and marketplace monetization.
             </p>
           </div>
@@ -211,39 +211,39 @@ Technical Requirements:
       </div>
 
       {errorMsg && (
-        <div className="p-3 rounded-xl border border-red-500/30 bg-red-950/40 text-red-300 text-xs">
+        <div className="p-3 rounded-xl border border-red-500/30 bg-red-50 text-red-700 text-xs">
           {errorMsg}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* SECTION 1: BASIC INFORMATION */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-5">
-          <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-500/20 text-purple-400">
+        <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-5">
+          <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-800 uppercase tracking-wider">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f7ece1] text-[#b8531e]">
               1
             </span>
             <span>Blueprint Metadata</span>
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-mono text-zinc-300">Prompt Blueprint Title *</label>
+            <label className="text-xs font-mono text-zinc-800">Prompt Blueprint Title *</label>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Next.js 15 Fastlane Auth & Stripe Multi-Tenant Architect"
-              className="border-white/[0.1] bg-[#141822] text-xs text-white"
+              className="border-orange-200 bg-[#faf5ef] text-xs text-zinc-950"
               required
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-mono text-zinc-300">Category</label>
+              <label className="text-xs font-mono text-zinc-800">Category</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as any)}
-                className="w-full rounded-xl border border-white/[0.1] bg-[#141822] p-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                className="w-full rounded-xl border border-orange-200 bg-[#faf5ef] p-2.5 text-xs text-zinc-950 focus:outline-none focus:ring-1 focus:ring-[#cc6b35]"
               >
                 <option value="saas">Full-Stack SaaS</option>
                 <option value="auth">Authentication & Identity</option>
@@ -257,50 +257,50 @@ Technical Requirements:
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-mono text-zinc-300">Version Tag</label>
+              <label className="text-xs font-mono text-zinc-800">Version Tag</label>
               <Input
                 value="v1.0.0"
                 disabled
-                className="border-white/[0.08] bg-[#0e1017] text-xs text-zinc-500 font-mono cursor-not-allowed"
+                className="border-orange-200 bg-white text-xs text-zinc-600 font-mono cursor-not-allowed"
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-mono text-zinc-300">Short Summary *</label>
+            <label className="text-xs font-mono text-zinc-800">Short Summary *</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
               placeholder="What does this AI prompt blueprint generate in production?"
-              className="w-full rounded-xl border border-white/[0.1] bg-[#141822] p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+              className="w-full rounded-xl border border-orange-200 bg-[#faf5ef] p-3 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#cc6b35]"
               required
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-mono text-zinc-300">Problem It Solves</label>
+            <label className="text-xs font-mono text-zinc-800">Problem It Solves</label>
             <textarea
               value={problemSolves}
               onChange={(e) => setProblemSolves(e.target.value)}
               rows={2}
               placeholder="e.g. Cuts down 20+ hours of authentication setup by outputting clean server actions and typed schemas."
-              className="w-full rounded-xl border border-white/[0.1] bg-[#141822] p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+              className="w-full rounded-xl border border-orange-200 bg-[#faf5ef] p-3 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#cc6b35]"
             />
           </div>
         </div>
 
         {/* SECTION 2: COMPATIBILITY & MODELS */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-5">
-          <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-500/20 text-purple-400">
+        <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-5">
+          <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-800 uppercase tracking-wider">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f7ece1] text-[#b8531e]">
               2
             </span>
             <span>Tested Models & Supported Stack</span>
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-mono text-zinc-300">Supported AI Models</label>
+            <label className="text-xs font-mono text-zinc-800">Supported AI Models</label>
             <div className="flex flex-wrap gap-2">
               {AVAILABLE_MODELS.map((model) => {
                 const isSelected = selectedModels.includes(model);
@@ -311,8 +311,8 @@ Technical Requirements:
                     onClick={() => toggleModel(model)}
                     className={`px-3 py-1.5 rounded-xl border text-xs font-medium transition-all ${
                       isSelected
-                        ? 'border-purple-500/50 bg-purple-500/10 text-purple-300 shadow-sm'
-                        : 'border-white/[0.08] bg-[#141822] text-zinc-400 hover:text-white'
+                        ? 'border-[#cc6b35] bg-[#f7ece1] text-[#b8531e] shadow-sm'
+                        : 'border-orange-200 bg-[#faf5ef] text-zinc-600 hover:text-zinc-950'
                     }`}
                   >
                     {isSelected && <span className="mr-1.5">✓</span>}
@@ -323,8 +323,8 @@ Technical Requirements:
             </div>
           </div>
 
-          <div className="space-y-2 pt-2 border-t border-white/[0.08]">
-            <label className="text-xs font-mono text-zinc-300">Associated Technologies</label>
+          <div className="space-y-2 pt-2 border-t border-orange-200">
+            <label className="text-xs font-mono text-zinc-800">Associated Technologies</label>
             <div className="flex flex-wrap gap-2">
               {AVAILABLE_FRAMEWORKS.map((fw) => {
                 const isSelected = selectedFrameworks.includes(fw);
@@ -335,8 +335,8 @@ Technical Requirements:
                     onClick={() => toggleFramework(fw)}
                     className={`px-3 py-1.5 rounded-xl border text-xs font-medium transition-all ${
                       isSelected
-                        ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-300 shadow-sm'
-                        : 'border-white/[0.08] bg-[#141822] text-zinc-400 hover:text-white'
+                        ? 'border-[#cc6b35] bg-[#f7ece1] text-[#b8531e] shadow-sm'
+                        : 'border-orange-200 bg-[#faf5ef] text-zinc-600 hover:text-zinc-950'
                     }`}
                   >
                     {isSelected && <span className="mr-1.5">✓</span>}
@@ -349,10 +349,10 @@ Technical Requirements:
         </div>
 
         {/* SECTION 3: CONFIGURABLE VARIABLES */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-5">
+        <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-500/20 text-purple-400">
+            <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-800 uppercase tracking-wider">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f7ece1] text-[#b8531e]">
                 3
               </span>
               <span>Configurable Prompt Variables</span>
@@ -362,32 +362,32 @@ Technical Requirements:
               onClick={addVariable}
               variant="outline"
               size="sm"
-              className="text-xs border-white/[0.1] text-zinc-300 hover:text-white gap-1"
+              className="text-xs border-orange-200 text-zinc-800 hover:text-zinc-950 gap-1"
             >
               <Plus className="h-3.5 w-3.5" />
               <span>Add Variable</span>
             </Button>
           </div>
 
-          <p className="text-xs text-zinc-400">
-            Define placeholders like <code className="text-purple-400">{'{{project_name}}'}</code> that users will customize in AI Studio before generating code.
+          <p className="text-xs text-zinc-600">
+            Define placeholders like <code className="text-[#b8531e]">{'{{project_name}}'}</code> that users will customize in AI Studio before generating code.
           </p>
 
           <div className="space-y-3">
             {variables.map((v, index) => (
               <div
                 key={index}
-                className="p-3.5 rounded-xl border border-white/[0.08] bg-[#141822] space-y-3"
+                className="p-3.5 rounded-xl border border-orange-200 bg-[#faf5ef] space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-purple-400 font-semibold">
+                  <span className="text-xs font-mono text-[#b8531e] font-semibold">
                     {`{{${v.name}}}`}
                   </span>
                   {variables.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeVariable(index)}
-                      className="text-zinc-500 hover:text-red-400"
+                      className="text-zinc-600 hover:text-red-700"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -396,7 +396,7 @@ Technical Requirements:
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-mono text-zinc-400">Variable Key (no spaces)</label>
+                    <label className="text-[11px] font-mono text-zinc-600">Variable Key (no spaces)</label>
                     <Input
                       value={v.name}
                       onChange={(e) =>
@@ -407,27 +407,27 @@ Technical Requirements:
                         )
                       }
                       placeholder="e.g. project_name"
-                      className="border-white/[0.08] bg-zinc-950 text-xs text-white font-mono h-8"
+                      className="border-orange-200 bg-white text-xs text-zinc-950 font-mono h-8"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] font-mono text-zinc-400">Display Label</label>
+                    <label className="text-[11px] font-mono text-zinc-600">Display Label</label>
                     <Input
                       value={v.label}
                       onChange={(e) => updateVariable(index, 'label', e.target.value)}
                       placeholder="e.g. Project Name"
-                      className="border-white/[0.08] bg-zinc-950 text-xs text-white h-8"
+                      className="border-orange-200 bg-white text-xs text-zinc-950 h-8"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] font-mono text-zinc-400">Default Value</label>
+                    <label className="text-[11px] font-mono text-zinc-600">Default Value</label>
                     <Input
                       value={v.defaultValue || ''}
                       onChange={(e) => updateVariable(index, 'defaultValue', e.target.value)}
                       placeholder="e.g. DocuFlow"
-                      className="border-white/[0.08] bg-zinc-950 text-xs text-white h-8"
+                      className="border-orange-200 bg-white text-xs text-zinc-950 h-8"
                     />
                   </div>
                 </div>
@@ -437,15 +437,15 @@ Technical Requirements:
         </div>
 
         {/* SECTION 4: TEMPLATE BLUEPRINT */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-5">
+        <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-500/20 text-purple-400">
+            <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-800 uppercase tracking-wider">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f7ece1] text-[#b8531e]">
                 4
               </span>
               <span>Template Blueprint Prompt *</span>
             </div>
-            <Badge variant="outline" className="border-purple-500/30 text-purple-300 text-[10px] font-mono">
+            <Badge variant="outline" className="border-[#cc6b35] text-[#b8531e] text-[10px] font-mono">
               Protected by Paywall Masking
             </Badge>
           </div>
@@ -456,13 +456,13 @@ Technical Requirements:
               onChange={(e) => setTemplateContent(e.target.value)}
               rows={10}
               placeholder="Write the full AI prompt here using {{variable}} placeholders..."
-              className="w-full rounded-xl border border-white/[0.1] bg-[#141822] p-4 text-xs font-mono text-zinc-200 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+              className="w-full rounded-xl border border-orange-200 bg-[#faf5ef] p-4 text-xs font-mono text-zinc-900 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#cc6b35]"
               required
             />
           </div>
 
-          <div className="p-3.5 rounded-xl border border-purple-500/20 bg-purple-950/20 text-xs text-purple-200 flex items-start gap-2.5">
-            <Lock className="h-4 w-4 shrink-0 text-purple-400 mt-0.5" />
+          <div className="p-3.5 rounded-xl border border-[#cc6b35] bg-[#f7ece1] text-xs text-[#964115] flex items-start gap-2.5">
+            <Lock className="h-4 w-4 shrink-0 text-[#b8531e] mt-0.5" />
             <div>
               <strong className="block font-semibold">Protected Intellectual Property:</strong>
               When published as a paid prompt, DevKit masks the template content on all public APIs. Buyers only unlock the complete template after verified payment via Razorpay.
@@ -471,9 +471,9 @@ Technical Requirements:
         </div>
 
         {/* SECTION 5: PRICING & MONETIZATION */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0d12]/90 p-6 shadow-xl backdrop-blur-xl space-y-5">
-          <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-500/20 text-purple-400">
+        <div className="rounded-2xl border border-orange-200 bg-white p-6 shadow-xl backdrop-blur-xl space-y-5">
+          <div className="flex items-center gap-2 text-xs font-mono font-semibold text-zinc-800 uppercase tracking-wider">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f7ece1] text-[#b8531e]">
               5
             </span>
             <span>Marketplace Monetization</span>
@@ -485,12 +485,12 @@ Technical Requirements:
               onClick={() => setIsPaid(false)}
               className={`p-3.5 rounded-xl border text-xs font-medium transition-all text-left space-y-1 ${
                 !isPaid
-                  ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-300 shadow-sm'
-                  : 'border-white/[0.08] bg-[#141822] text-zinc-400 hover:text-white'
+                  ? 'border-[#cc6b35] bg-[#f7ece1] text-[#b8531e] shadow-sm'
+                  : 'border-orange-200 bg-[#faf5ef] text-zinc-600 hover:text-zinc-950'
               }`}
             >
-              <div className="font-semibold text-white">Free Community Blueprint</div>
-              <div className="text-[11px] text-zinc-400">
+              <div className="font-semibold text-zinc-950">Free Community Blueprint</div>
+              <div className="text-[11px] text-zinc-600">
                 Open source for all developers. Visible and runnable by anyone.
               </div>
             </button>
@@ -500,33 +500,33 @@ Technical Requirements:
               onClick={() => setIsPaid(true)}
               className={`p-3.5 rounded-xl border text-xs font-medium transition-all text-left space-y-1 ${
                 isPaid
-                  ? 'border-purple-500/50 bg-purple-500/10 text-purple-300 shadow-sm'
-                  : 'border-white/[0.08] bg-[#141822] text-zinc-400 hover:text-white'
+                  ? 'border-[#cc6b35] bg-[#f7ece1] text-[#b8531e] shadow-sm'
+                  : 'border-orange-200 bg-[#faf5ef] text-zinc-600 hover:text-zinc-950'
               }`}
             >
-              <div className="font-semibold text-white">Paid Commercial Blueprint</div>
-              <div className="text-[11px] text-zinc-400">
+              <div className="font-semibold text-zinc-950">Paid Commercial Blueprint</div>
+              <div className="text-[11px] text-zinc-600">
                 Monetize your AI workflow with Razorpay checkout and automated payouts.
               </div>
             </button>
           </div>
 
           {isPaid && (
-            <div className="space-y-2 pt-2 border-t border-white/[0.08]">
-              <label className="text-xs font-mono text-zinc-300">Price in Indian Rupees (INR) *</label>
+            <div className="space-y-2 pt-2 border-t border-orange-200">
+              <label className="text-xs font-mono text-zinc-800">Price in Indian Rupees (INR) *</label>
               <div className="relative max-w-xs">
-                <span className="absolute left-3 top-2.5 text-xs font-mono text-zinc-400">₹</span>
+                <span className="absolute left-3 top-2.5 text-xs font-mono text-zinc-600">₹</span>
                 <Input
                   type="number"
                   min="49"
                   max="10000"
                   value={priceINR}
                   onChange={(e) => setPriceINR(Math.max(0, parseInt(e.target.value) || 0))}
-                  className="pl-7 text-xs bg-[#141822] border-white/[0.1] text-white font-mono"
+                  className="pl-7 text-xs bg-[#faf5ef] border-orange-200 text-zinc-950 font-mono"
                   required
                 />
               </div>
-              <p className="text-[10px] text-zinc-500">
+              <p className="text-[10px] text-zinc-600">
                 Equivalent to approx. ${Math.round(priceINR / 83)} USD. Settlements routed to your configured UPI / Bank account.
               </p>
             </div>
@@ -536,7 +536,7 @@ Technical Requirements:
         {/* SUBMIT BUTTON */}
         <div className="flex items-center justify-between pt-2">
           <Link href="/prompts">
-            <Button variant="outline" type="button" className="text-xs border-white/[0.1] text-zinc-300 hover:text-white">
+            <Button variant="outline" type="button" className="text-xs border-orange-200 text-zinc-800 hover:text-zinc-950">
               Cancel
             </Button>
           </Link>
@@ -544,7 +544,7 @@ Technical Requirements:
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="gap-2 text-xs bg-purple-600 hover:bg-purple-500 text-white font-medium px-6 shadow-lg shadow-purple-600/20"
+            className="gap-2 text-xs bg-[#b8531e] hover:bg-[#b8531e] text-white font-medium px-6 shadow-lg shadow-[#e8c3a8]"
           >
             <Sparkles className="h-4 w-4" />
             <span>{isSubmitting ? 'Publishing Blueprint...' : 'Publish Prompt Blueprint'}</span>

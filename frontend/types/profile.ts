@@ -1,6 +1,7 @@
 export interface DeveloperProfile {
   username: string;
   name: string;
+  email?: string;
   avatar: string;
   bio: string;
   website?: string;

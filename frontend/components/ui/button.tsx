@@ -12,23 +12,29 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, ...props }, ref) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 select-none';
+      'inline-flex items-center justify-center font-pixel font-bold tracking-wide rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#cc6b35] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 select-none active:translate-x-[1px] active:translate-y-[1px]';
 
     const variants = {
-      primary: 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm active:bg-indigo-800',
-      secondary: 'bg-zinc-800 text-zinc-100 hover:bg-zinc-700 active:bg-zinc-900 border border-zinc-700',
+      primary:
+        'bg-[#b8531e] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] hover:bg-[#964115] active:shadow-none',
+      secondary:
+        'bg-[#f7ece1] text-[#964115] border-2 border-[#cc6b35] shadow-[3px_3px_0px_#cc6b35] hover:bg-[#f5e3d3] active:shadow-none',
       outline:
-        'border border-zinc-700 bg-transparent text-zinc-200 hover:bg-zinc-800/80 hover:text-white',
-      ghost: 'bg-transparent text-zinc-300 hover:bg-zinc-800 hover:text-white',
-      danger: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
-      white: 'bg-white text-zinc-950 hover:bg-zinc-200 font-semibold shadow-sm',
-      glass: 'bg-white/[0.08] hover:bg-white/[0.16] border border-white/[0.15] text-white backdrop-blur-md shadow-sm',
+        'border-2 border-[#cc6b35] bg-white text-[#b8531e] hover:bg-[#faf5ef] hover:text-[#964115] shadow-[2px_2px_0px_#e8c3a8] active:shadow-none',
+      ghost:
+        'bg-transparent text-zinc-700 hover:bg-orange-100 hover:text-[#b8531e] border-2 border-transparent',
+      danger:
+        'bg-red-700 text-white border-2 border-red-950 shadow-[3px_3px_0px_#fca5a5] hover:bg-red-800 active:shadow-none',
+      white:
+        'bg-white text-[#b8531e] border-2 border-[#b8531e] hover:bg-[#faf5ef] font-bold shadow-[3px_3px_0px_#cc6b35] active:shadow-none',
+      glass:
+        'bg-white/95 hover:bg-[#faf5ef] border-2 border-[#cc6b35] text-[#964115] backdrop-blur-md shadow-[3px_3px_0px_#cc6b35] active:shadow-none',
     };
 
     const sizes = {
-      sm: 'text-xs px-2.5 py-1.5 gap-1.5',
-      md: 'text-sm px-4 py-2 gap-2',
-      lg: 'text-base px-6 py-3 gap-2.5',
+      sm: 'text-xs px-3 py-1.5 gap-1.5 min-h-[2rem]',
+      md: 'text-sm px-4 py-2 gap-2 min-h-[2.5rem]',
+      lg: 'text-sm px-6 py-3 gap-2.5 min-h-[3rem]',
       icon: 'h-9 w-9 p-0',
     };
 

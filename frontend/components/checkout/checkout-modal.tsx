@@ -117,7 +117,7 @@ export function CheckoutModal({ kit, isOpen, onClose }: CheckoutModalProps) {
           email,
         },
         theme: {
-          color: '#4f46e5',
+          color: '#cc6b35',
         },
         handler: async function (response: any) {
           try {
@@ -162,36 +162,36 @@ export function CheckoutModal({ kit, isOpen, onClose }: CheckoutModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm animate-fade-in">
       <div className="fixed inset-0" onClick={onClose} />
 
-      <div className="relative w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl z-10 space-y-6">
+      <div className="relative w-full max-w-md rounded-2xl border-2 border-[#cc6b35] bg-white p-6 shadow-[6px_6px_0px_#cc6b35] z-10 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4">
+        <div className="flex items-center justify-between border-b-2 border-orange-100 pb-4">
           <div className="flex flex-col">
-            <h3 className="text-base font-bold text-zinc-100">Instant Checkout</h3>
-            <span className="text-xs text-zinc-400">{kit.title}</span>
+            <h3 className="text-base font-pixel font-bold text-zinc-950">Instant Checkout</h3>
+            <span className="text-xs text-zinc-600">{kit.title}</span>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-zinc-400 hover:text-zinc-200 text-sm font-mono"
+            className="text-[#b8531e] hover:text-zinc-950 text-sm font-pixel font-bold"
           >
             ✕
           </button>
         </div>
 
         {/* Pricing Summary */}
-        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-3.5 flex items-center justify-between">
+        <div className="rounded-xl border-2 border-orange-200 bg-[#faf5ef] p-3.5 flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-xs text-zinc-400">Total Price (Commercial License)</span>
-            <span className="text-xs text-emerald-400">Lifetime access & updates</span>
+            <span className="text-xs text-zinc-700">Total Price (Commercial License)</span>
+            <span className="text-xs text-[#b8531e] font-pixel font-bold">Lifetime access &amp; updates</span>
           </div>
           <div className="text-right">
-            <span className="text-lg font-extrabold text-white">
+            <span className="text-base font-arcade text-[#b8531e]">
               {formatPriceINR(kit.priceINR)}
             </span>
-            <span className="text-xs text-zinc-500 block">
+            <span className="text-xs text-zinc-600 font-pixel block">
               ({formatPriceUSD(kit.priceUSD)})
             </span>
           </div>
@@ -200,7 +200,7 @@ export function CheckoutModal({ kit, isOpen, onClose }: CheckoutModalProps) {
         {/* Buyer Information Form */}
         <form onSubmit={handleStartCheckout} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-zinc-300 mb-1">
+            <label className="block text-xs font-pixel font-bold text-zinc-800 mb-1">
               Your Full Name
             </label>
             <Input
@@ -213,7 +213,7 @@ export function CheckoutModal({ kit, isOpen, onClose }: CheckoutModalProps) {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-300 mb-1">
+            <label className="block text-xs font-pixel font-bold text-zinc-800 mb-1">
               Email Address (for download delivery)
             </label>
             <Input
@@ -226,7 +226,7 @@ export function CheckoutModal({ kit, isOpen, onClose }: CheckoutModalProps) {
           </div>
 
           {errorMessage && (
-            <div className="rounded-lg border border-red-900/50 bg-red-950/30 p-2.5 text-xs text-red-400">
+            <div className="rounded-lg border-2 border-red-400 bg-red-50 p-2.5 text-xs text-red-800 font-medium">
               ⚠️ {errorMessage}
             </div>
           )}
@@ -236,13 +236,13 @@ export function CheckoutModal({ kit, isOpen, onClose }: CheckoutModalProps) {
             variant="primary"
             size="lg"
             isLoading={isLoading}
-            className="w-full text-xs font-semibold mt-2"
+            className="w-full text-xs mt-2"
           >
             {isLoading ? 'Processing...' : `Pay ${formatPriceINR(kit.priceINR)} & Download`}
           </Button>
 
-          <p className="text-[11px] text-zinc-500 text-center">
-            🔒 Secured by Razorpay • UPI, Netbanking, Cards & Wallets supported
+          <p className="text-[11px] text-zinc-600 text-center">
+            🔒 Secured by Razorpay • UPI, Netbanking, Cards &amp; Wallets supported
           </p>
         </form>
       </div>

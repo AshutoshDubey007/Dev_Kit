@@ -86,16 +86,16 @@ export default function RepositoriesPage() {
   return (
     <div className="max-w-7xl mx-auto pb-20 space-y-8">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orange-200 pb-6">
         <div>
-          <div className="flex items-center gap-2 mb-2 text-xs text-blue-400 font-mono">
+          <div className="flex items-center gap-2 mb-2 text-xs text-[#b8531e] font-mono">
             <span>●</span>
             <span>Developer Codebases &amp; Open Source</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl font-extrabold text-zinc-950 tracking-tight">
             Developer Repositories
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-400">
+          <p className="mt-1 text-xs sm:text-sm text-zinc-600">
             Explore public repositories, inspect code trees, star projects, and fork building blocks.
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function RepositoriesPage() {
             <Button
               variant="primary"
               size="sm"
-              className="text-xs bg-gradient-to-r from-emerald-500 to-blue-500 text-black font-semibold gap-1.5 shadow-lg shadow-emerald-500/20"
+              className="text-xs bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white font-semibold gap-1.5 shadow-lg shadow-[#e8c3a8]"
             >
               <Plus className="h-4 w-4" />
               <span>New Repository</span>
@@ -117,13 +117,13 @@ export default function RepositoriesPage() {
       {/* Search & Filter Bar */}
       <div className="flex flex-col sm:flex-row items-center gap-3">
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-600" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Find a repository by name, topic, or description..."
-            className="w-full rounded-xl border border-white/[0.08] bg-[#0c0e14] pl-10 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-2.5 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:border-[#cc6b35]"
           />
         </div>
 
@@ -131,7 +131,7 @@ export default function RepositoriesPage() {
           <select
             value={selectedLanguage}
             onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="rounded-xl border border-white/[0.08] bg-[#0c0e14] px-3 py-2.5 text-xs text-zinc-300 focus:outline-none focus:border-blue-500"
+            className="rounded-xl border border-orange-200 bg-white px-3 py-2.5 text-xs text-zinc-800 focus:outline-none focus:border-[#cc6b35]"
           >
             <option value="all">Language: All</option>
             {allLanguages.map((lang) => (
@@ -144,12 +144,12 @@ export default function RepositoriesPage() {
       </div>
 
       {/* Repositories List */}
-      <div className="divide-y divide-white/[0.06] rounded-2xl border border-white/[0.08] bg-[#0c0e14]/80 shadow-xl overflow-hidden">
+      <div className="divide-y divide-orange-100 rounded-2xl border border-orange-200 bg-white shadow-xl overflow-hidden">
         {filteredRepos.length === 0 ? (
           <div className="p-12 text-center space-y-3">
             <BookMarked className="h-8 w-8 text-zinc-600 mx-auto" />
-            <p className="text-sm font-semibold text-white">No repositories match your search</p>
-            <p className="text-xs text-zinc-500">Try modifying your keyword query or clear filters.</p>
+            <p className="text-sm font-semibold text-zinc-950">No repositories match your search</p>
+            <p className="text-xs text-zinc-600">Try modifying your keyword query or clear filters.</p>
           </div>
         ) : (
           filteredRepos.map((repo) => {
@@ -157,20 +157,20 @@ export default function RepositoriesPage() {
             return (
               <div
                 key={repo.id}
-                className="p-6 space-y-3 hover:bg-white/[0.02] transition-colors flex flex-col sm:flex-row sm:items-start justify-between gap-4"
+                className="p-6 space-y-3 hover:bg-[#faf5ef] transition-colors flex flex-col sm:flex-row sm:items-start justify-between gap-4"
               >
                 <div className="space-y-2 min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <Link
                       href={`/${repo.ownerUsername}`}
-                      className="text-sm font-semibold text-zinc-400 hover:text-white transition-colors"
+                      className="text-sm font-semibold text-zinc-600 hover:text-zinc-950 transition-colors"
                     >
                       {repo.ownerUsername}
                     </Link>
                     <span className="text-zinc-600">/</span>
                     <Link
                       href={`/repos/${repo.ownerUsername}/${repo.name}`}
-                      className="text-base font-bold text-white hover:text-blue-400 transition-colors"
+                      className="text-base font-bold text-zinc-950 hover:text-[#b8531e] transition-colors"
                     >
                       {repo.name}
                     </Link>
@@ -186,7 +186,7 @@ export default function RepositoriesPage() {
                     )}
                   </div>
 
-                  <p className="text-xs text-zinc-400 max-w-3xl leading-relaxed">{repo.description}</p>
+                  <p className="text-xs text-zinc-600 max-w-3xl leading-relaxed">{repo.description}</p>
 
                   {/* Topics Pills */}
                   {repo.topics.length > 0 && (
@@ -196,7 +196,7 @@ export default function RepositoriesPage() {
                           key={t}
                           type="button"
                           onClick={() => setSearchQuery(t)}
-                          className="rounded-md border border-white/[0.06] bg-zinc-950 px-2 py-0.5 text-[10px] font-mono text-blue-300 hover:border-blue-500/40"
+                          className="rounded-md border border-orange-200 bg-white px-2 py-0.5 text-[10px] font-mono text-[#b8531e] hover:border-[#cc6b35]"
                         >
                           {t}
                         </button>
@@ -205,17 +205,17 @@ export default function RepositoriesPage() {
                   )}
 
                   {/* Meta stats bar */}
-                  <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-mono text-zinc-500">
-                    <span className="flex items-center gap-1.5 text-zinc-300">
+                  <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-mono text-zinc-600">
+                    <span className="flex items-center gap-1.5 text-zinc-800">
                       <span className="h-2 w-2 rounded-full bg-blue-400" />
                       {repo.primaryLanguage}
                     </span>
-                    <span className="flex items-center gap-1 text-zinc-400">
-                      <Star className="h-3.5 w-3.5 text-amber-400" />
+                    <span className="flex items-center gap-1 text-zinc-600">
+                      <Star className="h-3.5 w-3.5 text-[#b8531e]" />
                       {repo.starsCount}
                     </span>
-                    <span className="flex items-center gap-1 text-zinc-400">
-                      <FolderGit2 className="h-3.5 w-3.5 text-zinc-500" />
+                    <span className="flex items-center gap-1 text-zinc-600">
+                      <FolderGit2 className="h-3.5 w-3.5 text-zinc-600" />
                       {repo.forksCount}
                     </span>
                     <span>Updated {new Date(repo.updatedAt).toLocaleDateString()}</span>
@@ -229,13 +229,13 @@ export default function RepositoriesPage() {
                     onClick={() => handleStar(repo.id)}
                     className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold font-mono transition-colors ${
                       isStarred
-                        ? 'border-amber-500/40 bg-amber-950/20 text-amber-300'
-                        : 'border-white/[0.1] bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800'
+                        ? 'border-[#cc6b35] bg-[#f7ece1] text-[#b8531e]'
+                        : 'border-orange-200 bg-[#faf5ef] text-zinc-800 hover:text-zinc-950 hover:bg-orange-100'
                     }`}
                   >
                     <Star className={`h-3.5 w-3.5 ${isStarred ? 'fill-amber-400 text-amber-400' : ''}`} />
                     <span>{isStarred ? 'Starred' : 'Star'}</span>
-                    <span className="ml-1 pl-1.5 border-l border-white/[0.1] text-zinc-500">{repo.starsCount}</span>
+                    <span className="ml-1 pl-1.5 border-l border-orange-200 text-zinc-600">{repo.starsCount}</span>
                   </button>
                 </div>
               </div>

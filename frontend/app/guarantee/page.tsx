@@ -18,7 +18,7 @@ export default function VerificationGuaranteePage() {
       <div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors mb-4"
+          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-600 hover:text-zinc-950 transition-colors mb-4"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to DevKit Marketplace</span>
@@ -27,39 +27,39 @@ export default function VerificationGuaranteePage() {
           <Badge variant="success" size="sm">
             Zero-Risk Promise
           </Badge>
-          <span className="text-xs text-zinc-500 font-mono">Last updated: October 16, 2026</span>
+          <span className="text-xs text-zinc-600 font-mono">Last updated: October 16, 2026</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">
           7-Day Product Verification &amp; Refund Policy
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-400 mt-2 max-w-2xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-zinc-600 mt-2 max-w-2xl leading-relaxed">
           We believe developers should never pay for broken templates. Every eligible paid purchase on DevKit comes with a guaranteed 7-day testing and verification window.
         </p>
       </div>
 
-      <div className="space-y-8 text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
+      <div className="space-y-8 text-xs sm:text-sm text-zinc-800 leading-relaxed font-light">
         {/* Core Timeline Banner */}
-        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-6 space-y-4">
+        <div className="rounded-2xl border border-[#cc6b35] bg-[#f7ece1] p-6 space-y-4">
           <div className="flex items-center gap-2.5">
-            <Clock className="h-5 w-5 text-emerald-400" />
-            <h2 className="text-base font-bold text-white">How the 7-Day Window Works</h2>
+            <Clock className="h-5 w-5 text-[#b8531e]" />
+            <h2 className="text-base font-bold text-zinc-950">How the 7-Day Window Works</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-            <div className="p-4 rounded-xl border border-white/[0.06] bg-black/40 space-y-1.5">
-              <span className="text-emerald-400 font-mono font-bold text-xs">Step 1: Unpack &amp; Test</span>
-              <p className="text-zinc-400 text-xs">
+            <div className="p-4 rounded-xl border border-orange-200 bg-white space-y-1.5">
+              <span className="text-[#b8531e] font-mono font-bold text-xs">Step 1: Unpack &amp; Test</span>
+              <p className="text-zinc-600 text-xs">
                 Install dependencies and run the included automated test suite in your environment according to the author setup guide.
               </p>
             </div>
-            <div className="p-4 rounded-xl border border-white/[0.06] bg-black/40 space-y-1.5">
-              <span className="text-emerald-400 font-mono font-bold text-xs">Step 2: Confirm or Report</span>
-              <p className="text-zinc-400 text-xs">
+            <div className="p-4 rounded-xl border border-orange-200 bg-white space-y-1.5">
+              <span className="text-[#b8531e] font-mono font-bold text-xs">Step 2: Confirm or Report</span>
+              <p className="text-zinc-600 text-xs">
                 If the code works, click &quot;Product Works&quot; in your dashboard. If you encounter an unexpected bug, click &quot;Report an Issue&quot;.
               </p>
             </div>
-            <div className="p-4 rounded-xl border border-white/[0.06] bg-black/40 space-y-1.5">
-              <span className="text-emerald-400 font-mono font-bold text-xs">Step 3: Remediation or Refund</span>
-              <p className="text-zinc-400 text-xs">
+            <div className="p-4 rounded-xl border border-orange-200 bg-white space-y-1.5">
+              <span className="text-[#b8531e] font-mono font-bold text-xs">Step 3: Remediation or Refund</span>
+              <p className="text-zinc-600 text-xs">
                 The author has 48 hours to provide a fix in chat. If the issue cannot be resolved, you receive a full refund.
               </p>
             </div>
@@ -67,15 +67,15 @@ export default function VerificationGuaranteePage() {
         </div>
 
         {/* Section: Eligible Refund Criteria */}
-        <section className="space-y-3 rounded-2xl border border-white/[0.08] bg-[#0c0d14]/70 p-6">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+        <section className="space-y-3 rounded-2xl border border-orange-200 bg-white p-6">
+          <h2 className="text-base font-bold text-zinc-950 flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-[#b8531e]" />
             <span>Eligible Refund Scenarios</span>
           </h2>
-          <p className="text-zinc-400">
+          <p className="text-zinc-600">
             You are fully eligible for a 100% refund during your 7-day verification window if:
           </p>
-          <ul className="list-disc pl-5 space-y-2 text-zinc-400">
+          <ul className="list-disc pl-5 space-y-2 text-zinc-600">
             <li>
               <strong>Clean Install Failure:</strong> The product fails to install or compile on the documented runtime/framework versions when following the author&apos;s setup steps.
             </li>
@@ -92,12 +92,12 @@ export default function VerificationGuaranteePage() {
         </section>
 
         {/* Section: Ineligible Scenarios */}
-        <section className="space-y-3 rounded-2xl border border-white/[0.08] bg-[#0c0d14]/70 p-6">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-amber-400" />
+        <section className="space-y-3 rounded-2xl border border-orange-200 bg-white p-6">
+          <h2 className="text-base font-bold text-zinc-950 flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-[#b8531e]" />
             <span>Ineligible Refund Scenarios</span>
           </h2>
-          <ul className="list-disc pl-5 space-y-2 text-zinc-400">
+          <ul className="list-disc pl-5 space-y-2 text-zinc-600">
             <li>
               <strong>Buyer Remorse:</strong> Changing your mind after downloading the source code without identifying a software defect.
             </li>

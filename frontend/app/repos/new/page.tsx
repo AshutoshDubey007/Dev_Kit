@@ -77,11 +77,11 @@ export default function NewRepositoryPage() {
 
   return (
     <div className="max-w-3xl mx-auto pb-20 space-y-8">
-      <div className="border-b border-white/[0.08] pb-6">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+      <div className="border-b border-orange-200 pb-6">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 tracking-tight">
           Create a New Repository
         </h1>
-        <p className="mt-1 text-xs sm:text-sm text-zinc-400">
+        <p className="mt-1 text-xs sm:text-sm text-zinc-600">
           A repository contains all project files, revision history, and can be associated with a marketplace code kit.
         </p>
       </div>
@@ -89,9 +89,9 @@ export default function NewRepositoryPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Owner & Repository Name */}
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-zinc-300">Repository Name *</label>
+          <label className="block text-xs font-semibold text-zinc-800">Repository Name *</label>
           <div className="flex items-center gap-2">
-            <span className="rounded-xl border border-white/[0.08] bg-zinc-950 px-3 py-2 text-xs font-mono text-zinc-400">
+            <span className="rounded-xl border border-orange-200 bg-white px-3 py-2 text-xs font-mono text-zinc-600">
               {ownerUsername} /
             </span>
             <Input
@@ -103,33 +103,33 @@ export default function NewRepositoryPage() {
               className="text-xs font-mono flex-1"
             />
           </div>
-          <p className="text-[11px] text-zinc-500 font-mono">
+          <p className="text-[11px] text-zinc-600 font-mono">
             Great repository names are short and memorable. Need inspiration? Try <code>realtime-vector-search</code>.
           </p>
         </div>
 
         {/* Description */}
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-zinc-300">
-            Description <span className="text-zinc-500 font-normal">(optional)</span>
+          <label className="block text-xs font-semibold text-zinc-800">
+            Description <span className="text-zinc-600 font-normal">(optional)</span>
           </label>
           <textarea
             rows={3}
             placeholder="Short description of what this project provides..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full rounded-xl border border-white/[0.08] bg-zinc-950 p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-orange-200 bg-white p-3 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:border-[#cc6b35]"
           />
         </div>
 
         {/* Primary Language & Topics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="block text-xs font-semibold text-zinc-300">Primary Language</label>
+            <label className="block text-xs font-semibold text-zinc-800">Primary Language</label>
             <select
               value={primaryLanguage}
               onChange={(e) => setPrimaryLanguage(e.target.value)}
-              className="w-full rounded-xl border border-white/[0.08] bg-zinc-950 p-2.5 text-xs text-zinc-200 focus:outline-none focus:border-blue-500 font-mono"
+              className="w-full rounded-xl border border-orange-200 bg-white p-2.5 text-xs text-zinc-900 focus:outline-none focus:border-[#cc6b35] font-mono"
             >
               <option value="TypeScript">TypeScript</option>
               <option value="JavaScript">JavaScript</option>
@@ -140,7 +140,7 @@ export default function NewRepositoryPage() {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-semibold text-zinc-300">Topics (comma separated)</label>
+            <label className="block text-xs font-semibold text-zinc-800">Topics (comma separated)</label>
             <Input
               type="text"
               placeholder="nextjs, razorpay, webhooks"
@@ -153,13 +153,13 @@ export default function NewRepositoryPage() {
 
         {/* Visibility: Public vs Private */}
         <div className="space-y-3 pt-2">
-          <label className="block text-xs font-semibold text-zinc-300">Visibility</label>
+          <label className="block text-xs font-semibold text-zinc-800">Visibility</label>
           <div className="space-y-2.5">
             <label
               className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-colors ${
                 visibility === 'public'
-                  ? 'border-blue-500/50 bg-blue-950/20'
-                  : 'border-white/[0.08] bg-zinc-950 hover:bg-white/[0.02]'
+                  ? 'border-[#cc6b35] bg-[#f7ece1]'
+                  : 'border-orange-200 bg-white hover:bg-[#faf5ef]'
               }`}
             >
               <input
@@ -171,10 +171,10 @@ export default function NewRepositoryPage() {
               />
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4 text-emerald-400" />
-                  <span className="text-xs font-bold text-white">Public</span>
+                  <Globe className="h-4 w-4 text-[#b8531e]" />
+                  <span className="text-xs font-bold text-zinc-950">Public</span>
                 </div>
-                <p className="text-[11px] text-zinc-400">
+                <p className="text-[11px] text-zinc-600">
                   Anyone on the internet can see this repository. You choose who can commit.
                 </p>
               </div>
@@ -183,8 +183,8 @@ export default function NewRepositoryPage() {
             <label
               className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-colors ${
                 visibility === 'private'
-                  ? 'border-blue-500/50 bg-blue-950/20'
-                  : 'border-white/[0.08] bg-zinc-950 hover:bg-white/[0.02]'
+                  ? 'border-[#cc6b35] bg-[#f7ece1]'
+                  : 'border-orange-200 bg-white hover:bg-[#faf5ef]'
               }`}
             >
               <input
@@ -196,10 +196,10 @@ export default function NewRepositoryPage() {
               />
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <Lock className="h-4 w-4 text-amber-400" />
-                  <span className="text-xs font-bold text-white">Private</span>
+                  <Lock className="h-4 w-4 text-[#b8531e]" />
+                  <span className="text-xs font-bold text-zinc-950">Private</span>
                 </div>
-                <p className="text-[11px] text-zinc-400">
+                <p className="text-[11px] text-zinc-600">
                   You choose who can see and commit to this repository.
                 </p>
               </div>
@@ -208,11 +208,11 @@ export default function NewRepositoryPage() {
         </div>
 
         {/* GitHub Import Option */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0e14] p-4 space-y-3">
+        <div className="rounded-2xl border border-orange-200 bg-white p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Github className="h-4 w-4 text-zinc-300" />
-              <span className="text-xs font-bold text-white">Import from GitHub</span>
+              <Github className="h-4 w-4 text-zinc-800" />
+              <span className="text-xs font-bold text-zinc-950">Import from GitHub</span>
             </div>
             <input
               type="checkbox"
@@ -224,7 +224,7 @@ export default function NewRepositoryPage() {
 
           {isImport && (
             <div className="pt-2 space-y-2">
-              <label className="block text-[11px] font-mono text-zinc-400">GitHub Repository URL</label>
+              <label className="block text-[11px] font-mono text-zinc-600">GitHub Repository URL</label>
               <Input
                 type="url"
                 placeholder="https://github.com/username/repository"
@@ -237,7 +237,7 @@ export default function NewRepositoryPage() {
         </div>
 
         {/* Submit Button */}
-        <div className="pt-4 border-t border-white/[0.08] flex items-center justify-end gap-3">
+        <div className="pt-4 border-t border-orange-200 flex items-center justify-end gap-3">
           <Link href="/repos">
             <Button variant="outline" size="md" className="text-xs">
               Cancel
@@ -248,7 +248,7 @@ export default function NewRepositoryPage() {
             variant="primary"
             size="md"
             disabled={isSubmitting || !name.trim()}
-            className="text-xs bg-gradient-to-r from-emerald-500 to-blue-500 text-black font-semibold shadow-lg shadow-emerald-500/20"
+            className="text-xs bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] text-white font-semibold shadow-lg shadow-[#e8c3a8]"
           >
             {isSubmitting ? 'Creating Repository...' : 'Create Repository'}
           </Button>

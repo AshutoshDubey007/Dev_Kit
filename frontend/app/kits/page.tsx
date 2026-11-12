@@ -83,16 +83,16 @@ function KitsCatalogContent() {
   return (
     <div className="space-y-10 pb-16">
       {/* Page Header */}
-      <div className="border-b border-white/[0.06] pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="border-b border-orange-200 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-2 text-xs text-indigo-400 font-mono">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-2 mb-2 text-xs text-[#b8531e] font-mono">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#cc6b35] animate-pulse" />
             <span>Verified Integration Directory</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-950">
             Explore Verified Kits
           </h1>
-          <p className="mt-2 text-xs sm:text-sm text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="mt-2 text-xs sm:text-sm text-zinc-600 max-w-2xl leading-relaxed">
             Search, filter by architecture and technology, and inspect test audits for battle-tested Next.js building blocks.
           </p>
         </div>
@@ -100,13 +100,13 @@ function KitsCatalogContent() {
         <div className="flex items-center gap-2 shrink-0">
           <Link
             href="/seller/my-kits"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-zinc-900/90 px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200 bg-[#faf5ef] px-3 py-1.5 text-xs font-semibold text-zinc-800 hover:text-zinc-950 hover:bg-orange-100 transition-colors"
           >
             <span>📦 My Published Repos</span>
           </Link>
           <Link
             href="/seller/new-kit"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 text-xs font-semibold text-emerald-400 hover:bg-emerald-500/20 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-[#f7ece1] border border-[#cc6b35] px-3 py-1.5 text-xs font-semibold text-[#b8531e] hover:bg-[#f7ece1] transition-colors"
           >
             <span>+ List Kit</span>
           </Link>
@@ -128,7 +128,7 @@ function KitsCatalogContent() {
         {/* Right Column: Search bar + Active Tags + Grid */}
         <div className="lg:col-span-3 space-y-6">
           {/* Instant Search Bar */}
-          <div className="p-1 rounded-2xl border border-white/[0.08] bg-[#0c0d12]/70 shadow-lg backdrop-blur-md">
+          <div className="p-1 rounded-2xl border border-orange-200 bg-white shadow-lg backdrop-blur-md">
             <SearchBar
               value={filters.query}
               onChange={(q) => setFilters((prev) => ({ ...prev, query: q }))}
@@ -142,8 +142,8 @@ function KitsCatalogContent() {
             filters.maxPriceINR !== null ||
             filters.verifiedOnly ||
             filters.query) && (
-            <div className="flex flex-wrap items-center gap-2 text-xs p-3 rounded-xl border border-white/[0.06] bg-zinc-950/40">
-              <span className="text-zinc-500 font-mono text-[11px]">Active Filters:</span>
+            <div className="flex flex-wrap items-center gap-2 text-xs p-3 rounded-xl border border-orange-200 bg-white">
+              <span className="text-zinc-600 font-mono text-[11px]">Active Filters:</span>
 
               {filters.query && (
                 <Badge variant="secondary" size="sm" className="gap-1.5 font-mono text-[11px]">
@@ -151,7 +151,7 @@ function KitsCatalogContent() {
                   <button
                     type="button"
                     onClick={() => setFilters((p) => ({ ...p, query: '' }))}
-                    className="hover:text-white"
+                    className="hover:text-zinc-950"
                   >
                     ✕
                   </button>
@@ -164,7 +164,7 @@ function KitsCatalogContent() {
                   <button
                     type="button"
                     onClick={() => setFilters((p) => ({ ...p, category: 'all' }))}
-                    className="hover:text-white"
+                    className="hover:text-zinc-950"
                   >
                     ✕
                   </button>
@@ -177,7 +177,7 @@ function KitsCatalogContent() {
                   <button
                     type="button"
                     onClick={() => handleSelectTag(tech)}
-                    className="hover:text-white"
+                    className="hover:text-zinc-950"
                   >
                     ✕
                   </button>
@@ -190,7 +190,7 @@ function KitsCatalogContent() {
                   <button
                     type="button"
                     onClick={() => setFilters((p) => ({ ...p, maxPriceINR: null }))}
-                    className="hover:text-white"
+                    className="hover:text-zinc-950"
                   >
                     ✕
                   </button>
@@ -203,7 +203,7 @@ function KitsCatalogContent() {
                   <button
                     type="button"
                     onClick={() => setFilters((p) => ({ ...p, verifiedOnly: false }))}
-                    className="hover:text-white"
+                    className="hover:text-zinc-950"
                   >
                     ✕
                   </button>
@@ -213,7 +213,7 @@ function KitsCatalogContent() {
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="text-xs text-indigo-400 hover:text-indigo-300 ml-auto font-medium"
+                className="text-xs text-[#b8531e] hover:text-[#b8531e] ml-auto font-medium"
               >
                 Clear all
               </button>
@@ -235,7 +235,7 @@ function KitsCatalogContent() {
 
 export default function KitsCatalogPage() {
   return (
-    <Suspense fallback={<div className="py-20 text-center text-xs text-zinc-500 font-mono">Loading catalog...</div>}>
+    <Suspense fallback={<div className="py-20 text-center text-xs text-zinc-600 font-mono">Loading catalog...</div>}>
       <KitsCatalogContent />
     </Suspense>
   );

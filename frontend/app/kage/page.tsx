@@ -22,7 +22,7 @@ const KageCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="fixed inset-0 bg-[#06080d] z-0 pointer-events-none" aria-hidden="true" />
+      <div className="fixed inset-0 bg-white z-0 pointer-events-none" aria-hidden="true" />
     ),
   }
 );
@@ -79,13 +79,13 @@ export default function KageExperiencePage() {
   ];
 
   return (
-    <div className="relative min-h-[500vh] bg-[#06080d] text-white selection:bg-red-500 selection:text-white font-sans antialiased">
+    <div className="relative min-h-[500vh] bg-[#fcfaf7] text-zinc-950 selection:bg-[#cc6b35] selection:text-white font-sans antialiased">
       {/* 1. 3D WebGL Background Canvas */}
-      <KageCanvas scrollProgress={scrollProgress} />
+      <KageCanvas scrollProgress={scrollProgress} theme="arcade" />
 
-      {/* 2. Cinematic Vignette & Noise Texture Overlay */}
+      {/* 2. Subtle Warm Arcade Vignette */}
       <div
-        className="fixed inset-0 pointer-events-none z-10 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(6,8,13,0.85)_100%)]"
+        className="fixed inset-0 pointer-events-none z-10 bg-[radial-gradient(ellipse_at_center,_rgba(255,250,245,0.18)_0%,_rgba(255,247,237,0.68)_100%)]"
         aria-hidden="true"
       />
 
@@ -99,27 +99,27 @@ export default function KageExperiencePage() {
       />
 
       {/* 3. FIXED CINEMATIC HUD / TOP BAR */}
-      <header className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-4 md:px-10 border-b border-white/[0.06] backdrop-blur-md bg-[#06080d]/60">
+      <header className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-4 md:px-10 border-b border-orange-200 backdrop-blur-md bg-white">
         {/* Brand Mark */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="font-serif text-lg tracking-widest text-red-500 font-bold group-hover:text-red-400 transition-colors">
+            <span className="font-serif text-lg tracking-widest text-red-500 font-bold group-hover:text-red-700 transition-colors">
               影
             </span>
-            <span className="text-xs font-mono tracking-[0.25em] text-zinc-300 font-semibold uppercase">
+            <span className="text-xs font-mono tracking-[0.25em] text-zinc-800 font-semibold uppercase">
               Kage // DevKit
             </span>
           </Link>
           <span className="hidden sm:inline text-zinc-600 font-mono text-xs">|</span>
-          <span className="hidden sm:inline text-[11px] font-mono text-zinc-400">
+          <span className="hidden sm:inline text-[11px] font-mono text-zinc-600">
             Cinematic Night Walk
           </span>
         </div>
 
         {/* Dynamic Chapter Indicator */}
-        <div className="hidden md:flex items-center gap-3 font-mono text-xs text-zinc-400">
+        <div className="hidden md:flex items-center gap-3 font-mono text-xs text-zinc-600">
           <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
-          <span className="text-zinc-200 uppercase tracking-wider font-semibold">
+          <span className="text-zinc-900 uppercase tracking-wider font-semibold">
             {chapterNames[currentChapter - 1]}
           </span>
           <span className="text-zinc-600">[{currentChapter}/5]</span>
@@ -130,17 +130,17 @@ export default function KageExperiencePage() {
           <button
             type="button"
             onClick={toggleSound}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/[0.1] bg-black/40 text-[11px] font-mono text-zinc-300 hover:text-white hover:border-white/[0.25] transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-orange-200 bg-white text-[11px] font-mono text-zinc-800 hover:text-zinc-950 hover:border-orange-200 transition-all"
             title="Toggle procedural night wind soundscape"
           >
             {isAudioActive ? (
               <>
-                <Volume2 className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
-                <span className="text-amber-300">Ambient On</span>
+                <Volume2 className="h-3.5 w-3.5 text-[#b8531e] animate-pulse" />
+                <span className="text-[#b8531e]">Ambient On</span>
               </>
             ) : (
               <>
-                <VolumeX className="h-3.5 w-3.5 text-zinc-500" />
+                <VolumeX className="h-3.5 w-3.5 text-zinc-600" />
                 <span>Ambient Off</span>
               </>
             )}
@@ -150,7 +150,7 @@ export default function KageExperiencePage() {
             <Button
               variant="outline"
               size="sm"
-              className="text-xs border-white/[0.12] bg-white/[0.04] text-zinc-200 hover:text-white hover:border-emerald-500/50 gap-1.5"
+              className="text-xs border-orange-200 bg-[#faf5ef] text-zinc-900 hover:text-zinc-950 hover:border-[#cc6b35] gap-1.5"
             >
               <ChevronLeft className="h-3.5 w-3.5" />
               <span>Standard UI</span>
@@ -160,7 +160,7 @@ export default function KageExperiencePage() {
       </header>
 
       {/* 4. FIXED BOTTOM BAR (Progress & Coordinates) */}
-      <footer className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-3 md:px-10 border-t border-white/[0.06] backdrop-blur-md bg-[#06080d]/60 text-[10px] font-mono text-zinc-400">
+      <footer className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-3 md:px-10 border-t border-orange-200 backdrop-blur-md bg-white text-[10px] font-mono text-zinc-600">
         <div className="flex items-center gap-4">
           <span>35.0116° N, 135.7681° E</span>
           <span className="hidden sm:inline text-zinc-600">•</span>
@@ -168,7 +168,7 @@ export default function KageExperiencePage() {
         </div>
 
         {/* Progress Bar */}
-        <div className="w-32 sm:w-64 h-1 bg-white/[0.08] rounded-full overflow-hidden">
+        <div className="w-32 sm:w-64 h-1 bg-[#faf5ef] rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-amber-500 via-red-500 to-amber-500 transition-all duration-100"
             style={{ width: `${Math.round(scrollProgress * 100)}%` }}
@@ -178,7 +178,7 @@ export default function KageExperiencePage() {
         <div className="flex items-center gap-3">
           <span>ALT: {420 + Math.round(scrollProgress * 180)}m</span>
           <span className="text-zinc-600">•</span>
-          <span className="text-red-400">MOON: 94%</span>
+          <span className="text-red-700">MOON: 94%</span>
         </div>
       </footer>
 
@@ -189,15 +189,15 @@ export default function KageExperiencePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Content */}
             <div className="lg:col-span-8 space-y-6">
-              <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-400">
+              <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-700">
                 <span>01 // 閾 // The Threshold</span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif tracking-tight font-extrabold leading-[1.08] text-white">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif tracking-tight font-extrabold leading-[1.08] text-zinc-950">
                 The Sacred Night Walk into Precision Code.
               </h1>
 
-              <p className="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed font-sans font-light">
+              <p className="text-xs sm:text-sm text-zinc-800 max-w-xl leading-relaxed font-sans font-light">
                 Ascend beyond ordinary boilerplate into a cinematic developer sanctuary. 
                 Procedural Japanese architecture, glowing torii gates, and living code repositories 
                 crafted for production Next.js 15, AI generation, and instant Razorpay payments.
@@ -206,7 +206,7 @@ export default function KageExperiencePage() {
               <div className="flex flex-wrap items-center gap-4 pt-4">
                 <a
                   href="#chapter-2"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white text-xs font-semibold uppercase tracking-wider transition-all shadow-lg shadow-red-900/30"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#b8531e] hover:bg-[#964115] text-white border-2 border-[#78330f] shadow-[3px_3px_0px_#e5a982] hover:from-red-500 hover:to-amber-500 text-white text-xs font-semibold uppercase tracking-wider transition-all shadow-lg shadow-[#e8c3a8]"
                 >
                   <span>Begin Ascent</span>
                   <ArrowDown className="h-4 w-4 animate-bounce" />
@@ -214,7 +214,7 @@ export default function KageExperiencePage() {
 
                 <Link
                   href="/explore"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-white/[0.12] bg-black/40 hover:bg-white/[0.08] text-zinc-300 hover:text-white text-xs font-medium transition-all"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-orange-200 bg-white hover:bg-[#faf5ef] text-zinc-800 hover:text-zinc-950 text-xs font-medium transition-all"
                 >
                   <span>Explore Directory</span>
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -224,13 +224,13 @@ export default function KageExperiencePage() {
 
             {/* Right Vertical Kanji Art Column */}
             <div className="lg:col-span-4 hidden lg:flex flex-col items-center justify-center">
-              <div className="[writing-mode:vertical-rl] font-serif text-6xl text-white/[0.12] tracking-[0.4em] select-none pointer-events-none hover:text-white/[0.2] transition-colors">
+              <div className="[writing-mode:vertical-rl] font-serif text-6xl text-zinc-950/[0.12] tracking-[0.4em] select-none pointer-events-none hover:text-zinc-950/[0.2] transition-colors">
                 影・静寂の山門
               </div>
-              <div className="mt-4 p-4 rounded-2xl border border-white/[0.08] bg-black/50 backdrop-blur-xl text-[11px] font-mono text-zinc-400 space-y-1 w-full max-w-xs">
-                <div className="text-white font-semibold flex items-center justify-between">
+              <div className="mt-4 p-4 rounded-2xl border border-orange-200 bg-white backdrop-blur-xl text-[11px] font-mono text-zinc-600 space-y-1 w-full max-w-xs">
+                <div className="text-zinc-950 font-semibold flex items-center justify-between">
                   <span>CAMERA_RIG</span>
-                  <span className="text-red-400">WAYPOINT_01</span>
+                  <span className="text-red-700">WAYPOINT_01</span>
                 </div>
                 <div>TORII_AZIMUTH: 184°</div>
                 <div>FOG_EXTINCTION: 0.022</div>
@@ -252,15 +252,15 @@ export default function KageExperiencePage() {
 
             {/* Main Editorial Card */}
             <div className="lg:col-span-9 space-y-6">
-              <div className="inline-flex items-center gap-2 border-b border-amber-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-amber-400">
+              <div className="inline-flex items-center gap-2 border-b border-[#cc6b35] pb-1 text-xs font-mono uppercase tracking-[0.25em] text-[#b8531e]">
                 <span>02 // 燈籠 // The Lantern Path</span>
               </div>
 
-              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-white leading-tight">
+              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-zinc-950 leading-tight">
                 Illuminating Battle-Tested Architecture.
               </h2>
 
-              <p className="text-xs sm:text-sm text-zinc-300 max-w-2xl leading-relaxed font-light">
+              <p className="text-xs sm:text-sm text-zinc-800 max-w-2xl leading-relaxed font-light">
                 Each stone lantern along the path represents a verified code kit in our marketplace. 
                 Zero synthetic vanity metrics: 100% test-verified Next.js 15 boilerplates, 
                 Razorpay idempotency routers, and Supabase RBAC matrices built with authentic developer discipline.
@@ -268,26 +268,26 @@ export default function KageExperiencePage() {
 
               {/* Editorial Feature Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                <div className="p-4 rounded-2xl border border-white/[0.08] bg-[#0c0e14]/70 backdrop-blur-xl space-y-2">
-                  <div className="text-xs font-mono text-amber-400 uppercase">● Runtime Verified</div>
-                  <div className="text-sm font-bold text-white">Next.js 15 &amp; React 19</div>
-                  <p className="text-[11px] text-zinc-400 leading-relaxed">
+                <div className="p-4 rounded-2xl border border-orange-200 bg-white backdrop-blur-xl space-y-2">
+                  <div className="text-xs font-mono text-[#b8531e] uppercase">● Runtime Verified</div>
+                  <div className="text-sm font-bold text-zinc-950">Next.js 15 &amp; React 19</div>
+                  <p className="text-[11px] text-zinc-600 leading-relaxed">
                     Clean audits on Node 20+ with zero peer dependency conflicts.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl border border-white/[0.08] bg-[#0c0e14]/70 backdrop-blur-xl space-y-2">
-                  <div className="text-xs font-mono text-emerald-400 uppercase">● Instant Settlements</div>
-                  <div className="text-sm font-bold text-white">Razorpay Route &amp; UPI</div>
-                  <p className="text-[11px] text-zinc-400 leading-relaxed">
+                <div className="p-4 rounded-2xl border border-orange-200 bg-white backdrop-blur-xl space-y-2">
+                  <div className="text-xs font-mono text-[#b8531e] uppercase">● Instant Settlements</div>
+                  <div className="text-sm font-bold text-zinc-950">Razorpay Route &amp; UPI</div>
+                  <p className="text-[11px] text-zinc-600 leading-relaxed">
                     Direct automated payouts to developer bank accounts and UPI handles.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl border border-white/[0.08] bg-[#0c0e14]/70 backdrop-blur-xl space-y-2">
-                  <div className="text-xs font-mono text-blue-400 uppercase">● DLP Protection</div>
-                  <div className="text-sm font-bold text-white">Anti-Leak Chat Shield</div>
-                  <p className="text-[11px] text-zinc-400 leading-relaxed">
+                <div className="p-4 rounded-2xl border border-orange-200 bg-white backdrop-blur-xl space-y-2">
+                  <div className="text-xs font-mono text-[#b8531e] uppercase">● DLP Protection</div>
+                  <div className="text-sm font-bold text-zinc-950">Anti-Leak Chat Shield</div>
+                  <p className="text-[11px] text-zinc-600 leading-relaxed">
                     Automatic obfuscation filters guarding against off-platform leakage.
                   </p>
                 </div>
@@ -298,19 +298,19 @@ export default function KageExperiencePage() {
 
         {/* ─── CHAPTER III: THE SACRED CRAFT ─── */}
         <section className="min-h-[85vh] flex flex-col justify-center px-6 md:px-20 max-w-6xl mx-auto">
-          <div className="p-8 sm:p-12 rounded-3xl border border-white/[0.08] bg-black/60 backdrop-blur-2xl space-y-8 relative overflow-hidden">
+          <div className="p-8 sm:p-12 rounded-3xl border border-orange-200 bg-white backdrop-blur-2xl space-y-8 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="space-y-4 max-w-2xl">
-              <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-400">
+              <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-700">
                 <span>03 // 本堂 // The Sacred Craft</span>
               </div>
 
-              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-white leading-tight">
+              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-zinc-950 leading-tight">
                 AI Generation Studio &amp; Prompt Blueprints.
               </h2>
 
-              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
+              <p className="text-xs sm:text-sm text-zinc-800 leading-relaxed font-light">
                 Step into the glowing pavilion where software requirements transform into 
                 multi-file production codebases through Claude 3.5 Sonnet, GPT-4o, and Gemini 1.5 Pro.
               </p>
@@ -319,36 +319,36 @@ export default function KageExperiencePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link
                 href="/studio"
-                className="p-5 rounded-2xl border border-white/[0.1] bg-[#141822]/80 hover:border-purple-500/50 hover:bg-[#1a202e] transition-all group space-y-2"
+                className="p-5 rounded-2xl border border-orange-200 bg-[#faf5ef] hover:border-[#cc6b35] hover:bg-orange-100 transition-all group space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-purple-400 font-semibold uppercase">
+                  <span className="text-xs font-mono text-[#b8531e] font-semibold uppercase">
                     AI Code Studio
                   </span>
-                  <Bot className="h-4 w-4 text-purple-400 group-hover:scale-110 transition-transform" />
+                  <Bot className="h-4 w-4 text-[#b8531e] group-hover:scale-110 transition-transform" />
                 </div>
-                <div className="text-base font-bold text-white group-hover:text-purple-300 transition-colors">
+                <div className="text-base font-bold text-zinc-950 group-hover:text-[#b8531e] transition-colors">
                   Synthesize Multi-File Codebase →
                 </div>
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-zinc-600">
                   Generate complete directory structures, Route Handlers, Prisma schemas, and download as clean ZIP archives.
                 </p>
               </Link>
 
               <Link
                 href="/prompts"
-                className="p-5 rounded-2xl border border-white/[0.1] bg-[#141822]/80 hover:border-amber-500/50 hover:bg-[#1a202e] transition-all group space-y-2"
+                className="p-5 rounded-2xl border border-orange-200 bg-[#faf5ef] hover:border-[#cc6b35] hover:bg-orange-100 transition-all group space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-amber-400 font-semibold uppercase">
+                  <span className="text-xs font-mono text-[#b8531e] font-semibold uppercase">
                     Prompt Marketplace
                   </span>
-                  <Sparkles className="h-4 w-4 text-amber-400 group-hover:scale-110 transition-transform" />
+                  <Sparkles className="h-4 w-4 text-[#b8531e] group-hover:scale-110 transition-transform" />
                 </div>
-                <div className="text-base font-bold text-white group-hover:text-amber-300 transition-colors">
+                <div className="text-base font-bold text-zinc-950 group-hover:text-[#b8531e] transition-colors">
                   Explore Prompt Blueprints →
                 </div>
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-zinc-600">
                   Buy, test, version, and monetize software blueprints with protected paywall template encryption.
                 </p>
               </Link>
@@ -360,15 +360,15 @@ export default function KageExperiencePage() {
         <section className="min-h-[85vh] flex flex-col justify-center px-6 md:px-20 max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-6">
-              <div className="inline-flex items-center gap-2 border-b border-zinc-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-zinc-400">
+              <div className="inline-flex items-center gap-2 border-b border-zinc-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-zinc-600">
                 <span>04 // 枯山水 // Stillness &amp; Depth</span>
               </div>
 
-              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-white leading-tight">
+              <h2 className="text-3xl sm:text-5xl font-serif tracking-tight font-bold text-zinc-950 leading-tight">
                 The Quiet Discipline of Open Source Repositories.
               </h2>
 
-              <p className="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed font-light">
+              <p className="text-xs sm:text-sm text-zinc-800 max-w-xl leading-relaxed font-light">
                 Like the raked gravel of a zen garden, high-performance code requires 
                 uncompromising restraint. Browse repositories with live syntax viewing, clone commands, 
                 issue tracking, and branch navigation.
@@ -381,14 +381,14 @@ export default function KageExperiencePage() {
                   </Button>
                 </Link>
                 <Link href="/repos/new">
-                  <Button variant="outline" className="text-xs border-white/[0.15] text-white hover:bg-white/[0.08]">
+                  <Button variant="outline" className="text-xs border-orange-200 text-zinc-950 hover:bg-[#faf5ef]">
                     Create Repository
                   </Button>
                 </Link>
               </div>
             </div>
 
-            <div className="lg:col-span-4 [writing-mode:vertical-rl] font-serif text-5xl text-white/[0.08] tracking-[0.4em] select-none text-right">
+            <div className="lg:col-span-4 [writing-mode:vertical-rl] font-serif text-5xl text-zinc-950/[0.08] tracking-[0.4em] select-none text-right">
               枯山水・無言の真理
             </div>
           </div>
@@ -397,15 +397,15 @@ export default function KageExperiencePage() {
         {/* ─── CHAPTER V: AFTERLIGHT & RETURN ─── */}
         <section className="min-h-[90vh] flex flex-col justify-center px-6 md:px-20 max-w-6xl mx-auto text-center space-y-8">
           <div className="space-y-4 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-400">
+            <div className="inline-flex items-center gap-2 border-b border-red-500/40 pb-1 text-xs font-mono uppercase tracking-[0.25em] text-red-700">
               <span>05 // 余光 // Afterlight</span>
             </div>
 
-            <h2 className="text-4xl sm:text-6xl font-serif tracking-tight font-bold text-white">
+            <h2 className="text-4xl sm:text-6xl font-serif tracking-tight font-bold text-zinc-950">
               The Summit of DevKit.
             </h2>
 
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
+            <p className="text-xs sm:text-sm text-zinc-800 leading-relaxed font-light">
               You have completed the cinematic night walk. Every system you saw—repositories, 
               digital kits, AI generation, and secure messaging—is live and functional.
             </p>
@@ -415,38 +415,38 @@ export default function KageExperiencePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto pt-4">
             <Link
               href="/repos"
-              className="p-4 rounded-2xl border border-white/[0.08] bg-black/60 backdrop-blur-xl hover:border-blue-500/40 hover:bg-[#0c0e14] transition-all text-left space-y-1"
+              className="p-4 rounded-2xl border border-orange-200 bg-white backdrop-blur-xl hover:border-[#cc6b35] hover:bg-white transition-all text-left space-y-1"
             >
-              <BookMarked className="h-4 w-4 text-blue-400" />
-              <div className="text-xs font-bold text-white">Repositories</div>
-              <p className="text-[10px] text-zinc-400">Explore open source code</p>
+              <BookMarked className="h-4 w-4 text-[#b8531e]" />
+              <div className="text-xs font-bold text-zinc-950">Repositories</div>
+              <p className="text-[10px] text-zinc-600">Explore open source code</p>
             </Link>
 
             <Link
               href="/kits"
-              className="p-4 rounded-2xl border border-white/[0.08] bg-black/60 backdrop-blur-xl hover:border-emerald-500/40 hover:bg-[#0c0e14] transition-all text-left space-y-1"
+              className="p-4 rounded-2xl border border-orange-200 bg-white backdrop-blur-xl hover:border-[#cc6b35] hover:bg-white transition-all text-left space-y-1"
             >
-              <ShoppingBag className="h-4 w-4 text-emerald-400" />
-              <div className="text-xs font-bold text-white">Marketplace</div>
-              <p className="text-[10px] text-zinc-400">Verified starter kits</p>
+              <ShoppingBag className="h-4 w-4 text-[#b8531e]" />
+              <div className="text-xs font-bold text-zinc-950">Marketplace</div>
+              <p className="text-[10px] text-zinc-600">Verified starter kits</p>
             </Link>
 
             <Link
               href="/prompts"
-              className="p-4 rounded-2xl border border-white/[0.08] bg-black/60 backdrop-blur-xl hover:border-purple-500/40 hover:bg-[#0c0e14] transition-all text-left space-y-1"
+              className="p-4 rounded-2xl border border-orange-200 bg-white backdrop-blur-xl hover:border-[#cc6b35] hover:bg-white transition-all text-left space-y-1"
             >
-              <Sparkles className="h-4 w-4 text-purple-400" />
-              <div className="text-xs font-bold text-white">AI Prompts</div>
-              <p className="text-[10px] text-zinc-400">Code generation blueprints</p>
+              <Sparkles className="h-4 w-4 text-[#b8531e]" />
+              <div className="text-xs font-bold text-zinc-950">AI Prompts</div>
+              <p className="text-[10px] text-zinc-600">Code generation blueprints</p>
             </Link>
 
             <Link
               href="/chat"
-              className="p-4 rounded-2xl border border-white/[0.08] bg-black/60 backdrop-blur-xl hover:border-amber-500/40 hover:bg-[#0c0e14] transition-all text-left space-y-1"
+              className="p-4 rounded-2xl border border-orange-200 bg-white backdrop-blur-xl hover:border-[#cc6b35] hover:bg-white transition-all text-left space-y-1"
             >
-              <Compass className="h-4 w-4 text-amber-400" />
-              <div className="text-xs font-bold text-white">Support Chat</div>
-              <p className="text-[10px] text-zinc-400">3-Panel DLP collaboration</p>
+              <Compass className="h-4 w-4 text-[#b8531e]" />
+              <div className="text-xs font-bold text-zinc-950">Support Chat</div>
+              <p className="text-[10px] text-zinc-600">3-Panel DLP collaboration</p>
             </Link>
           </div>
 

@@ -34,32 +34,32 @@ export default function CategoryPage() {
   return (
     <div className="space-y-8">
       {/* Breadcrumbs */}
-      <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
-        <Link href="/" className="hover:text-zinc-300">
+      <div className="flex items-center gap-2 text-xs text-zinc-600 font-mono">
+        <Link href="/" className="hover:text-zinc-800">
           Home
         </Link>
         <span>/</span>
-        <Link href="/kits" className="hover:text-zinc-300">
+        <Link href="/kits" className="hover:text-zinc-800">
           Categories
         </Link>
         <span>/</span>
-        <span className="text-zinc-300 capitalize">{category.name}</span>
+        <span className="text-zinc-800 capitalize">{category.name}</span>
       </div>
 
       {/* Category Header */}
-      <div className="border-b border-zinc-800/80 pb-6">
+      <div className="border-b border-orange-200 pb-6">
         <div className="flex items-center gap-2 mb-2">
           <Badge variant="purple" size="sm" className="capitalize">
             {category.slug}
           </Badge>
-          <span className="text-xs text-zinc-500 font-mono">
+          <span className="text-xs text-zinc-600 font-mono">
             {categoryKits.length} verified integration {categoryKits.length === 1 ? 'kit' : 'kits'}
           </span>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-white">
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
           {category.name}
         </h1>
-        <p className="mt-2 text-sm text-zinc-400 max-w-2xl leading-relaxed">
+        <p className="mt-2 text-sm text-zinc-600 max-w-2xl leading-relaxed">
           {category.description}
         </p>
       </div>

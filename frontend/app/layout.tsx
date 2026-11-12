@@ -1,11 +1,20 @@
 import type { Metadata, Viewport } from 'next';
+import '@fontsource/press-start-2p/400.css';
+import '@fontsource/silkscreen/400.css';
+import '@fontsource/silkscreen/700.css';
+import '@fontsource/chakra-petch/400.css';
+import '@fontsource/chakra-petch/500.css';
+import '@fontsource/chakra-petch/600.css';
+import '@fontsource/chakra-petch/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/700.css';
 import './globals.css';
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#07090e',
+  themeColor: '#b8531e',
 };
 
 export const metadata: Metadata = {
@@ -29,8 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-zinc-950 text-zinc-100 antialiased selection:bg-indigo-600 selection:text-white">
+    <html lang="en">
+      <body className="min-h-screen bg-[#fcfaf7] text-zinc-950 font-sans antialiased selection:bg-[#b8531e] selection:text-white">
         <AuthProvider>
           <LayoutShell>{children}</LayoutShell>
         </AuthProvider>

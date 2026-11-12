@@ -279,16 +279,16 @@ export default function BuyerVerificationDashboard() {
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 space-y-8">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-orange-200 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-900/60 bg-emerald-950/40 px-3 py-1 text-xs text-emerald-400 font-mono mb-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#cc6b35] bg-[#f7ece1] px-3 py-1 text-xs text-[#b8531e] font-mono mb-2">
             <ShieldCheck className="h-3.5 w-3.5" />
             <span>DevKit Trust Standard • 7-Day Protection Window</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 tracking-tight">
             Product Verification Dashboard
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-zinc-600 mt-1">
             Every paid kit comes with 7 full days of defect resolution guarantee and direct seller chat assistance.
           </p>
         </div>
@@ -299,7 +299,7 @@ export default function BuyerVerificationDashboard() {
             size="sm"
             onClick={loadData}
             disabled={isLoading}
-            className="text-xs border-zinc-800 text-zinc-300 hover:text-white"
+            className="text-xs border-orange-200 text-zinc-800 hover:text-zinc-950"
           >
             <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${isLoading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
@@ -315,12 +315,12 @@ export default function BuyerVerificationDashboard() {
 
       {/* Notifications / Alerts */}
       {successToast && (
-        <div className="p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 text-xs flex items-center justify-between animate-fade-in">
+        <div className="p-4 rounded-xl border border-[#cc6b35] bg-[#f7ece1] text-[#b8531e] text-xs flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-2.5">
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-[#b8531e]" />
             <span>{successToast}</span>
           </div>
-          <button onClick={() => setSuccessToast(null)} className="text-emerald-400 hover:text-emerald-200">
+          <button onClick={() => setSuccessToast(null)} className="text-[#b8531e] hover:text-[#964115]">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -341,16 +341,16 @@ export default function BuyerVerificationDashboard() {
       {/* Main Verification List */}
       {isLoading ? (
         <div className="py-20 text-center space-y-3">
-          <div className="h-8 w-8 mx-auto border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs text-zinc-400 font-mono">Loading your purchased kits and verification status...</p>
+          <div className="h-8 w-8 mx-auto border-2 border-[#cc6b35] border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs text-zinc-600 font-mono">Loading your purchased kits and verification status...</p>
         </div>
       ) : verifications.length === 0 ? (
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-12 text-center space-y-4">
-          <div className="h-12 w-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-zinc-500">
+        <div className="rounded-2xl border border-orange-200 bg-white p-12 text-center space-y-4">
+          <div className="h-12 w-12 rounded-2xl bg-[#faf5ef] border border-orange-200 flex items-center justify-center mx-auto text-zinc-600">
             <ShieldCheck className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-bold text-white">No Active Verifications</h3>
-          <p className="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
+          <h3 className="text-base font-bold text-zinc-950">No Active Verifications</h3>
+          <p className="text-xs text-zinc-600 max-w-md mx-auto leading-relaxed">
             When you purchase verified kits or blueprints, your 7-day testing and support window appears here automatically.
           </p>
           <div className="pt-2">
@@ -370,21 +370,21 @@ export default function BuyerVerificationDashboard() {
             return (
               <div
                 key={v.verificationId}
-                className="rounded-2xl border border-zinc-800 bg-zinc-950 overflow-hidden shadow-xl hover:border-zinc-700/80 transition-all"
+                className="rounded-2xl border border-orange-200 bg-white overflow-hidden shadow-xl hover:border-orange-200 transition-all"
               >
                 {/* Header Strip */}
-                <div className="bg-[#10121a] px-6 py-4 border-b border-zinc-800/80 flex flex-wrap items-center justify-between gap-4">
+                <div className="bg-[#faf5ef] px-6 py-4 border-b border-orange-200 flex flex-wrap items-center justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-xs font-semibold text-zinc-400">
+                      <span className="font-mono text-xs font-semibold text-zinc-600">
                         {v.orderId}
                       </span>
                       <span className="text-zinc-600">•</span>
-                      <span className="text-xs text-zinc-400">
+                      <span className="text-xs text-zinc-600">
                         Purchased {new Date(v.purchaseVerifiedAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <h2 className="text-base sm:text-lg font-bold text-white">
+                    <h2 className="text-base sm:text-lg font-bold text-zinc-950">
                       {v.productTitle}
                     </h2>
                   </div>
@@ -392,20 +392,20 @@ export default function BuyerVerificationDashboard() {
                   {/* Status Badges */}
                   <div className="flex items-center gap-3">
                     {v.verificationStatus === 'verified_success' ? (
-                      <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-xs py-1 px-3">
+                      <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-xs py-1 px-3">
                         ✓ Verified Working
                       </Badge>
                     ) : v.verificationStatus === 'issue_reported' ? (
-                      <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/30 text-xs py-1 px-3">
+                      <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-xs py-1 px-3">
                         ⚠️ Issue Under Review
                       </Badge>
                     ) : v.verificationStatus === 'expired' ? (
-                      <Badge className="bg-zinc-800 text-zinc-400 border-zinc-700 text-xs py-1 px-3">
+                      <Badge className="bg-orange-100 text-zinc-600 border-orange-200 text-xs py-1 px-3">
                         Period Concluded
                       </Badge>
                     ) : (
-                      <div className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/30 bg-indigo-950/40 px-3 py-1 text-xs text-indigo-300 font-mono">
-                        <Clock className="h-3 w-3 text-indigo-400 animate-pulse" />
+                      <div className="inline-flex items-center gap-1.5 rounded-full border border-[#cc6b35] bg-[#f7ece1] px-3 py-1 text-xs text-[#b8531e] font-mono">
+                        <Clock className="h-3 w-3 text-[#b8531e] animate-pulse" />
                         <span>{timeInfo.text}</span>
                       </div>
                     )}
@@ -418,81 +418,81 @@ export default function BuyerVerificationDashboard() {
                   <div className="lg:col-span-2 space-y-5">
                     {/* Seller & Verification Metadata */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
-                      <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-                        <span className="text-zinc-500 block text-[11px]">Seller</span>
-                        <span className="text-zinc-200 font-medium block mt-0.5">
+                      <div className="p-3 rounded-xl bg-[#faf5ef] border border-orange-200">
+                        <span className="text-zinc-600 block text-[11px]">Seller</span>
+                        <span className="text-zinc-900 font-medium block mt-0.5">
                           {v.sellerName || 'DevKit Core Team'}
                         </span>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-                        <span className="text-zinc-500 block text-[11px]">7-Day Deadline (UTC)</span>
-                        <span className="text-zinc-200 font-mono text-[11px] block mt-0.5">
+                      <div className="p-3 rounded-xl bg-[#faf5ef] border border-orange-200">
+                        <span className="text-zinc-600 block text-[11px]">7-Day Deadline (UTC)</span>
+                        <span className="text-zinc-900 font-mono text-[11px] block mt-0.5">
                           {new Date(v.verificationDeadline).toLocaleString()}
                         </span>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-                        <span className="text-zinc-500 block text-[11px]">Verification ID</span>
-                        <span className="text-zinc-300 font-mono text-[11px] block mt-0.5 truncate">
+                      <div className="p-3 rounded-xl bg-[#faf5ef] border border-orange-200">
+                        <span className="text-zinc-600 block text-[11px]">Verification ID</span>
+                        <span className="text-zinc-800 font-mono text-[11px] block mt-0.5 truncate">
                           {v.verificationId}
                         </span>
                       </div>
                     </div>
 
                     {/* Step-by-Step Setup Guide */}
-                    <div className="p-4 rounded-xl bg-[#0e1017] border border-zinc-800/80 space-y-3">
-                      <div className="flex items-center justify-between text-xs font-semibold text-zinc-200">
+                    <div className="p-4 rounded-xl bg-white border border-orange-200 space-y-3">
+                      <div className="flex items-center justify-between text-xs font-semibold text-zinc-900">
                         <span className="flex items-center gap-1.5 font-mono">
-                          <Terminal className="h-3.5 w-3.5 text-emerald-400" />
+                          <Terminal className="h-3.5 w-3.5 text-[#b8531e]" />
                           <span>Standard Setup Verification Steps:</span>
                         </span>
                         <Link
                           href={`/kits/${v.productSlug}`}
-                          className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+                          className="text-[11px] text-[#b8531e] hover:text-[#b8531e] flex items-center gap-1"
                         >
                           <span>Listing Details</span>
                           <ExternalLink className="h-3 w-3" />
                         </Link>
                       </div>
 
-                      <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800/60 font-mono text-[11px] text-zinc-300 space-y-1">
-                        <div><span className="text-emerald-400">$</span> tar -xzf package.zip</div>
-                        <div><span className="text-emerald-400">$</span> npm install</div>
-                        <div><span className="text-emerald-400">$</span> cp .env.example .env.local</div>
-                        <div><span className="text-emerald-400">$</span> npm run dev</div>
+                      <div className="p-3 rounded-lg bg-white border border-orange-200 font-mono text-[11px] text-zinc-800 space-y-1">
+                        <div><span className="text-[#b8531e]">$</span> tar -xzf package.zip</div>
+                        <div><span className="text-[#b8531e]">$</span> npm install</div>
+                        <div><span className="text-[#b8531e]">$</span> cp .env.example .env.local</div>
+                        <div><span className="text-[#b8531e]">$</span> npm run dev</div>
                       </div>
 
-                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                      <p className="text-[11px] text-zinc-600 leading-relaxed">
                         If npm install fails or dependencies conflict with Next.js 15, report the issue immediately. The 7-day window keeps you protected until resolved.
                       </p>
                     </div>
 
                     {/* Open Ticket Details Banner if Applicable */}
                     {ticket && (
-                      <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 space-y-3">
+                      <div className="p-4 rounded-xl bg-[#f7ece1] border border-[#cc6b35] space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <Bug className="h-4 w-4 text-amber-400" />
-                            <span className="text-xs font-bold text-amber-200">
+                            <Bug className="h-4 w-4 text-[#b8531e]" />
+                            <span className="text-xs font-bold text-[#b8531e]">
                               Linked Support Ticket: {ticket.ticketId}
                             </span>
                           </div>
-                          <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/40 text-[10px]">
+                          <Badge className="bg-[#f7ece1] text-[#b8531e] border-[#cc6b35] text-[10px]">
                             Status: {ticket.status.replace('_', ' ').toUpperCase()}
                           </Badge>
                         </div>
 
-                        <p className="text-xs text-zinc-300 leading-relaxed">
+                        <p className="text-xs text-zinc-800 leading-relaxed">
                           <strong>{ticket.title}</strong>: {ticket.description}
                         </p>
 
                         {ticket.proposedResolution && ticket.status === 'resolution_proposed' && (
-                          <div className="p-3 rounded-lg bg-indigo-950/40 border border-indigo-500/40 space-y-2 mt-2">
-                            <span className="text-xs font-semibold text-indigo-300 block">
+                          <div className="p-3 rounded-lg bg-[#f7ece1] border border-[#cc6b35] space-y-2 mt-2">
+                            <span className="text-xs font-semibold text-[#b8531e] block">
                               💡 Solution Proposed by Seller:
                             </span>
-                            <p className="text-xs text-zinc-300 whitespace-pre-wrap">
+                            <p className="text-xs text-zinc-800 whitespace-pre-wrap">
                               {ticket.proposedResolution.notes}
                             </p>
                             <div className="pt-2 flex items-center gap-3">
@@ -501,7 +501,7 @@ export default function BuyerVerificationDashboard() {
                                 size="sm"
                                 onClick={() => handleAcceptResolution(ticket.ticketId)}
                                 disabled={actionLoading === `accept_${ticket.ticketId}`}
-                                className="text-xs bg-emerald-600 hover:bg-emerald-500"
+                                className="text-xs bg-[#b8531e] hover:bg-[#b8531e]"
                               >
                                 {actionLoading === `accept_${ticket.ticketId}`
                                   ? 'Confirming...'
@@ -515,9 +515,9 @@ export default function BuyerVerificationDashboard() {
                   </div>
 
                   {/* Right Column: Actions */}
-                  <div className="rounded-xl bg-zinc-900/40 border border-zinc-800 p-4 space-y-4 flex flex-col justify-between">
+                  <div className="rounded-xl bg-[#faf5ef] border border-orange-200 p-4 space-y-4 flex flex-col justify-between">
                     <div className="space-y-3">
-                      <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider block font-mono">
+                      <span className="text-xs font-bold text-zinc-800 uppercase tracking-wider block font-mono">
                         Verification Actions
                       </span>
 
@@ -531,14 +531,14 @@ export default function BuyerVerificationDashboard() {
                           <Button
                             variant="secondary"
                             size="md"
-                            className="w-full text-xs justify-start gap-2 border-zinc-700"
+                            className="w-full text-xs justify-start gap-2 border-orange-200"
                           >
-                            <Download className="h-3.5 w-3.5 text-purple-400" />
+                            <Download className="h-3.5 w-3.5 text-[#b8531e]" />
                             <span>Download Package Source</span>
                           </Button>
                         </a>
                       ) : (
-                        <div className="text-[11px] text-zinc-500 p-2 rounded bg-zinc-900">
+                        <div className="text-[11px] text-zinc-600 p-2 rounded bg-[#faf5ef]">
                           Order reference: {v.orderId}
                         </div>
                       )}
@@ -549,9 +549,9 @@ export default function BuyerVerificationDashboard() {
                           <Button
                             variant="outline"
                             size="md"
-                            className="w-full text-xs justify-start gap-2 border-zinc-700 text-zinc-200 hover:text-white"
+                            className="w-full text-xs justify-start gap-2 border-orange-200 text-zinc-900 hover:text-zinc-950"
                           >
-                            <MessageSquare className="h-3.5 w-3.5 text-indigo-400" />
+                            <MessageSquare className="h-3.5 w-3.5 text-[#b8531e]" />
                             <span>Open Dedicated Seller Chat</span>
                           </Button>
                         </Link>
@@ -559,14 +559,14 @@ export default function BuyerVerificationDashboard() {
                     </div>
 
                     {/* Primary Decision Gate */}
-                    <div className="pt-4 border-t border-zinc-800 space-y-2.5">
+                    <div className="pt-4 border-t border-orange-200 space-y-2.5">
                       {v.verificationStatus === 'verified_success' ? (
-                        <div className="p-3 rounded-lg bg-emerald-950/30 border border-emerald-900/60 text-center space-y-1">
-                          <CheckCircle2 className="h-5 w-5 text-emerald-400 mx-auto" />
-                          <span className="text-xs font-semibold text-emerald-300 block">
+                        <div className="p-3 rounded-lg bg-[#f7ece1] border border-[#cc6b35] text-center space-y-1">
+                          <CheckCircle2 className="h-5 w-5 text-[#b8531e] mx-auto" />
+                          <span className="text-xs font-semibold text-[#b8531e] block">
                             Successfully Verified
                           </span>
-                          <span className="text-[10px] text-zinc-400 block">
+                          <span className="text-[10px] text-zinc-600 block">
                             Confirmed on {v.resolvedAt ? new Date(v.resolvedAt).toLocaleDateString() : 'Active'}
                           </span>
                         </div>
@@ -577,7 +577,7 @@ export default function BuyerVerificationDashboard() {
                             size="md"
                             onClick={() => handleConfirmWorks(v.verificationId)}
                             disabled={actionLoading === v.verificationId || v.verificationStatus === 'expired'}
-                            className="w-full text-xs bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-600/20"
+                            className="w-full text-xs bg-[#b8531e] hover:bg-[#b8531e] shadow-lg shadow-[#e8c3a8]"
                           >
                             {actionLoading === v.verificationId ? (
                               <span>Verifying...</span>
@@ -594,7 +594,7 @@ export default function BuyerVerificationDashboard() {
                             size="md"
                             onClick={() => setActiveModalVerification(v)}
                             disabled={v.verificationStatus === 'expired'}
-                            className="w-full text-xs border-amber-600/40 text-amber-400 hover:bg-amber-950/30"
+                            className="w-full text-xs border-amber-600/40 text-[#b8531e] hover:bg-[#f7ece1]"
                           >
                             <AlertTriangle className="h-3.5 w-3.5 mr-1.5" />
                             <span>Report an Issue & Open Ticket</span>
@@ -612,21 +612,21 @@ export default function BuyerVerificationDashboard() {
 
       {/* Report Issue Modal */}
       {activeModalVerification && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-2xl rounded-2xl border border-zinc-800 bg-[#0c0d12] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-2xl rounded-2xl border border-orange-200 bg-white p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-orange-200 pb-3">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Bug className="h-4 w-4 text-amber-400" />
+                <h3 className="text-base font-bold text-zinc-950 flex items-center gap-2">
+                  <Bug className="h-4 w-4 text-[#b8531e]" />
                   <span>Report Issue for {activeModalVerification.productTitle}</span>
                 </h3>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-600 mt-0.5">
                   Filing a ticket preserves your 7-day guarantee until the seller solves the issue.
                 </p>
               </div>
               <button
                 onClick={() => setActiveModalVerification(null)}
-                className="text-zinc-400 hover:text-white"
+                className="text-zinc-600 hover:text-zinc-950"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -634,7 +634,7 @@ export default function BuyerVerificationDashboard() {
 
             <form onSubmit={handleSubmitIssue} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                <label className="text-xs font-semibold text-zinc-800 block mb-1">
                   Issue Summary / Title *
                 </label>
                 <input
@@ -643,12 +643,12 @@ export default function BuyerVerificationDashboard() {
                   value={issueTitle}
                   onChange={(e) => setIssueTitle(e.target.value)}
                   placeholder="e.g. Next.js 15 webhook signature mismatch on local environment"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full rounded-xl border border-orange-200 bg-white px-3.5 py-2.5 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                <label className="text-xs font-semibold text-zinc-800 block mb-1">
                   Detailed Description *
                 </label>
                 <textarea
@@ -657,13 +657,13 @@ export default function BuyerVerificationDashboard() {
                   value={issueDescription}
                   onChange={(e) => setIssueDescription(e.target.value)}
                   placeholder="Explain what happened during installation or build execution..."
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-none"
+                  className="w-full rounded-xl border border-orange-200 bg-white p-3 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-y"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                  <label className="text-xs font-semibold text-zinc-800 block mb-1">
                     Expected Behavior
                   </label>
                   <input
@@ -671,12 +671,12 @@ export default function BuyerVerificationDashboard() {
                     value={expectedBehavior}
                     onChange={(e) => setExpectedBehavior(e.target.value)}
                     placeholder="e.g. Order creates without type error"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full rounded-xl border border-orange-200 bg-white px-3 py-2 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                  <label className="text-xs font-semibold text-zinc-800 block mb-1">
                     Actual Behavior
                   </label>
                   <input
@@ -684,13 +684,13 @@ export default function BuyerVerificationDashboard() {
                     value={actualBehavior}
                     onChange={(e) => setActualBehavior(e.target.value)}
                     placeholder="e.g. Webhook returns 400 invalid signature"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full rounded-xl border border-orange-200 bg-white px-3 py-2 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                <label className="text-xs font-semibold text-zinc-800 block mb-1">
                   Terminal / Runtime Error Message (Optional)
                 </label>
                 <textarea
@@ -698,12 +698,12 @@ export default function BuyerVerificationDashboard() {
                   value={errorMessage}
                   onChange={(e) => setErrorMessage(e.target.value)}
                   placeholder="Paste error logs, stack traces, or console warnings..."
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 font-mono text-[11px] text-rose-300 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-rose-500 resize-none"
+                  className="w-full rounded-xl border border-orange-200 bg-white p-3 font-mono text-[11px] text-rose-300 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-rose-500 resize-y"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                <label className="text-xs font-semibold text-zinc-800 block mb-1">
                   Reproduction Steps
                 </label>
                 <textarea
@@ -711,37 +711,37 @@ export default function BuyerVerificationDashboard() {
                   value={reproductionSteps}
                   onChange={(e) => setReproductionSteps(e.target.value)}
                   placeholder="1. Run npm install&#10;2. Add environment variables&#10;3. Trigger webhook"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-none"
+                  className="w-full rounded-xl border border-orange-200 bg-white p-3 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-y"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                  <label className="text-xs font-semibold text-zinc-800 block mb-1">
                     Operating System & Node Version
                   </label>
                   <input
                     type="text"
                     value={osName}
                     onChange={(e) => setOsName(e.target.value)}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none"
+                    className="w-full rounded-xl border border-orange-200 bg-white px-3 py-2 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-zinc-300 block mb-1">
+                  <label className="text-xs font-semibold text-zinc-800 block mb-1">
                     Framework Version
                   </label>
                   <input
                     type="text"
                     value={frameworkVersion}
                     onChange={(e) => setFrameworkVersion(e.target.value)}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none"
+                    className="w-full rounded-xl border border-orange-200 bg-white px-3 py-2 text-xs text-zinc-950 placeholder:text-zinc-500 focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-zinc-800 flex items-center justify-end gap-3">
+              <div className="pt-3 border-t border-orange-200 flex items-center justify-end gap-3">
                 <Button
                   type="button"
                   variant="outline"
