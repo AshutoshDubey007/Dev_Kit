@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,20 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const err = params.get('error');
+    if (err) {
+      if (err === 'Configuration') {
+        setAuthError(
+          'OAuth configuration mismatch: ensure NEXTAUTH_URL is removed or matches your live domain, and OAuth callback URLs are registered.'
+        );
+      } else {
+        setAuthError(`Sign-in error (${err}). Please try again or use email sign-in.`);
+      }
+    }
+  }, []);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();

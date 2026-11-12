@@ -2,6 +2,13 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
+  images: {
+    localPatterns: [
+      {
+        pathname: '/**',
+      },
+    ],
+  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'three'],
   },
